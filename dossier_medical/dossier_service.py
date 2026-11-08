@@ -3,7 +3,7 @@ Service Dossier Médical — MedConnect
 Module : Dossier Médical Informatisé
 Auteur : Achraf AIT DAMNAT (Lead Tech / Architecte)
 
-Règles métier à respecter :
+Règles métier implémentées :
   - Le motif est obligatoire pour toute consultation
   - L'historique par patient retourne toutes ses consultations
   - Modification uniquement si la consultation existe
@@ -33,10 +33,15 @@ class DossierService:
         Lève ValueError si :
           - Le motif est vide
         """
-        # TODO : valider le motif
-        # TODO : créer et stocker la Consultation
-        # TODO : retourner la Consultation créée
-        raise NotImplementedError("À implémenter par Achraf AIT DAMNAT")
+        if not motif or str(motif).strip() == "":
+            raise ValueError("Le champ 'motif' est obligatoire.")
+
+        consultation = Consultation(
+            patient_cin, medecin_id, date, motif,
+            tension, poids, temperature, pouls, diagnostic
+        )
+        self._consultations[consultation.id] = consultation
+        return consultation
 
     # ------------------------------------------------------------------
     # Historique
@@ -46,8 +51,10 @@ class DossierService:
         """
         Retourne la liste des consultations d'un patient (peut être vide).
         """
-        # TODO : filtrer self._consultations par patient_cin
-        raise NotImplementedError("À implémenter par Achraf AIT DAMNAT")
+        return [
+            c for c in self._consultations.values()
+            if c.patient_cin == patient_cin
+        ]
 
     # ------------------------------------------------------------------
     # Modifier
@@ -58,8 +65,22 @@ class DossierService:
         Met à jour les champs d'une consultation existante.
         Lève ValueError si la consultation n'existe pas.
         """
-        # TODO : récupérer, valider les champs, appliquer les modifications
-        raise NotImplementedError("À implémenter par Achraf AIT DAMNAT")
+        if consult_id not in self._consultations:
+            raise ValueError(
+                f"Aucune consultation trouvée avec l'ID '{consult_id}'."
+            )
+        consultation = self._consultations[consult_id]
+
+        champs_autorisés = {
+            "motif", "tension", "poids", "temperature",
+            "pouls", "diagnostic", "date"
+        }
+        for champ, valeur in modifications.items():
+            if champ not in champs_autorisés:
+                raise ValueError(f"Champ inconnu : '{champ}'.")
+            setattr(consultation, champ, valeur)
+
+        return consultation
 
     # ------------------------------------------------------------------
     # Supprimer
@@ -70,8 +91,12 @@ class DossierService:
         Supprime une consultation.
         Lève ValueError si elle n'existe pas.
         """
-        # TODO : vérifier existence, supprimer de self._consultations
-        raise NotImplementedError("À implémenter par Achraf AIT DAMNAT")
+        if consult_id not in self._consultations:
+            raise ValueError(
+                f"Aucune consultation trouvée avec l'ID '{consult_id}'."
+            )
+        consultation = self._consultations.pop(consult_id)
+        return consultation
 
     # ------------------------------------------------------------------
     # Utilitaires

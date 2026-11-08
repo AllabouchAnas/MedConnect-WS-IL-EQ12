@@ -3,7 +3,7 @@ Service Agenda — MedConnect
 Module : Gestion des Rendez-vous
 Auteur : Ahmed LAHMAINE (Product Owner / BA)
 
-Règles métier à respecter :
+Règles métier implémentées :
   - Pas de chevauchement pour le même médecin au même créneau
   - Cycle de statuts : Planifié → Salle d'attente → Consultation → Terminé
   - Annulation possible à tout moment (conserve l'historique)
@@ -31,10 +31,19 @@ class AgendaService:
         Lève ValueError si :
           - Un RDV non annulé existe déjà pour ce médecin à cette date/heure
         """
-        # TODO : vérifier les chevauchements pour ce médecin à cette date_heure
-        # TODO : créer et stocker le RendezVous
-        # TODO : retourner le RendezVous créé
-        raise NotImplementedError("À implémenter par Ahmed LAHMAINE")
+        # Vérification chevauchement : même médecin, même créneau, non annulé
+        for rdv in self._rendez_vous.values():
+            if (rdv.medecin_id == medecin_id
+                    and rdv.date_heure == date_heure
+                    and rdv.statut != "Annulé"):
+                raise ValueError(
+                    f"Le médecin '{medecin_id}' a déjà un rendez-vous "
+                    f"le {date_heure}."
+                )
+
+        rdv = RendezVous(patient_cin, medecin_id, date_heure, motif)
+        self._rendez_vous[rdv.id] = rdv
+        return rdv
 
     # ------------------------------------------------------------------
     # Avancer le statut
@@ -45,8 +54,17 @@ class AgendaService:
         Fait avancer le statut du RDV au suivant dans le cycle.
         Lève ValueError si le RDV est déjà Terminé ou Annulé.
         """
-        # TODO : récupérer le RDV, trouver le prochain statut, l'appliquer
-        raise NotImplementedError("À implémenter par Ahmed LAHMAINE")
+        rdv = self.rechercher_rdv(rdv_id)
+
+        if rdv.statut == "Annulé":
+            raise ValueError("Impossible d'avancer le statut d'un RDV annulé.")
+
+        if rdv.statut == "Terminé":
+            raise ValueError("Le rendez-vous est déjà terminé.")
+
+        index_actuel = STATUTS_ORDONNES.index(rdv.statut)
+        rdv.statut = STATUTS_ORDONNES[index_actuel + 1]
+        return rdv
 
     # ------------------------------------------------------------------
     # Annuler
@@ -57,8 +75,10 @@ class AgendaService:
         Annule un rendez-vous (conserve l'historique, ne supprime pas).
         Lève ValueError si le RDV n'existe pas.
         """
-        # TODO : passer statut à "Annulé", enregistrer motif_annulation
-        raise NotImplementedError("À implémenter par Ahmed LAHMAINE")
+        rdv = self.rechercher_rdv(rdv_id)
+        rdv.statut = "Annulé"
+        rdv.motif_annulation = motif_annulation
+        return rdv
 
     # ------------------------------------------------------------------
     # Recherche
@@ -69,8 +89,9 @@ class AgendaService:
         Retourne le RDV correspondant à l'ID.
         Lève ValueError si introuvable.
         """
-        # TODO : chercher dans self._rendez_vous
-        raise NotImplementedError("À implémenter par Ahmed LAHMAINE")
+        if rdv_id not in self._rendez_vous:
+            raise ValueError(f"Aucun rendez-vous trouvé avec l'ID '{rdv_id}'.")
+        return self._rendez_vous[rdv_id]
 
     # ------------------------------------------------------------------
     # Utilitaires

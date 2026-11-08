@@ -3,7 +3,7 @@ Service Ordonnances — MedConnect
 Module : Gestion des Ordonnances
 Auteur : ABDELLAH RAHEL (Responsable QA)
 
-Règles métier à respecter :
+Règles métier implémentées :
   - Alerte allergie si un médicament est dans la liste des allergies du patient
   - Une ordonnance validée devient non modifiable
   - Chaque ordonnance peut contenir plusieurs lignes (médicaments)
@@ -28,9 +28,9 @@ class OrdonnanceService:
         Crée une nouvelle ordonnance vide (sans lignes).
         Retourne l'ordonnance créée.
         """
-        # TODO : créer et stocker l'Ordonnance
-        # TODO : retourner l'Ordonnance
-        raise NotImplementedError("À implémenter par ABDELLAH RAHEL")
+        ordonnance = Ordonnance(patient_cin, medecin_id, date)
+        self._ordonnances[ordonnance.id] = ordonnance
+        return ordonnance
 
     # ------------------------------------------------------------------
     # Ajouter une ligne (médicament)
@@ -45,10 +45,24 @@ class OrdonnanceService:
           - L'ordonnance est déjà validée
           - Le médicament figure dans la liste allergies_patient
         """
-        # TODO : vérifier que l'ordonnance existe et n'est pas validée
-        # TODO : vérifier conflit d'allergie (comparaison insensible à la casse)
-        # TODO : créer LigneOrdonnance et l'ajouter à ordonnance.lignes
-        raise NotImplementedError("À implémenter par ABDELLAH RAHEL")
+        ordonnance = self.rechercher_ordonnance(ordonnance_id)
+
+        if ordonnance.est_validee:
+            raise ValueError(
+                "Impossible d'ajouter un médicament à une ordonnance déjà validée."
+            )
+
+        # Vérification allergie — comparaison insensible à la casse
+        if allergies_patient:
+            allergies_lower = [a.lower() for a in allergies_patient]
+            if medicament.lower() in allergies_lower:
+                raise ValueError(
+                    f"Alerte allergie : le patient est allergique à '{medicament}'."
+                )
+
+        ligne = LigneOrdonnance(medicament, dosage, posologie, duree_jours)
+        ordonnance.lignes.append(ligne)
+        return ligne
 
     # ------------------------------------------------------------------
     # Valider
@@ -59,8 +73,9 @@ class OrdonnanceService:
         Valide l'ordonnance — la rend non modifiable.
         Lève ValueError si l'ordonnance n'existe pas.
         """
-        # TODO : passer est_validee à True
-        raise NotImplementedError("À implémenter par ABDELLAH RAHEL")
+        ordonnance = self.rechercher_ordonnance(ordonnance_id)
+        ordonnance.est_validee = True
+        return ordonnance
 
     # ------------------------------------------------------------------
     # Modifier
@@ -71,8 +86,20 @@ class OrdonnanceService:
         Modifie les champs d'une ordonnance.
         Lève ValueError si l'ordonnance est déjà validée.
         """
-        # TODO : vérifier est_validee, appliquer modifications
-        raise NotImplementedError("À implémenter par ABDELLAH RAHEL")
+        ordonnance = self.rechercher_ordonnance(ordonnance_id)
+
+        if ordonnance.est_validee:
+            raise ValueError(
+                "Impossible de modifier une ordonnance déjà validée."
+            )
+
+        champs_autorisés = {"date", "patient_cin", "medecin_id"}
+        for champ, valeur in modifications.items():
+            if champ not in champs_autorisés:
+                raise ValueError(f"Champ inconnu : '{champ}'.")
+            setattr(ordonnance, champ, valeur)
+
+        return ordonnance
 
     # ------------------------------------------------------------------
     # Utilitaires
@@ -82,8 +109,11 @@ class OrdonnanceService:
         """
         Retourne l'ordonnance ou lève ValueError si introuvable.
         """
-        # TODO : chercher dans self._ordonnances
-        raise NotImplementedError("À implémenter par ABDELLAH RAHEL")
+        if ordonnance_id not in self._ordonnances:
+            raise ValueError(
+                f"Aucune ordonnance trouvée avec l'ID '{ordonnance_id}'."
+            )
+        return self._ordonnances[ordonnance_id]
 
     def nombre_ordonnances(self):
         """Retourne le nombre total d'ordonnances."""

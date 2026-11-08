@@ -123,3 +123,4 @@ def test_UT_ORD_05_refus_modification_apres_validation(service_avec_ordonnance):
 
     with pytest.raises(ValueError, match="validée"):
         service_avec_ordonnance.modifier_ordonnance(1, date="2026-12-01")
+

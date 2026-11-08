@@ -125,3 +125,4 @@ def test_UT_AGE_05_recherche_rdv_inexistant(service):
     """UT-AGE-05 : Rechercher un ID inexistant doit lever une erreur."""
     with pytest.raises(ValueError):
         service.rechercher_rdv(999)
+

@@ -118,3 +118,4 @@ def test_UT_DOS_05_modifier_diagnostic(service_avec_consultation):
 
     historique = service_avec_consultation.get_historique("AB123456")
     assert historique[0].diagnostic == "Ulcère gastrique"
+
