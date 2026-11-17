@@ -35,8 +35,10 @@ MedConnect-WS-IL-EQ12/
 ├── dossier_medical/                 ← Module Achraf AIT DAMNAT
 │   ├── __init__.py
 │   ├── consultation.py              # Modèle Consultation ✅ (fourni)
-│   ├── dossier_service.py           # Stub — À IMPLÉMENTER
-│   └── test_dossier_service.py      # 5 tests — À faire passer
+│   ├── dossier_service.py           # Service métier du dossier médical
+│   ├── store.py                     # Persistance JSON des consultations
+│   ├── views.py                     # Pages web du dossier médical
+│   └── test_dossier_service.py      # 5 tests unitaires
 │
 ├── ordonnances/                     ← Module ABDELLAH RAHEL
 │   ├── __init__.py
@@ -44,6 +46,11 @@ MedConnect-WS-IL-EQ12/
 │   ├── ordonnance_service.py        # Stub — À IMPLÉMENTER
 │   └── test_ordonnance_service.py   # 5 tests — À faire passer
 │
+├── web/                             # Mise en page et styles partagés
+│   ├── __init__.py
+│   ├── layout.py                    # Gabarit HTML partagé
+│   └── static/styles.css            # Tokens et styles du guide MedConnect
+├── app.py                           # Tableau de bord et routage central
 ├── venv/                            # Environnement virtuel Python (ne pas commit)
 ├── requirements.txt                 # Dépendances : pytest, pytest-html
 ├── pytest.ini                       # Configuration pytest
@@ -82,6 +89,20 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+
+### Lancer l'interface web
+
+Depuis la racine du projet, démarrez l'application avec :
+
+```powershell
+python app.py
+```
+
+Ouvrez ensuite http://127.0.0.1:8765. Le tableau de bord et le routage
+central sont dans `app.py`; les pages du dossier médical sont dans
+`dossier_medical/views.py`; la mise en page et les styles partagés sont dans
+`web/`. Les autres modules peuvent ajouter leurs vues et leurs routes sans
+modifier celles du dossier médical.
 
 ### Étape 4 — Lancer les tests de son module
 
@@ -168,20 +189,20 @@ python -m pytest agenda/test_agenda_service.py -v --html=rapport_tests_agenda.ht
 
 ---
 
-## 🩺 Module Dossier Médical — Achraf AIT DAMNAT (À faire)
+## 🩺 Module Dossier Médical — Achraf AIT DAMNAT (Terminé)
 
-### Ce que tu dois implémenter
+### Fonctions principales
 
 **Fichier : `dossier_medical/dossier_service.py`**
 
-| Méthode | Ce qu'elle doit faire |
+| Méthode | Comportement |
 |---------|----------------------|
 | `ajouter_consultation(patient_cin, medecin_id, date, motif, ...)` | Enregistrer la consultation — lever `ValueError` si motif vide |
 | `get_historique(patient_cin)` | Retourner la liste des consultations du patient (liste vide si aucune) |
 | `modifier_consultation(consult_id, **modifications)` | Mettre à jour les champs — lever `ValueError` si ID inexistant |
 | `supprimer_consultation(consult_id)` | Supprimer — lever `ValueError` si ID inexistant |
 
-### Tests à faire passer
+### Tests unitaires
 
 | ID | Scénario |
 |----|----------|
