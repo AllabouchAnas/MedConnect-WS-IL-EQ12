@@ -86,6 +86,9 @@ def run_pytest():
 def reset_db_cmd():
     print("▶  Alimentation de la base de donnees de demonstration...")
     res = subprocess.run([PYTHON, MANAGE_PY, "seed_demo"], cwd=BACKEND)
+    seed_dossier_py = os.path.join(BACKEND, "dossier_medical_api", "management", "commands", "seed_dossier.py")
+    if os.path.isfile(seed_dossier_py):
+        subprocess.run([PYTHON, MANAGE_PY, "seed_dossier"], cwd=BACKEND)
     if res.returncode == 0:
         print("✅  Base SQLite MedConnect alimentee avec succes.")
     else:
@@ -96,7 +99,7 @@ def menu():
     banner()
     choices = {
         "1": ("🚀 Lancer MedConnect (Django REST API + SPA Web - Port 8000)", lambda: run_django(8000)),
-        "2": ("🧪 Lancer la suite de tests Django REST (27 tests)",          run_django_tests),
+        "2": ("🧪 Lancer la suite de tests Django REST (45 tests)",          run_django_tests),
         "3": ("🧪 Lancer la suite de tests pytest (23 tests)",              run_pytest),
         "4": ("🗄️  Reinitialiser la base SQLite de demo (seed_demo)",        reset_db_cmd),
         "5": ("🌐 Lancer le prototype Flask historique (Port 5000)",        run_flask),
