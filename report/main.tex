@@ -89,6 +89,73 @@
 \titleformat{\subsubsection}
   {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
 
+% ── TikZ (diagrammes UML) ─────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,shapes.multipart,arrows.meta,fit,positioning,calc,backgrounds}
+
+% Styles UML réutilisables
+\tikzset{
+  % --- Use-case ---
+  actor/.style={
+    draw=medprimary, fill=medaccent, text=medprimary,
+    ellipse, minimum width=2.2cm, minimum height=0.8cm,
+    font=\small\bfseries, align=center
+  },
+  usecase/.style={
+    draw=medsecondary, fill=white, text=black,
+    ellipse, minimum width=3.2cm, minimum height=0.9cm,
+    font=\small, align=center
+  },
+  actorbox/.style={
+    draw=medprimary, fill=medprimary!10,
+    rectangle, rounded corners=4pt,
+    font=\small\bfseries\color{medprimary}, align=center,
+    minimum width=2.4cm, minimum height=1cm
+  },
+  system/.style={
+    draw=medprimary, thick, dashed, fill=medaccent!30,
+    rectangle, rounded corners=6pt
+  },
+  % --- Classe ---
+  classbox/.style={
+    draw=medprimary, fill=white,
+    rectangle split, rectangle split parts=3,
+    rectangle split part fill={medprimary!80, white, white},
+    font=\small, align=left,
+    minimum width=3.8cm
+  },
+  inherit/.style={-{Triangle[open,length=8pt]}, draw=medprimary, thick},
+  assoc/.style={-{Latex[length=6pt]}, draw=medsecondary, thick},
+  comp/.style={-{Diamond[length=8pt]}, draw=medred, thick},
+  % --- Composant ---
+  compbox/.style={
+    draw=medprimary, fill=medaccent, thick,
+    rectangle, rounded corners=5pt,
+    font=\small\bfseries\color{medprimary}, align=center,
+    minimum width=3cm, minimum height=1.1cm
+  },
+  dbbox/.style={
+    draw=medprimary, fill=medprimary!15, thick,
+    cylinder, shape border rotate=90, aspect=0.15,
+    font=\small\bfseries, align=center,
+    minimum width=2.5cm, minimum height=1.2cm
+  },
+  nodebox/.style={
+    draw=medprimary, fill=white, thick,
+    rectangle, rounded corners=3pt,
+    font=\small, align=center,
+    minimum width=2.8cm, minimum height=0.9cm
+  },
+  serverbox/.style={
+    draw=medsecondary, fill=medsecondary!10, thick,
+    rectangle, rounded corners=5pt,
+    font=\small\bfseries\color{medsecondary}, align=center,
+    minimum width=4.5cm, minimum height=1.2cm
+  },
+  link/.style={-{Latex[length=5pt]}, draw=medprimary, thick},
+  dlink/.style={-{Latex[length=5pt]}, draw=medsecondary, thick, dashed},
+}
+
 % ── Utilitaire ────────────────────────────────────────────
 \usepackage{pdfpages}
 \usepackage{pdflscape}
@@ -213,7 +280,7 @@
   \hline
   Module & Web Services et Applications Distribuées \\
   \hline
-  Dépôt GitHub & \texttt{github.com/[organisation]/MedConnect-WS-IL-EQ12} \\
+  Dépôt GitHub & \texttt{github.com/AllabouchAnas/MedConnect-WS-IL-EQ12} \\
   \hline
   Branche principale & \texttt{main} \\
   \hline
@@ -488,135 +555,357 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
 
 \section{Diagramme de cas d'utilisation}
 
-Le tableau suivant synthétise les cas d'utilisation par acteur, en l'absence des fichiers source UML disponibles au dépôt :
+Le diagramme ci-dessous représente les cas d'utilisation des deux acteurs principaux du système MedConnect.
 
-\begin{table}[H]
+\begin{figure}[H]
 \centering
-\caption{Cas d'utilisation – Secrétaire}
-\renewcommand{\arraystretch}{1.4}
-\begin{tabularx}{\textwidth}{|c|X|}
-  \hline
-  \rowcolor{medaccent}
-  \textbf{Acteur} & \textbf{Cas d'utilisation} \\
-  \hline
-  \multirow{6}{*}{\textbf{Secrétaire}} &
-    UC-01 : S'authentifier \\
-  \cline{2-2}
-  & UC-02 : Créer / modifier / supprimer un patient \\
-  \cline{2-2}
-  & UC-03 : Rechercher un patient par CIN ou nom \\
-  \cline{2-2}
-  & UC-04 : Planifier un rendez-vous \\
-  \cline{2-2}
-  & UC-05 : Annuler un rendez-vous \\
-  \cline{2-2}
-  & UC-06 : Enregistrer l'arrivée d'un patient (salle d'attente) \\
-  \hline
-  \multirow{6}{*}{\textbf{Médecin}} &
-    UC-01 : S'authentifier \\
-  \cline{2-2}
-  & UC-07 : Consulter la salle d'attente \\
-  \cline{2-2}
-  & UC-08 : Ouvrir le dossier médical d'un patient \\
-  \cline{2-2}
-  & UC-09 : Enregistrer une consultation \\
-  \cline{2-2}
-  & UC-10 : Rédiger et valider une ordonnance \\
-  \cline{2-2}
-  & UC-11 : Consulter l'historique des ordonnances \\
-  \hline
-\end{tabularx}
-\end{table}
+\begin{tikzpicture}[node distance=0.7cm and 1.4cm]
+
+  % ── Acteur Secrétaire ──────────────────────────
+  \node[actorbox] (sec) at (-5.5, 0) {Secrétaire};
+
+  % ── Use-cases Secrétaire ───────────────────────
+  \node[usecase, right=2cm of sec, yshift= 3.5cm] (uc01) {S'authentifier};
+  \node[usecase, right=2cm of sec, yshift= 2.0cm] (uc02) {Gérer les patients\\(CRUD)};
+  \node[usecase, right=2cm of sec, yshift= 0.6cm] (uc03) {Rechercher\\un patient};
+  \node[usecase, right=2cm of sec, yshift=-0.9cm] (uc04) {Planifier\\un RDV};
+  \node[usecase, right=2cm of sec, yshift=-2.3cm] (uc05) {Annuler\\un RDV};
+  \node[usecase, right=2cm of sec, yshift=-3.7cm] (uc06) {Enregistrer\\l'arrivée};
+
+  % ── Acteur Médecin ─────────────────────────────
+  \node[actorbox] (med) at (5.5, 0) {Médecin};
+
+  % ── Use-cases Médecin ──────────────────────────
+  \node[usecase, left=2cm of med, yshift= 2.8cm] (uc07) {Consulter\\salle d'attente};
+  \node[usecase, left=2cm of med, yshift= 1.3cm] (uc08) {Ouvrir dossier\\médical};
+  \node[usecase, left=2cm of med, yshift=-0.2cm] (uc09) {Créer\\une consultation};
+  \node[usecase, left=2cm of med, yshift=-1.7cm] (uc10) {Rédiger\\une ordonnance};
+  \node[usecase, left=2cm of med, yshift=-3.2cm] (uc11) {Valider\\une ordonnance};
+
+  % ── Boîte système ──────────────────────────────
+  \begin{scope}[on background layer]
+    \node[system, fit=(uc01)(uc02)(uc03)(uc04)(uc05)(uc06)(uc07)(uc08)(uc09)(uc10)(uc11),
+          label={[font=\small\bfseries\color{medprimary}]above:Système MedConnect}] (sys) {};
+  \end{scope}
+
+  % ── Associations Secrétaire ────────────────────
+  \draw[link] (sec) -- (uc01);
+  \draw[link] (sec) -- (uc02);
+  \draw[link] (sec) -- (uc03);
+  \draw[link] (sec) -- (uc04);
+  \draw[link] (sec) -- (uc05);
+  \draw[link] (sec) -- (uc06);
+
+  % ── Associations Médecin ───────────────────────
+  \draw[link] (med) -- (uc01);
+  \draw[link] (med) -- (uc04);
+  \draw[link] (med) -- (uc07);
+  \draw[link] (med) -- (uc08);
+  \draw[link] (med) -- (uc09);
+  \draw[link] (med) -- (uc10);
+  \draw[link] (med) -- (uc11);
+
+\end{tikzpicture}
+\caption{Diagramme de cas d'utilisation – MedConnect}
+\label{fig:uml-usecase}
+\end{figure}
 
 \section{Diagramme de classes}
 
-Le diagramme de classes ci-dessous représente les entités principales et leurs relations :
+Le diagramme de classes reflète exactement les modèles Django implémentés dans le projet.
 
-\begin{table}[H]
+\begin{figure}[H]
 \centering
-\caption{Entités et relations (diagramme de classes simplifié)}
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{4.5cm}|p{5.5cm}|}
-  \hline
-  \rowcolor{medaccent}
-  \textbf{Entité} & \textbf{Attributs clés} & \textbf{Relations} \\
-  \hline
-  \textbf{Patient} & cin (PK), nom, prénom, date\_naissance, allergies & 1 $\rightarrow$ N RendezVous ; 1 $\rightarrow$ N Consultation \\
-  \hline
-  \textbf{User (Django)} & username, password, groups & 1 $\rightarrow$ N RendezVous (médecin) \\
-  \hline
-  \textbf{RendezVous} & id (PK), patient (FK), medecin (FK), date\_rdv, statut & N $\rightarrow$ 1 Patient ; N $\rightarrow$ 1 User \\
-  \hline
-  \textbf{Consultation} & id (PK), patient (FK), rdv (FK), notes, date & N $\rightarrow$ 1 RendezVous ; 1 $\rightarrow$ 1 Ordonnance \\
-  \hline
-  \textbf{Ordonnance} & id (PK), consultation (FK), validee, date\_creation & N $\rightarrow$ 1 Consultation ; 1 $\rightarrow$ N LigneOrdonnance \\
-  \hline
-  \textbf{LigneOrdonnance} & id (PK), ordonnance (FK), medicament, posologie & N $\rightarrow$ 1 Ordonnance \\
-  \hline
-\end{tabular}
-\end{table}
+\begin{tikzpicture}[node distance=1.6cm and 2.4cm]
+
+  % ── Patient ───────────────────────────────────
+  \node[classbox] (patient) {
+    \textbf{\color{white} Patient}
+    \nodepart{two}
+    \texttt{cin : CharField (PK)}\\
+    \texttt{nom : CharField}\\
+    \texttt{prenom : CharField}\\
+    \texttt{date\_naissance : DateField}\\
+    \texttt{telephone : CharField}\\
+    \texttt{groupe\_sanguin : CharField}\\
+    \texttt{allergies : TextField}\\
+    \texttt{contact\_urgence : CharField}
+    \nodepart{three}
+    \texttt{nom\_complet : property}
+  };
+
+  % ── User (Django) ─────────────────────────────
+  \node[classbox, right=3.2cm of patient] (user) {
+    \textbf{\color{white} User (Django)}
+    \nodepart{two}
+    \texttt{username : CharField}\\
+    \texttt{password : CharField}\\
+    \texttt{groups : ManyToMany}
+    \nodepart{three}
+    \textit{(modèle intégré Django)}
+  };
+
+  % ── RendezVous ────────────────────────────────
+  \node[classbox, below=2.4cm of patient] (rdv) {
+    \textbf{\color{white} RendezVous}
+    \nodepart{two}
+    \texttt{id : AutoField (PK)}\\
+    \texttt{patient : FK → Patient}\\
+    \texttt{medecin : FK → User}\\
+    \texttt{date\_heure : DateTimeField}\\
+    \texttt{motif : CharField}\\
+    \texttt{statut : CharField (choices)}\\
+    \texttt{motif\_annulation : CharField}\\
+    \texttt{arrivee\_a : DateTimeField}\\
+    \texttt{arrivee\_par : FK → User}\\
+    \texttt{cree\_a : DateTimeField}
+    \nodepart{three}
+    \texttt{avancer(user)}\\
+    \texttt{annuler(motif)}
+  };
+
+  % ── Consultation ──────────────────────────────
+  \node[classbox, below=2.4cm of user] (consult) {
+    \textbf{\color{white} Consultation}
+    \nodepart{two}
+    \texttt{id : AutoField (PK)}\\
+    \texttt{patient : FK → Patient}\\
+    \texttt{medecin : FK → User}\\
+    \texttt{date : DateField}\\
+    \texttt{motif : CharField}\\
+    \texttt{tension : CharField}\\
+    \texttt{poids : DecimalField}\\
+    \texttt{temperature : DecimalField}\\
+    \texttt{pouls : PositiveSmallInt}\\
+    \texttt{diagnostic : TextField}
+    \nodepart{three}
+    \textit{ordering: -date, -id}
+  };
+
+  % ── Ordonnance ────────────────────────────────
+  \node[classbox, below=2.4cm of rdv] (ordonnance) {
+    \textbf{\color{white} Ordonnance}
+    \nodepart{two}
+    \texttt{id : AutoField (PK)}\\
+    \texttt{patient : FK → Patient}\\
+    \texttt{medecin : FK → User}\\
+    \texttt{consultation : FK → Consultation}\\
+    \texttt{date : DateField}\\
+    \texttt{est\_validee : BooleanField}\\
+    \texttt{cree\_a : DateTimeField}
+    \nodepart{three}
+    \texttt{valider()}
+  };
+
+  % ── LigneOrdonnance ───────────────────────────
+  \node[classbox, below=2.4cm of consult] (ligne) {
+    \textbf{\color{white} LigneOrdonnance}
+    \nodepart{two}
+    \texttt{id : AutoField (PK)}\\
+    \texttt{ordonnance : FK → Ordonnance}\\
+    \texttt{medicament : CharField}\\
+    \texttt{dosage : CharField}\\
+    \texttt{posologie : CharField}\\
+    \texttt{duree\_jours : PositiveInt}
+    \nodepart{three}
+    \textit{ordering: id}
+  };
+
+  % ── Relations ─────────────────────────────────
+  % Patient -> RendezVous (1..N)
+  \draw[assoc] (patient.south) -- node[left,font=\tiny]{1} (rdv.north) node[left,font=\tiny,near end]{N};
+  % Patient -> Consultation (1..N)
+  \draw[assoc] (patient.east) -- ++(0.6,0) |- node[right,font=\tiny,pos=0.8]{N} (consult.east);
+  % Patient -> Ordonnance (1..N)
+  \draw[assoc] (patient.south) -- ++(0,-0.4) -| node[right,font=\tiny,near start]{N} (ordonnance.north);
+  % User -> RendezVous medecin
+  \draw[assoc] (user.south) -- ++(0,-0.4) -| node[right,font=\tiny,pos=0.3]{N} (rdv.east);
+  % User -> Consultation
+  \draw[assoc] (user.south) -- (consult.north) node[right,font=\tiny,near start]{N};
+  % User -> Ordonnance
+  \draw[assoc] (user.south) -- ++(0,-0.4) -| node[near start,font=\tiny]{N} (ordonnance.east);
+  % Consultation -> Ordonnance (1..N)
+  \draw[assoc] (consult.south) -- (ligne.north) node[right,font=\tiny,near start]{};
+  \draw[assoc] (ordonnance.east) -- node[below,font=\tiny]{1} ++(0.6,0) |- node[right,font=\tiny,near end]{N} (ligne.east);
+  % Consultation -> Ordonnance FK
+  \draw[dlink] (ordonnance.north) -- node[right,font=\tiny]{N→1} (consult.south);
+
+\end{tikzpicture}
+\caption{Diagramme de classes – modèles Django MedConnect}
+\label{fig:uml-classes}
+\end{figure}
 
 \section{Diagramme de composants}
 
-L'architecture de MedConnect est organisée en couches distinctes communicant via HTTP/REST :
-
-\begin{table}[H]
+\begin{figure}[H]
 \centering
-\caption{Composants de l'architecture MedConnect}
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{5cm}|p{5cm}|}
-  \hline
-  \rowcolor{medaccent}
-  \textbf{Composant} & \textbf{Technologie} & \textbf{Rôle} \\
-  \hline
-  \textbf{Frontend SPA} & JavaScript natif + CSS & Interface utilisateur (navigateur) \\
-  \hline
-  \textbf{API Gateway} & Django URL Router & Routage vers les 4 services + auth \\
-  \hline
-  \textbf{patients\_api} & DRF ViewSet & CRUD patients \\
-  \hline
-  \textbf{agenda\_api} & DRF ViewSet & Gestion RDV et salle d'attente \\
-  \hline
-  \textbf{dossier\_medical\_api} & DRF ViewSet & Consultations médicales \\
-  \hline
-  \textbf{ordonnances\_api} & DRF ViewSet & Ordonnances et lignes \\
-  \hline
-  \textbf{Auth Service} & SimpleJWT & Tokens access/refresh \\
-  \hline
-  \textbf{Base de données} & SQLite 3 (dev) & Persistence des données \\
-  \hline
-\end{tabular}
-\end{table}
+\begin{tikzpicture}[node distance=1cm and 1.6cm]
+
+  % ── Couche Client ─────────────────────────────
+  \node[compbox, fill=medgreen!20, draw=medgreen, text=black, minimum width=10cm]
+    (spa) {Frontend SPA\\{\small JavaScript ES6 + CSS3 – \texttt{fetch()} vers \texttt{/api/*}}};
+
+  % ── Couche Gateway ────────────────────────────
+  \node[compbox, below=0.9cm of spa, minimum width=10cm]
+    (gw) {API Gateway – Django URL Dispatcher (\texttt{config/urls.py})\\{\small Routage vers les services + JWT middleware}};
+
+  % ── Ligne Auth ────────────────────────────────
+  \node[compbox, below left=1.2cm and -0.5cm of gw, minimum width=3cm, fill=medred!10, draw=medred]
+    (auth) {auth\_service\\{\small SimpleJWT\\login / refresh / logout}};
+
+  % ── 4 services ────────────────────────────────
+  \node[compbox, right=0.4cm of auth] (p)   {patients\_api\\{\small PatientViewSet}};
+  \node[compbox, right=0.4cm of p]    (ag)  {agenda\_api\\{\small RendezVousViewSet\\MedecinListView}};
+  \node[compbox, right=0.4cm of ag]   (dm)  {dossier\_medical\_api\\{\small ConsultationViewSet}};
+  \node[compbox, right=0.4cm of dm, minimum width=2.6cm]  (ord) {ordonnances\_api\\{\small OrdonnanceViewSet}};
+
+  % ── ORM ───────────────────────────────────────
+  \node[compbox, below=1.2cm of ag, minimum width=10cm, fill=medprimary!10]
+    (orm) {Django ORM\\{\small models.py par service – migrations appliquées sur SQLite}};
+
+  % ── BDD ───────────────────────────────────────
+  \node[dbbox, below=0.9cm of orm, text width=2.5cm]
+    (db) {SQLite 3\\db.sqlite3};
+
+  % ── Liens ─────────────────────────────────────
+  \draw[link] (spa)  -- (gw);
+  \draw[link] (gw)   -- (auth);
+  \draw[link] (gw)   -- (p);
+  \draw[link] (gw)   -- (ag);
+  \draw[link] (gw)   -- (dm);
+  \draw[link] (gw)   -- (ord);
+  \draw[link] (auth.south) |- (orm.west);
+  \draw[link] (p.south)    -- (orm.north -| p.south);
+  \draw[link] (ag.south)   -- (orm.north);
+  \draw[link] (dm.south)   -- (orm.north -| dm.south);
+  \draw[link] (ord.south)  |- (orm.east);
+  \draw[link] (orm) -- (db);
+
+  % ── Labels HTTP ───────────────────────────────
+  \node[font=\tiny\itshape,color=medsecondary] at ($(spa)!0.5!(gw)+(3,0)$) {HTTP/REST JSON};
+  \node[font=\tiny\itshape,color=medsecondary] at ($(orm)!0.5!(db)+(2,0)$) {SQL};
+
+\end{tikzpicture}
+\caption{Diagramme de composants – architecture MedConnect}
+\label{fig:uml-composants}
+\end{figure}
 
 \section{Diagramme de séquence – Cycle de vie d'un RDV}
 
-Le flux nominal d'un rendez-vous médical dans MedConnect suit la séquence suivante :
-
-\begin{table}[H]
+\begin{figure}[H]
 \centering
-\caption{Séquence : Cycle de vie d'un rendez-vous}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|c|p{3cm}|p{3cm}|p{5cm}|}
-  \hline
-  \rowcolor{medaccent}
-  \textbf{Étape} & \textbf{Acteur} & \textbf{Action} & \textbf{Résultat / Statut RDV} \\
-  \hline
-  1 & Secrétaire & Crée le RDV & Statut : \textbf{Planifié} \\
-  \hline
-  2 & Secrétaire & Enregistre l'arrivée & Statut : \textbf{Salle d'attente} \\
-  \hline
-  3 & Médecin & Lance la consultation & Statut : \textbf{En cours} \\
-  \hline
-  4 & Médecin & Crée le dossier + ordonnance & Consultation créée \\
-  \hline
-  5 & Médecin & Valide l'ordonnance & Ordonnance immuable \\
-  \hline
-  6 & Médecin & Clôture le RDV & Statut : \textbf{Terminé} \\
-  \hline
-  Alt & Secrétaire / Médecin & Annule le RDV & Statut : \textbf{Annulé} \\
-  \hline
-\end{tabular}
-\end{table}
+\begin{tikzpicture}[node distance=0cm]
+
+  % ── Lignes de vie ─────────────────────────────
+  \node[nodebox] (sec)    at (0,0)    {Secrétaire};
+  \node[nodebox] (client) at (3.5,0)  {Frontend\\SPA};
+  \node[nodebox] (api)    at (7,0)    {Django API};
+  \node[nodebox] (db)     at (10.5,0) {SQLite};
+  \node[nodebox] (med)    at (14,0)   {Médecin};
+
+  % traits de vie
+  \foreach \x in {0,3.5,7,10.5,14} {
+    \draw[draw=medprimary!40, dashed] (\x,-0.5) -- (\x,-12.5);
+  }
+
+  % ── Messages ──────────────────────────────────
+  % 1. Création RDV
+  \draw[link] (0,-1.0)  -- node[above,font=\tiny]{POST /api/agenda/rdv/} (7,-1.0);
+  \draw[link] (7,-1.3)  -- node[above,font=\tiny]{INSERT RendezVous} (10.5,-1.3);
+  \draw[dlink](10.5,-1.6) -- node[above,font=\tiny]{201 Created} (7,-1.6);
+  \draw[dlink](7,-1.9)  -- node[above,font=\tiny]{statut=Planifié} (0,-1.9);
+
+  \node[font=\tiny\bfseries\color{medprimary}] at (-1.2,-1.4) {RDV planifié};
+
+  % 2. Arrivée patient
+  \draw[link] (0,-2.8)  -- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-2.8);
+  \draw[link] (7,-3.1)  -- node[above,font=\tiny]{UPDATE statut='Salle d'attente'} (10.5,-3.1);
+  \draw[dlink](10.5,-3.4) -- node[above,font=\tiny]{200 OK} (7,-3.4);
+  \draw[dlink](7,-3.7)  -- node[above,font=\tiny]{statut=Salle d'attente} (0,-3.7);
+
+  \node[font=\tiny\bfseries\color{medprimary}] at (-1.2,-3.2) {Arrivée};
+
+  % 3. Consultation
+  \draw[link] (14,-4.6) -- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-4.6);
+  \draw[link] (7,-4.9)  -- node[above,font=\tiny]{UPDATE statut='Consultation'} (10.5,-4.9);
+  \draw[dlink](10.5,-5.2) -- node[above,font=\tiny]{200 OK} (7,-5.2);
+  \draw[dlink](7,-5.5)  -- node[above,font=\tiny]{statut=Consultation} (14,-5.5);
+
+  \node[font=\tiny\bfseries\color{medprimary}] at (15.3,-5.0) {Consultation};
+
+  % 4. Création dossier médical
+  \draw[link] (14,-6.4) -- node[above,font=\tiny]{POST /api/consultations/} (7,-6.4);
+  \draw[link] (7,-6.7)  -- node[above,font=\tiny]{INSERT Consultation} (10.5,-6.7);
+  \draw[dlink](10.5,-7.0) -- node[above,font=\tiny]{201 Created} (7,-7.0);
+  \draw[dlink](7,-7.3)  -- node[above,font=\tiny]{consultation\_id} (14,-7.3);
+
+  % 5. Ordonnance
+  \draw[link] (14,-8.2) -- node[above,font=\tiny]{POST /api/ordonnances/ + ajouter-ligne} (7,-8.2);
+  \draw[link] (7,-8.5)  -- node[above,font=\tiny]{INSERT Ordonnance + LigneOrdonnance} (10.5,-8.5);
+  \draw[dlink](10.5,-8.8) -- node[above,font=\tiny]{201 Created} (7,-8.8);
+  \draw[dlink](7,-9.1)  -- node[above,font=\tiny]{ordonnance\_id} (14,-9.1);
+
+  % 6. Validation ordonnance
+  \draw[link] (14,-10.0)-- node[above,font=\tiny]{POST /api/ordonnances/\{id\}/valider/} (7,-10.0);
+  \draw[link] (7,-10.3) -- node[above,font=\tiny]{UPDATE est\_validee=True} (10.5,-10.3);
+  \draw[dlink](10.5,-10.6)-- node[above,font=\tiny]{200 OK} (7,-10.6);
+
+  % 7. Clôture RDV
+  \draw[link] (14,-11.5)-- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-11.5);
+  \draw[link] (7,-11.8) -- node[above,font=\tiny]{UPDATE statut='Terminé'} (10.5,-11.8);
+  \draw[dlink](10.5,-12.1)-- node[above,font=\tiny]{200 OK – statut=Terminé} (7,-12.1);
+
+  \node[font=\tiny\bfseries\color{medgreen}] at (15.3,-11.8) {Terminé};
+
+\end{tikzpicture}
+\caption{Diagramme de séquence – cycle de vie complet d'un rendez-vous médical}
+\label{fig:uml-sequence}
+\end{figure}
+
+\section{Diagramme de déploiement}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.2cm and 2cm]
+
+  % ── Nœud Poste Client ─────────────────────────
+  \node[serverbox, minimum width=5.5cm, minimum height=2.4cm, label={[font=\small\bfseries]above:«node» Poste Client}]
+    (client_node) at (0,0) {};
+  \node[nodebox, fill=medgreen!10] (browser) at (0,0) {Navigateur Web\\{\small Chrome / Firefox / Edge}};
+  \node[nodebox, fill=medgreen!10, below=0.3cm of browser] (spa_art) {{\small \texttt{index.html + JS/CSS SPA}}};
+
+  % ── Nœud Serveur Django ───────────────────────
+  \node[serverbox, minimum width=6cm, minimum height=5.2cm,
+        label={[font=\small\bfseries]above:«node» Serveur Django (Python 3.14)},
+        right=3.5cm of client_node] (server_node) {};
+
+  \node[nodebox, fill=medaccent] (django) at (server_node.center) [yshift=1.6cm]
+    {Django 6.0 + DRF 3.18\\{\small \texttt{config/urls.py + wsgi.py}}};
+  \node[nodebox, fill=medaccent, below=0.25cm of django] (jwt_art)
+    {SimpleJWT 5.5\\{\small \texttt{/api/auth/*}}};
+  \node[nodebox, fill=medaccent, below=0.25cm of jwt_art] (services_art)
+    {4 DRF Services\\{\small patients / agenda / dossier / ordonnances}};
+  \node[nodebox, fill=medaccent, below=0.25cm of services_art] (perm_art)
+    {Permissions RBAC\\{\small \texttt{IsMedecin / HasCabinetRole}}};
+
+  % ── Nœud Base de données ──────────────────────
+  \node[serverbox, minimum width=4cm, minimum height=2cm,
+        label={[font=\small\bfseries]above:«node» Stockage},
+        below=2cm of server_node] (db_node) {};
+  \node[dbbox] (sqlite_art) at (db_node.center) {SQLite 3\\{\small \texttt{db.sqlite3}}};
+
+  % ── Liens de déploiement ──────────────────────
+  \draw[link, ultra thick] (client_node.east) -- node[above,font=\small]{HTTP REST / JSON\\port 8000} (server_node.west);
+  \draw[link, ultra thick] (server_node.south) -- node[right,font=\small]{SQL / Django ORM} (db_node.north);
+
+  % ── Protocoles ────────────────────────────────
+  \node[font=\footnotesize\itshape\color{medsecondary}, below=0.2cm of client_node]
+    {\texttt{Authorization: Bearer <JWT>}};
+
+\end{tikzpicture}
+\caption{Diagramme de déploiement – infrastructure MedConnect (développement)}
+\label{fig:uml-deploiement}
+\end{figure}
 
 % ══════════════════════════════════════════════════════
 %  SECTION 4 : ARCHITECTURE
@@ -750,12 +1039,12 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \centering
 \caption{Modèle Patient (\texttt{patients\_api})}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{3cm}|p{3cm}|p{4cm}|}
+\begin{tabular}{|p{3.8cm}|p{3cm}|p{3cm}|p{3.7cm}|}
   \hline
   \rowcolor{medaccent}
-  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \textbf{Champ} & \textbf{Type Django} & \textbf{Contrainte} & \textbf{Description} \\
   \hline
-  \texttt{cin} & CharField(20) & PK, unique & Carte d'identité nationale \\
+  \texttt{cin} & CharField(20) & PK unique & Carte d'Identité Nationale \\
   \hline
   \texttt{nom} & CharField(100) & NOT NULL & Nom de famille \\
   \hline
@@ -763,19 +1052,13 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
   \texttt{date\_naissance} & DateField & NOT NULL & Date de naissance \\
   \hline
-  \texttt{sexe} & CharField(1) & M/F & Genre du patient \\
+  \texttt{telephone} & CharField(20) & unique & Numéro de téléphone \\
   \hline
-  \texttt{telephone} & CharField(20) & nullable & Numéro de téléphone \\
+  \texttt{groupe\_sanguin} & CharField(5) & blank & Groupe sanguin \\
   \hline
-  \texttt{adresse} & TextField & nullable & Adresse postale \\
+  \texttt{allergies} & TextField & blank & Liste des allergies déclarées \\
   \hline
-  \texttt{allergies} & TextField & nullable & Liste des allergies déclarées \\
-  \hline
-  \texttt{groupe\_sanguin} & CharField(5) & nullable & Groupe sanguin \\
-  \hline
-  \texttt{is\_active} & BooleanField & default=True & Désactivation logique \\
-  \hline
-  \texttt{created\_at} & DateTimeField & auto\_now\_add & Date de création \\
+  \texttt{contact\_urgence} & CharField(20) & blank & Contact en cas d'urgence \\
   \hline
 \end{tabular}
 \end{table}
@@ -786,29 +1069,35 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \centering
 \caption{Modèle RendezVous (\texttt{agenda\_api})}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+\begin{tabular}{|p{3.8cm}|p{3.5cm}|p{2.5cm}|p{4.2cm}|}
   \hline
   \rowcolor{medaccent}
-  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \textbf{Champ} & \textbf{Type Django} & \textbf{Contrainte} & \textbf{Description} \\
   \hline
-  \texttt{id} & AutoField & PK & Identifiant auto \\
+  \texttt{id} & AutoField & PK & Identifiant unique du RDV \\
   \hline
-  \texttt{patient} & FK $\rightarrow$ Patient & NOT NULL & Patient concerné \\
+  \texttt{patient} & FK $\rightarrow$ Patient & PROTECT & Patient concerné \\
   \hline
-  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin assigné \\
+  \texttt{medecin} & FK $\rightarrow$ User & PROTECT & Médecin assigné \\
   \hline
-  \texttt{date\_rdv} & DateTimeField & NOT NULL & Date et heure du RDV \\
+  \texttt{date\_heure} & DateTimeField & NOT NULL & Date et heure du RDV \\
   \hline
-  \texttt{motif} & TextField & nullable & Motif de la consultation \\
+  \texttt{motif} & CharField(255) & blank & Motif de consultation \\
   \hline
-  \texttt{statut} & CharField(20) & choices & Planifié / Salle\_attente / En\_cours / Terminé / Annulé \\
+  \texttt{statut} & CharField(20) & choices & Planifié / Salle d'attente / Consultation / Terminé / Annulé \\
   \hline
-  \texttt{created\_at} & DateTimeField & auto\_now\_add & Date de création \\
+  \texttt{motif\_annulation} & CharField(255) & blank & Raison en cas d'annulation \\
   \hline
-  \texttt{updated\_at} & DateTimeField & auto\_now & Dernière modification \\
+  \texttt{arrivee\_a} & DateTimeField & null, blank & Horodatage d'arrivée \\
+  \hline
+  \texttt{arrivee\_par} & FK $\rightarrow$ User & null, blank & Agent ayant validé l'arrivée \\
+  \hline
+  \texttt{cree\_a} & DateTimeField & auto\_now\_add & Date de création du RDV \\
   \hline
 \end{tabular}
 \end{table}
+
+\noindent\textbf{Contrainte d'intégrité métier :} Un médecin ne peut avoir qu'un seul rendez-vous actif par créneau (\texttt{UniqueConstraint(fields=['medecin', 'date\_heure'], condition=\~{}Q(statut='Annulé'))}).
 
 \section{Module \texttt{dossier\_medical\_api} – Entité Consultation}
 
@@ -816,30 +1105,34 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \centering
 \caption{Modèle Consultation (\texttt{dossier\_medical\_api})}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{4cm}|}
   \hline
   \rowcolor{medaccent}
-  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \textbf{Champ} & \textbf{Type Django} & \textbf{Contrainte} & \textbf{Description} \\
   \hline
   \texttt{id} & AutoField & PK & Identifiant auto \\
   \hline
-  \texttt{patient} & FK $\rightarrow$ Patient & NOT NULL & Patient consulté \\
+  \texttt{patient} & FK $\rightarrow$ Patient & PROTECT & Patient consulté \\
   \hline
-  \texttt{rdv} & FK $\rightarrow$ RendezVous & nullable, unique & RDV associé \\
+  \texttt{medecin} & FK $\rightarrow$ User & PROTECT & Médecin consultant \\
   \hline
-  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin consultant \\
+  \texttt{date} & DateField & NOT NULL & Date de la consultation \\
   \hline
-  \texttt{date\_consultation} & DateTimeField & auto\_now\_add & Date de la consultation \\
+  \texttt{motif} & CharField(255) & NOT NULL & Motif de la visite \\
   \hline
-  \texttt{notes} & TextField & NOT NULL & Notes cliniques \\
+  \texttt{tension} & CharField(7) & regex 12/8 ou 120/80 & Tension artérielle (cmHg/mmHg) \\
   \hline
-  \texttt{diagnostic} & TextField & nullable & Diagnostic posé \\
+  \texttt{poids} & DecimalField(5,2) & [0.5, 500] kg & Poids du patient \\
   \hline
-  \texttt{tension} & CharField(10) & nullable & Tension artérielle \\
+  \texttt{temperature} & DecimalField(4,1) & [30.0, 45.0] °C & Température corporelle \\
   \hline
-  \texttt{poids} & DecimalField & nullable & Poids en kg \\
+  \texttt{pouls} & PositiveSmallInt & [20, 300] bpm & Fréquence cardiaque \\
   \hline
-  \texttt{temperature} & DecimalField & nullable & Température en °C \\
+  \texttt{diagnostic} & TextField & blank & Diagnostic et observations \\
+  \hline
+  \texttt{cree\_a} & DateTimeField & auto\_now\_add & Horodatage de création \\
+  \hline
+  \texttt{modifie\_a} & DateTimeField & auto\_now & Dernière modification \\
   \hline
 \end{tabular}
 \end{table}
@@ -850,22 +1143,24 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \centering
 \caption{Modèle Ordonnance (\texttt{ordonnances\_api})}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{4cm}|}
   \hline
   \rowcolor{medaccent}
-  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \textbf{Champ} & \textbf{Type Django} & \textbf{Contrainte} & \textbf{Description} \\
   \hline
   \texttt{id} & AutoField & PK & Identifiant auto \\
   \hline
-  \texttt{consultation} & FK $\rightarrow$ Consultation & NOT NULL, unique & Consultation associée \\
+  \texttt{patient} & FK $\rightarrow$ Patient & CASCADE & Patient bénéficiaire \\
   \hline
-  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin prescripteur \\
+  \texttt{medecin} & FK $\rightarrow$ User & PROTECT & Médecin prescripteur \\
   \hline
-  \texttt{date\_creation} & DateTimeField & auto\_now\_add & Date de création \\
+  \texttt{consultation} & FK $\rightarrow$ Consultation & null, blank, SET\_NULL & Consultation associée \\
   \hline
-  \texttt{validee} & BooleanField & default=False & Statut de validation \\
+  \texttt{date} & DateField & NOT NULL & Date de prescription \\
   \hline
-  \texttt{notes} & TextField & nullable & Notes complémentaires \\
+  \texttt{est\_validee} & BooleanField & default=False & État de validation \\
+  \hline
+  \texttt{cree\_a} & DateTimeField & auto\_now\_add & Date de création \\
   \hline
 \end{tabular}
 \end{table}
@@ -874,20 +1169,22 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \centering
 \caption{Modèle LigneOrdonnance (\texttt{ordonnances\_api})}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{4cm}|}
   \hline
   \rowcolor{medaccent}
-  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \textbf{Champ} & \textbf{Type Django} & \textbf{Contrainte} & \textbf{Description} \\
   \hline
   \texttt{id} & AutoField & PK & Identifiant auto \\
   \hline
-  \texttt{ordonnance} & FK $\rightarrow$ Ordonnance & NOT NULL & Ordonnance parente \\
+  \texttt{ordonnance} & FK $\rightarrow$ Ordonnance & CASCADE & Ordonnance parente \\
   \hline
   \texttt{medicament} & CharField(200) & NOT NULL & Nom du médicament \\
   \hline
-  \texttt{posologie} & TextField & NOT NULL & Dosage et fréquence \\
+  \texttt{dosage} & CharField(100) & NOT NULL & Dosage (ex: 500mg, 1g) \\
   \hline
-  \texttt{duree} & CharField(50) & nullable & Durée du traitement \\
+  \texttt{posologie} & CharField(255) & NOT NULL & Fréquence et prise \\
+  \hline
+  \texttt{duree\_jours} & PositiveInt & default=1 & Durée du traitement en jours \\
   \hline
 \end{tabular}
 \end{table}
@@ -1047,6 +1344,22 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
 \end{longtable}
 
+\section{Tableau de bord – \texttt{/api/dashboard/}}
+
+\begin{table}[H]
+\centering
+\caption{Endpoint du tableau de bord d'activité}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.5cm}|p{4.5cm}|p{2.5cm}|p{4.5cm}|p{1.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  GET & \texttt{/api/dashboard/} & Authentifié & Synthèse d'activité (statistiques RDV, patients, consultations) & 200, 401 \\
+  \hline
+\end{tabular}
+\end{table}
+
 % ══════════════════════════════════════════════════════
 %  SECTION 7 : SÉCURITÉ
 % ══════════════════════════════════════════════════════
@@ -1172,8 +1485,15 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{agenda4.png}
-  \caption{Vue de la salle d'attente – patients arrivés en attente de consultation}
-  \label{fig:salle-attente}
+  \caption{Vue détaillée de l'agenda avec filtrage et statuts en temps réel}
+  \label{fig:agenda-view4}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{salle attente.png}
+  \caption{Salle d'attente – gestion de la file d'attente et appel en consultation}
+  \label{fig:salle-attente-dedicated}
 \end{figure}
 
 \begin{figure}[H]
@@ -1328,7 +1648,7 @@ La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
 
 \begin{lstlisting}[language=bash, caption={Procédure d'installation complète}]
 # 1. Cloner le dépôt
-git clone https://github.com/[organisation]/MedConnect-WS-IL-EQ12.git
+git clone https://github.com/AllabouchAnas/MedConnect-WS-IL-EQ12.git
 cd MedConnect-WS-IL-EQ12/backend
 
 # 2. Créer et activer l'environnement virtuel
