@@ -1,0 +1,1692 @@
+% ============================================================
+%  MedConnect – Rapport Technique Final
+%  Groupe 12 – Web Services et Applications Distribuées
+%  Structure calquée sur le rapport Atlas Trips (Équipe 8)
+%  Compilé avec pdflatex (Overleaf)
+% ============================================================
+\documentclass[12pt,a4paper]{report}
+
+% ── Encodage & langue ─────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+
+% ── Mise en page ──────────────────────────────────────────
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm]{geometry}
+
+% ── Couleurs ──────────────────────────────────────────────
+\usepackage[table,xcdraw]{xcolor}
+\definecolor{medprimary}{HTML}{1a3c5e}
+\definecolor{medsecondary}{HTML}{2980b9}
+\definecolor{medaccent}{HTML}{e8f4fd}
+\definecolor{medgray}{HTML}{f5f5f5}
+\definecolor{medgreen}{HTML}{27ae60}
+\definecolor{medred}{HTML}{c0392b}
+
+% ── Tableaux ──────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+
+% ── Graphiques & figures ───────────────────────────────────
+\usepackage{graphicx}
+\graphicspath{{screenshots/}}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Code source ───────────────────────────────────────────
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{medgray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {â}{{\^a}}1
+           {ù}{{\`u}}1 {û}{{\^u}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {ç}{{\c c}}1
+}
+
+% ── Mathématiques ─────────────────────────────────────────
+\usepackage{amsmath}
+
+% ── Listes ────────────────────────────────────────────────
+\usepackage{enumitem}
+
+% ── En-têtes & pieds de page ──────────────────────────────
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\fancyhead[L]{\small\textcolor{medprimary}{\textbf{MedConnect}} – Rapport Technique}
+\fancyhead[R]{\small Groupe 12}
+\fancyfoot[C]{\small Page \thepage\ sur \pageref{LastPage}}
+
+% ── Liens hypertexte ──────────────────────────────────────
+\usepackage[hidelinks,
+            pdftitle={MedConnect – Rapport Technique},
+            pdfauthor={Groupe 12},
+            pdfsubject={Web Services et Applications Distribuées}]{hyperref}
+
+% ── Titres de sections ────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{medprimary}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{medprimary}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{medsecondary}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% ── Utilitaire ────────────────────────────────────────────
+\usepackage{pdfpages}
+\usepackage{pdflscape}
+\setlength{\headheight}{15pt}
+
+% ── Profondeur de la table des matières ───────────────────
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% ======================================================
+\begin{document}
+% ======================================================
+
+% ══════════════════════════════════════════════════════
+%  PAGE DE COUVERTURE
+% ══════════════════════════════════════════════════════
+\thispagestyle{empty}
+\begin{titlepage}
+
+  % En-tête institutionnel
+  \begin{center}
+    {\small ROYAUME DU MAROC}\\[0.3em]
+    {\small Institut Supérieur de l'Information et de la Communication (ISIC)}\\[0.1em]
+    \rule{\linewidth}{0.5pt}\\[0.5em]
+    {\small Module : \textbf{Web Services et Applications Distribuées}}\\[0.2em]
+    {\small Année universitaire 2026--2027}
+  \end{center}
+
+  \vspace{1.5cm}
+
+  % Identité du groupe
+  \begin{center}
+    \colorbox{medprimary}{\parbox{0.6\textwidth}{\centering\vspace{0.4em}
+      {\color{white}\Large\bfseries GROUPE 12}\\[0.2em]
+    \vspace{0.3em}}}
+  \end{center}
+
+  \vspace{1cm}
+
+  % Titre du projet
+  \begin{center}
+    {\color{medprimary}\rule{0.8\linewidth}{1.5pt}}\\[0.5em]
+    {\Huge\bfseries\color{medprimary} MEDCONNECT}\\[0.4em]
+    {\large\color{medsecondary} Plateforme Distribuée de Gestion de Cabinet Médical}\\[0.3em]
+    {\color{medprimary}\rule{0.8\linewidth}{1.5pt}}
+  \end{center}
+
+  \vspace{0.8cm}
+
+  % Sous-titre
+  \begin{center}
+    {\normalsize Rapport Technique Final}\\[0.2em]
+    {\normalsize Référence : \texttt{MC-2026-RPT-001} \quad Version 1.0}\\[0.2em]
+    {\normalsize Date : 23 novembre 2026}
+  \end{center}
+
+  \vspace{1cm}
+
+  % Tableau équipe
+  \begin{center}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{|p{4.5cm}|p{4.5cm}|p{5cm}|}
+    \hline
+    \rowcolor{medprimary}
+    \textcolor{white}{\textbf{Nom}} &
+    \textcolor{white}{\textbf{Rôle}} &
+    \textcolor{white}{\textbf{Module responsable}} \\
+    \hline
+    Allabouch Anass & Chef de Projet & \texttt{patients\_api} \\
+    \hline
+    Ahmed Lahmaine & Product Owner / BA & \texttt{agenda\_api} \\
+    \hline
+    Achraf Ait Damnat & Lead Tech / Architecte & \texttt{dossier\_medical\_api} \\
+    \hline
+    Abdellah Rahel & QA / Conformité & \texttt{ordonnances\_api} \\
+    \hline
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.8cm}
+
+  \begin{center}
+    {\normalsize Encadrant : \underline{\hspace{6cm}}}\\[1.5em]
+    {\small\textit{23 novembre 2026}}
+  \end{center}
+
+\end{titlepage}
+
+% ══════════════════════════════════════════════════════
+%  FICHE D'IDENTIFICATION DU DOCUMENT
+% ══════════════════════════════════════════════════════
+\newpage
+\thispagestyle{fancy}
+\chapter*{Fiche d'Identification du Document}
+\addcontentsline{toc}{chapter}{Fiche d'Identification du Document}
+
+\renewcommand{\arraystretch}{1.4}
+
+\begin{table}[H]
+\centering
+\caption{Identification du document}
+\begin{tabular}{|p{5cm}|p{9cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Valeur} \\
+  \hline
+  Nom du projet & MedConnect – Plateforme de Gestion de Cabinet Médical \\
+  \hline
+  Référence & MC-2026-RPT-001 \\
+  \hline
+  Version & 1.0 \\
+  \hline
+  Date & 23 novembre 2026 \\
+  \hline
+  Statut & \textcolor{medgreen}{\textbf{Validé}} \\
+  \hline
+  Équipe & Groupe 12 \\
+  \hline
+  Membres & Allabouch Anass, Ahmed Lahmaine, Achraf Ait Damnat, Abdellah Rahel \\
+  \hline
+  Responsable & Allabouch Anass (Chef de Projet) \\
+  \hline
+  Module & Web Services et Applications Distribuées \\
+  \hline
+  Dépôt GitHub & \texttt{github.com/[organisation]/MedConnect-WS-IL-EQ12} \\
+  \hline
+  Branche principale & \texttt{main} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\caption{Historique des versions}
+\begin{tabular}{|c|c|p{3cm}|p{6cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Version} & \textbf{Date} & \textbf{Auteur} & \textbf{Description} \\
+  \hline
+  0.1 & 01/11/2026 & Allabouch Anass & Architecture cible, structure du projet, \texttt{patients\_api} \\
+  \hline
+  0.2 & 08/11/2026 & Ahmed Lahmaine & \texttt{agenda\_api}, salle d'attente, gestion des RDV \\
+  \hline
+  0.3 & 15/11/2026 & Achraf Ait Damnat & \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api} (Rahel) \\
+  \hline
+  1.0 & 23/11/2026 & Allabouch Anass & Consolidation finale, tests, rapport complet \\
+  \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+
+\noindent\textbf{Résumé :}\\
+MedConnect est une plateforme web distribuée dédiée à la gestion de cabinets médicaux, développée en Python 3.14 avec Django REST Framework (DRF) et sécurisée par des jetons JWT. L'architecture repose sur quatre micro-services REST indépendants (\texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api}) intégrés dans un monorepo Django, exposant des API conformes aux contraintes REST avec contrôle d'accès basé sur les rôles (RBAC). La base de données SQLite est utilisée en phase de développement, avec migration PostgreSQL prévue. La suite de tests couvre 68 cas (23 unitaires Pytest + 45 API Django), tous en succès.
+
+\vspace{0.4cm}
+
+\noindent\textbf{Mots-clés :} web services, REST, Django REST Framework, JWT, SQLite, cabinet médical, RBAC, Python, architecture distribuée, micro-services, Groupe 12.
+
+% ══════════════════════════════════════════════════════
+%  TABLE DES MATIÈRES
+% ══════════════════════════════════════════════════════
+\newpage
+\tableofcontents
+
+% ══════════════════════════════════════════════════════
+%  LISTE DES FIGURES
+% ══════════════════════════════════════════════════════
+\newpage
+\listoffigures
+\listoftables
+
+% ══════════════════════════════════════════════════════
+%  SECTION 1 : INTRODUCTION
+% ══════════════════════════════════════════════════════
+\newpage
+\chapter{Introduction}
+
+\section{Contexte du projet}
+
+Dans le cadre du module \textit{Web Services et Applications Distribuées}, le Groupe 12 a développé \textbf{MedConnect}, une plateforme web complète destinée à la gestion informatisée d'un cabinet médical. Le projet répond à une problématique réelle : la digitalisation des flux administratifs et médicaux au sein des cabinets de santé, notamment la gestion des patients, des rendez-vous, des dossiers médicaux et des ordonnances.
+
+Le développement suit une architecture orientée services (SOA) où chaque fonctionnalité métier est encapsulée dans un service REST autonome. L'ensemble est construit sur Django REST Framework (DRF), un framework Python robuste et éprouvé pour la création d'API web conformes aux standards REST.
+
+\section{Périmètre et acteurs}
+
+Le périmètre fonctionnel de MedConnect couvre la gestion complète du cycle de vie d'un patient au sein d'un cabinet médical, depuis la prise de rendez-vous jusqu'à la remise d'une ordonnance. Deux acteurs principaux sont identifiés :
+
+\renewcommand{\arraystretch}{1.4}
+\begin{table}[H]
+\centering
+\caption{Acteurs du système MedConnect}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Acteur} & \textbf{Responsabilités} \\
+  \hline
+  \textbf{Médecin} & Consultation des dossiers médicaux, rédaction et validation des ordonnances, gestion des consultations, accès complet à l'agenda \\
+  \hline
+  \textbf{Secrétaire} & Gestion des patients (CRUD), prise de rendez-vous, gestion de la salle d'attente, enregistrement des arrivées \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Objectifs du projet}
+
+Les objectifs fonctionnels et techniques du projet sont les suivants :
+
+\begin{enumerate}[leftmargin=*, label=\textbf{O\arabic*.}]
+  \item \textbf{Modularité} : Concevoir une architecture REST modulaire avec quatre services indépendants, chacun géré par un membre de l'équipe.
+  \item \textbf{Sécurité} : Implémenter une authentification JWT et un contrôle d'accès RBAC différenciant médecin et secrétaire.
+  \item \textbf{Couverture fonctionnelle} : Couvrir l'intégralité du cycle de vie d'un patient (inscription → RDV → consultation → ordonnance).
+  \item \textbf{Qualité} : Atteindre 100\% de réussite sur la suite de tests (68 cas de test).
+  \item \textbf{Maintenabilité} : Structurer le code pour faciliter la migration vers PostgreSQL et le déploiement Docker en V2.
+\end{enumerate}
+
+\section{Glossaire}
+
+\begin{table}[H]
+\centering
+\caption{Glossaire des termes techniques}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3cm}|p{11cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Terme} & \textbf{Définition} \\
+  \hline
+  \textbf{Patient} & Personne physique suivie par le cabinet, identifiée par son CIN \\
+  \hline
+  \textbf{CIN} & Carte d'Identité Nationale (identifiant unique du patient) \\
+  \hline
+  \textbf{RDV} & Rendez-vous médical planifié entre un patient et un médecin \\
+  \hline
+  \textbf{DME} & Dossier Médical Électronique – ensemble des consultations d'un patient \\
+  \hline
+  \textbf{JWT} & JSON Web Token – mécanisme d'authentification sans état (stateless) \\
+  \hline
+  \textbf{RBAC} & Role-Based Access Control – contrôle d'accès basé sur les rôles \\
+  \hline
+  \textbf{DRF} & Django REST Framework – bibliothèque Python pour la création d'API REST \\
+  \hline
+  \textbf{Ordonnance} & Document médical prescrivant des médicaments, immuable après validation \\
+  \hline
+  \textbf{Statut RDV} & État du rendez-vous : Planifié → Salle d'attente → En cours → Terminé / Annulé \\
+  \hline
+  \textbf{SimpleJWT} & Bibliothèque Django implémentant l'authentification JWT \\
+  \hline
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 2 : BESOINS FONCTIONNELS
+% ══════════════════════════════════════════════════════
+\chapter{Besoins Fonctionnels et Règles de Gestion}
+
+\section{Acteurs et cas d'utilisation}
+
+Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
+
+\begin{table}[H]
+\centering
+\caption{Matrice acteurs / fonctionnalités}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|X|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Fonctionnalité} & \textbf{Médecin} & \textbf{Secrétaire} \\
+  \hline
+  Authentification (login / logout) & \checkmark & \checkmark \\
+  \hline
+  Gestion des patients (CRUD) & \checkmark (lecture) & \checkmark (complet) \\
+  \hline
+  Prise de rendez-vous & \checkmark & \checkmark \\
+  \hline
+  Annulation de rendez-vous & \checkmark & \checkmark \\
+  \hline
+  Gestion salle d'attente & \checkmark & \checkmark \\
+  \hline
+  Avancement statut RDV & \checkmark & \checkmark \\
+  \hline
+  Consultation dossier médical & \checkmark & \texttimes \\
+  \hline
+  Création de consultation & \checkmark & \texttimes \\
+  \hline
+  Rédaction d'ordonnance & \checkmark & \texttimes \\
+  \hline
+  Validation d'ordonnance & \checkmark & \texttimes \\
+  \hline
+  Visualisation des ordonnances & \checkmark & \texttimes \\
+  \hline
+\end{tabularx}
+\end{table}
+
+\section{Besoins fonctionnels par module}
+
+\begin{longtable}{|p{3.5cm}|p{5cm}|p{5.5cm}|}
+  \caption{Besoins fonctionnels et règles de gestion par module} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Module} & \textbf{Besoin fonctionnel} & \textbf{Règle de gestion} \\
+  \hline
+  \endfirsthead
+  \multicolumn{3}{l}{\small\textit{(suite du tableau)}} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Module} & \textbf{Besoin fonctionnel} & \textbf{Règle de gestion} \\
+  \hline
+  \endhead
+  \hline
+  \endfoot
+
+  \multirow{4}{*}{\textbf{patients\_api}} &
+    Enregistrement d'un nouveau patient &
+    CIN obligatoire et unique ; date de naissance validée \\
+  \cline{2-3}
+  & Mise à jour des informations & Secrétaire uniquement ; médecin en lecture seule \\
+  \cline{2-3}
+  & Recherche par CIN ou nom & Résultats paginés, tri par nom \\
+  \cline{2-3}
+  & Suppression logique & Désactivation (is\_active=False) sans suppression physique \\
+  \hline
+
+  \multirow{5}{*}{\textbf{agenda\_api}} &
+    Création d'un RDV &
+    Date/heure future obligatoire ; patient existant requis \\
+  \cline{2-3}
+  & Annulation d'un RDV & Statut → Annulé ; impossible si déjà Terminé \\
+  \cline{2-3}
+  & Avancement du statut & Flux strict : Planifié → Salle d'attente → En cours → Terminé \\
+  \cline{2-3}
+  & Salle d'attente & Liste des patients arrivés (statut = Salle d'attente) \\
+  \cline{2-3}
+  & Liste des médecins & Utilisateurs du groupe ``Medecin'' \\
+  \hline
+
+  \multirow{3}{*}{\textbf{dossier\_medical\_api}} &
+    Création de consultation &
+    Liée à un RDV en cours ; médecin uniquement \\
+  \cline{2-3}
+  & Historique des consultations & Trié par date décroissante ; lecture médecin \\
+  \cline{2-3}
+  & Détection des allergies & Alerte si médicament prescrit figure dans les allergies déclarées \\
+  \hline
+
+  \multirow{4}{*}{\textbf{ordonnances\_api}} &
+    Création d'ordonnance &
+    Liée à une consultation ; médecin uniquement \\
+  \cline{2-3}
+  & Ajout de lignes & Médicament + posologie ; vérification allergie automatique \\
+  \cline{2-3}
+  & Validation & Statut → validée ; immuable après validation \\
+  \cline{2-3}
+  & Visualisation & PDF ou JSON ; accessible médecin et secrétaire \\
+  \hline
+\end{longtable}
+
+\section{Matrice RBAC}
+
+\begin{table}[H]
+\centering
+\caption{Matrice de contrôle d'accès basé sur les rôles (RBAC)}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|c|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Endpoint / Ressource} & \textbf{Non auth.} & \textbf{Secrétaire} & \textbf{Médecin} \\
+  \hline
+  \texttt{POST /api/auth/login/} & \checkmark & \checkmark & \checkmark \\
+  \hline
+  \texttt{GET /api/patients/} & \texttimes & \checkmark & \checkmark \\
+  \hline
+  \texttt{POST /api/patients/} & \texttimes & \checkmark & \texttimes \\
+  \hline
+  \texttt{GET/POST /api/agenda/rdv/} & \texttimes & \checkmark & \checkmark \\
+  \hline
+  \texttt{POST /api/agenda/rdv/\{id\}/avancer/} & \texttimes & \checkmark & \checkmark \\
+  \hline
+  \texttt{GET /api/agenda/rdv/salle-attente/} & \texttimes & \checkmark & \checkmark \\
+  \hline
+  \texttt{GET /api/consultations/} & \texttimes & \texttimes & \checkmark \\
+  \hline
+  \texttt{POST /api/consultations/} & \texttimes & \texttimes & \checkmark \\
+  \hline
+  \texttt{GET/POST /api/ordonnances/} & \texttimes & \texttimes & \checkmark \\
+  \hline
+  \texttt{POST .../valider/} & \texttimes & \texttimes & \checkmark \\
+  \hline
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 3 : MODÈLES UML
+% ══════════════════════════════════════════════════════
+\chapter{Modèles UML et Diagrammes}
+
+\section{Diagramme de cas d'utilisation}
+
+Le tableau suivant synthétise les cas d'utilisation par acteur, en l'absence des fichiers source UML disponibles au dépôt :
+
+\begin{table}[H]
+\centering
+\caption{Cas d'utilisation – Secrétaire}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|c|X|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Acteur} & \textbf{Cas d'utilisation} \\
+  \hline
+  \multirow{6}{*}{\textbf{Secrétaire}} &
+    UC-01 : S'authentifier \\
+  \cline{2-2}
+  & UC-02 : Créer / modifier / supprimer un patient \\
+  \cline{2-2}
+  & UC-03 : Rechercher un patient par CIN ou nom \\
+  \cline{2-2}
+  & UC-04 : Planifier un rendez-vous \\
+  \cline{2-2}
+  & UC-05 : Annuler un rendez-vous \\
+  \cline{2-2}
+  & UC-06 : Enregistrer l'arrivée d'un patient (salle d'attente) \\
+  \hline
+  \multirow{6}{*}{\textbf{Médecin}} &
+    UC-01 : S'authentifier \\
+  \cline{2-2}
+  & UC-07 : Consulter la salle d'attente \\
+  \cline{2-2}
+  & UC-08 : Ouvrir le dossier médical d'un patient \\
+  \cline{2-2}
+  & UC-09 : Enregistrer une consultation \\
+  \cline{2-2}
+  & UC-10 : Rédiger et valider une ordonnance \\
+  \cline{2-2}
+  & UC-11 : Consulter l'historique des ordonnances \\
+  \hline
+\end{tabularx}
+\end{table}
+
+\section{Diagramme de classes}
+
+Le diagramme de classes ci-dessous représente les entités principales et leurs relations :
+
+\begin{table}[H]
+\centering
+\caption{Entités et relations (diagramme de classes simplifié)}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{4.5cm}|p{5.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Entité} & \textbf{Attributs clés} & \textbf{Relations} \\
+  \hline
+  \textbf{Patient} & cin (PK), nom, prénom, date\_naissance, allergies & 1 $\rightarrow$ N RendezVous ; 1 $\rightarrow$ N Consultation \\
+  \hline
+  \textbf{User (Django)} & username, password, groups & 1 $\rightarrow$ N RendezVous (médecin) \\
+  \hline
+  \textbf{RendezVous} & id (PK), patient (FK), medecin (FK), date\_rdv, statut & N $\rightarrow$ 1 Patient ; N $\rightarrow$ 1 User \\
+  \hline
+  \textbf{Consultation} & id (PK), patient (FK), rdv (FK), notes, date & N $\rightarrow$ 1 RendezVous ; 1 $\rightarrow$ 1 Ordonnance \\
+  \hline
+  \textbf{Ordonnance} & id (PK), consultation (FK), validee, date\_creation & N $\rightarrow$ 1 Consultation ; 1 $\rightarrow$ N LigneOrdonnance \\
+  \hline
+  \textbf{LigneOrdonnance} & id (PK), ordonnance (FK), medicament, posologie & N $\rightarrow$ 1 Ordonnance \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Diagramme de composants}
+
+L'architecture de MedConnect est organisée en couches distinctes communicant via HTTP/REST :
+
+\begin{table}[H]
+\centering
+\caption{Composants de l'architecture MedConnect}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{5cm}|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Composant} & \textbf{Technologie} & \textbf{Rôle} \\
+  \hline
+  \textbf{Frontend SPA} & JavaScript natif + CSS & Interface utilisateur (navigateur) \\
+  \hline
+  \textbf{API Gateway} & Django URL Router & Routage vers les 4 services + auth \\
+  \hline
+  \textbf{patients\_api} & DRF ViewSet & CRUD patients \\
+  \hline
+  \textbf{agenda\_api} & DRF ViewSet & Gestion RDV et salle d'attente \\
+  \hline
+  \textbf{dossier\_medical\_api} & DRF ViewSet & Consultations médicales \\
+  \hline
+  \textbf{ordonnances\_api} & DRF ViewSet & Ordonnances et lignes \\
+  \hline
+  \textbf{Auth Service} & SimpleJWT & Tokens access/refresh \\
+  \hline
+  \textbf{Base de données} & SQLite 3 (dev) & Persistence des données \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Diagramme de séquence – Cycle de vie d'un RDV}
+
+Le flux nominal d'un rendez-vous médical dans MedConnect suit la séquence suivante :
+
+\begin{table}[H]
+\centering
+\caption{Séquence : Cycle de vie d'un rendez-vous}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|p{3cm}|p{3cm}|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Étape} & \textbf{Acteur} & \textbf{Action} & \textbf{Résultat / Statut RDV} \\
+  \hline
+  1 & Secrétaire & Crée le RDV & Statut : \textbf{Planifié} \\
+  \hline
+  2 & Secrétaire & Enregistre l'arrivée & Statut : \textbf{Salle d'attente} \\
+  \hline
+  3 & Médecin & Lance la consultation & Statut : \textbf{En cours} \\
+  \hline
+  4 & Médecin & Crée le dossier + ordonnance & Consultation créée \\
+  \hline
+  5 & Médecin & Valide l'ordonnance & Ordonnance immuable \\
+  \hline
+  6 & Médecin & Clôture le RDV & Statut : \textbf{Terminé} \\
+  \hline
+  Alt & Secrétaire / Médecin & Annule le RDV & Statut : \textbf{Annulé} \\
+  \hline
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 4 : ARCHITECTURE
+% ══════════════════════════════════════════════════════
+\chapter{Architecture Système et Stack Technologique}
+
+\section{Vue d'ensemble de l'architecture distribuée}
+
+MedConnect adopte une architecture REST distribuée monorepo, où chaque micro-service correspond à un module Django indépendant. La figure ci-dessous illustre les cinq couches de l'architecture :
+
+\begin{table}[H]
+\centering
+\caption{Couches de l'architecture distribuée MedConnect}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{|c|p{4cm}|p{7cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Couche} & \textbf{Composant} & \textbf{Description} \\
+  \hline
+  5 (Client) & Frontend SPA & JavaScript natif – appels \texttt{fetch()} vers l'API \\
+  \hline
+  4 (Gateway) & Django URL Dispatcher & \texttt{urls.py} racine – routage \texttt{/api/<service>/} \\
+  \hline
+  3 (Services) & 4 DRF Apps + Auth & \texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api} + \texttt{SimpleJWT} \\
+  \hline
+  2 (ORM) & Django ORM & Abstraction de la couche données (models.py par service) \\
+  \hline
+  1 (Données) & SQLite 3 & Fichier unique \texttt{backend/db.sqlite3} (dev) \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Stack technique}
+
+\begin{table}[H]
+\centering
+\caption{Stack technologique de MedConnect}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Composant} & \textbf{Technologie / Version} & \textbf{Rôle} \\
+  \hline
+  Langage backend & Python 3.14.2 & Runtime principal \\
+  \hline
+  Framework web & Django 6.0 & ORM, auth, admin, URL routing \\
+  \hline
+  API REST & Django REST Framework 3.18 & Sérialisation, ViewSets, Routers \\
+  \hline
+  Authentification & djangorestframework-simplejwt 5.5 & JWT access (30 min) + refresh (1 jour) \\
+  \hline
+  Base de données & SQLite 3 (dev) & Persistence légère sans configuration \\
+  \hline
+  Frontend & JavaScript ES6 + CSS3 & SPA natif (aucun framework) \\
+  \hline
+  Tests unitaires & pytest 8.x + pytest-django & 23 tests unitaires \\
+  \hline
+  Tests API & Django TestCase & 45 tests d'intégration API \\
+  \hline
+  Lanceur universel & \texttt{exe.py} & Script Python multi-OS (Windows/Linux) \\
+  \hline
+  Versionning & Git + GitHub & Branches : \texttt{main}, \texttt{develop}, \texttt{feature/*} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Structure du dépôt Git}
+
+\begin{lstlisting}
+MedConnect-WS-IL-EQ12/
+|-- backend/                     # Projet Django principal
+|   |-- medconnect/              # Configuration Django (settings, urls, wsgi)
+|   |   |-- settings.py
+|   |   |-- urls.py              # URL racine : inclut les 4 services + JWT
+|   |   +-- wsgi.py
+|   |-- patients_api/            # Module patients (Allabouch Anass)
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   +-- tests.py             # 5 tests API
+|   |-- agenda_api/              # Module agenda (Ahmed Lahmaine)
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   +-- tests.py             # 16 tests API
+|   |-- dossier_medical_api/     # Module dossier (Achraf Ait Damnat)
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   +-- tests.py             # 14 tests API
+|   |-- ordonnances_api/         # Module ordonnances (Abdellah Rahel)
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   |-- urls.py
+|   |   +-- tests.py             # 10 tests API
+|   |-- tests/                   # Tests unitaires Pytest
+|   |   +-- test_*.py            # 23 tests unitaires
+|   |-- exe.py                   # Lanceur universel
+|   |-- seed_demo.py             # Peuplement de la BDD de démo
+|   +-- requirements.txt
+|-- report/                      # Rapport LaTeX (ce document)
+|-- assests/                     # Spécifications et ressources
++-- README.md
+\end{lstlisting}
+
+\section{Communication inter-modules et flux JWT}
+
+Chaque requête vers une ressource protégée suit le flux suivant :
+
+\begin{enumerate}[leftmargin=*]
+  \item Le client envoie \texttt{POST /api/auth/login/} avec \texttt{username} et \texttt{password}.
+  \item SimpleJWT retourne un token \textbf{access} (TTL : 30 minutes) et un token \textbf{refresh} (TTL : 1 jour).
+  \item Le frontend stocke les tokens en mémoire et les envoie dans le header \texttt{Authorization: Bearer <access\_token>} pour chaque requête protégée.
+  \item Le middleware Django vérifie le token via \texttt{JWTAuthentication}.
+  \item La permission \texttt{HasCabinetRole} (ou \texttt{IsMedecin}) vérifie l'appartenance aux groupes Django (\texttt{Medecin} / \texttt{Secretaire}).
+  \item Si le token access expire, le client appelle \texttt{POST /api/auth/refresh/} avec le refresh token pour en obtenir un nouveau.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 5 : MODÈLE DE DONNÉES
+% ══════════════════════════════════════════════════════
+\chapter{Modèle de Données}
+
+\section{Module \texttt{patients\_api} – Entité Patient}
+
+\begin{table}[H]
+\centering
+\caption{Modèle Patient (\texttt{patients\_api})}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3cm}|p{3cm}|p{4cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \hline
+  \texttt{cin} & CharField(20) & PK, unique & Carte d'identité nationale \\
+  \hline
+  \texttt{nom} & CharField(100) & NOT NULL & Nom de famille \\
+  \hline
+  \texttt{prenom} & CharField(100) & NOT NULL & Prénom \\
+  \hline
+  \texttt{date\_naissance} & DateField & NOT NULL & Date de naissance \\
+  \hline
+  \texttt{sexe} & CharField(1) & M/F & Genre du patient \\
+  \hline
+  \texttt{telephone} & CharField(20) & nullable & Numéro de téléphone \\
+  \hline
+  \texttt{adresse} & TextField & nullable & Adresse postale \\
+  \hline
+  \texttt{allergies} & TextField & nullable & Liste des allergies déclarées \\
+  \hline
+  \texttt{groupe\_sanguin} & CharField(5) & nullable & Groupe sanguin \\
+  \hline
+  \texttt{is\_active} & BooleanField & default=True & Désactivation logique \\
+  \hline
+  \texttt{created\_at} & DateTimeField & auto\_now\_add & Date de création \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Module \texttt{agenda\_api} – Entité RendezVous}
+
+\begin{table}[H]
+\centering
+\caption{Modèle RendezVous (\texttt{agenda\_api})}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \hline
+  \texttt{id} & AutoField & PK & Identifiant auto \\
+  \hline
+  \texttt{patient} & FK $\rightarrow$ Patient & NOT NULL & Patient concerné \\
+  \hline
+  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin assigné \\
+  \hline
+  \texttt{date\_rdv} & DateTimeField & NOT NULL & Date et heure du RDV \\
+  \hline
+  \texttt{motif} & TextField & nullable & Motif de la consultation \\
+  \hline
+  \texttt{statut} & CharField(20) & choices & Planifié / Salle\_attente / En\_cours / Terminé / Annulé \\
+  \hline
+  \texttt{created\_at} & DateTimeField & auto\_now\_add & Date de création \\
+  \hline
+  \texttt{updated\_at} & DateTimeField & auto\_now & Dernière modification \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Module \texttt{dossier\_medical\_api} – Entité Consultation}
+
+\begin{table}[H]
+\centering
+\caption{Modèle Consultation (\texttt{dossier\_medical\_api})}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \hline
+  \texttt{id} & AutoField & PK & Identifiant auto \\
+  \hline
+  \texttt{patient} & FK $\rightarrow$ Patient & NOT NULL & Patient consulté \\
+  \hline
+  \texttt{rdv} & FK $\rightarrow$ RendezVous & nullable, unique & RDV associé \\
+  \hline
+  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin consultant \\
+  \hline
+  \texttt{date\_consultation} & DateTimeField & auto\_now\_add & Date de la consultation \\
+  \hline
+  \texttt{notes} & TextField & NOT NULL & Notes cliniques \\
+  \hline
+  \texttt{diagnostic} & TextField & nullable & Diagnostic posé \\
+  \hline
+  \texttt{tension} & CharField(10) & nullable & Tension artérielle \\
+  \hline
+  \texttt{poids} & DecimalField & nullable & Poids en kg \\
+  \hline
+  \texttt{temperature} & DecimalField & nullable & Température en °C \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Module \texttt{ordonnances\_api} – Entités Ordonnance et LigneOrdonnance}
+
+\begin{table}[H]
+\centering
+\caption{Modèle Ordonnance (\texttt{ordonnances\_api})}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \hline
+  \texttt{id} & AutoField & PK & Identifiant auto \\
+  \hline
+  \texttt{consultation} & FK $\rightarrow$ Consultation & NOT NULL, unique & Consultation associée \\
+  \hline
+  \texttt{medecin} & FK $\rightarrow$ User & NOT NULL & Médecin prescripteur \\
+  \hline
+  \texttt{date\_creation} & DateTimeField & auto\_now\_add & Date de création \\
+  \hline
+  \texttt{validee} & BooleanField & default=False & Statut de validation \\
+  \hline
+  \texttt{notes} & TextField & nullable & Notes complémentaires \\
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Modèle LigneOrdonnance (\texttt{ordonnances\_api})}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3cm}|p{3.5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Champ} & \textbf{Type} & \textbf{Contrainte} & \textbf{Description} \\
+  \hline
+  \texttt{id} & AutoField & PK & Identifiant auto \\
+  \hline
+  \texttt{ordonnance} & FK $\rightarrow$ Ordonnance & NOT NULL & Ordonnance parente \\
+  \hline
+  \texttt{medicament} & CharField(200) & NOT NULL & Nom du médicament \\
+  \hline
+  \texttt{posologie} & TextField & NOT NULL & Dosage et fréquence \\
+  \hline
+  \texttt{duree} & CharField(50) & nullable & Durée du traitement \\
+  \hline
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 6 : API REST
+% ══════════════════════════════════════════════════════
+\chapter{API REST}
+
+\section{Authentification – \texttt{/api/auth/}}
+
+\begin{table}[H]
+\centering
+\caption{Endpoints d'authentification JWT}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{1.5cm}|p{4cm}|p{2.5cm}|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méthode} & \textbf{Endpoint} & \textbf{Rôle requis} & \textbf{Description} \\
+  \hline
+  POST & \texttt{/api/auth/login/} & Aucun & Obtenir access + refresh tokens \\
+  \hline
+  POST & \texttt{/api/auth/refresh/} & Token refresh & Renouveler le token access \\
+  \hline
+  POST & \texttt{/api/auth/logout/} & Authentifié & Blacklist du refresh token \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Gestion des patients – \texttt{/api/patients/}}
+
+\begin{longtable}{|p{1.5cm}|p{4cm}|p{2.5cm}|p{3.5cm}|p{1.5cm}|}
+  \caption{Endpoints patients\_api} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endfirsthead
+  \multicolumn{5}{l}{\small\textit{(suite)}} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endhead
+  \hline
+  \endfoot
+  GET & \texttt{/api/patients/} & Tous & Liste paginée des patients & 200 \\
+  \hline
+  POST & \texttt{/api/patients/} & Secrétaire & Créer un nouveau patient & 201, 400 \\
+  \hline
+  GET & \texttt{/api/patients/\{cin\}/} & Tous & Détail d'un patient & 200, 404 \\
+  \hline
+  PUT & \texttt{/api/patients/\{cin\}/} & Secrétaire & Mise à jour complète & 200, 400 \\
+  \hline
+  PATCH & \texttt{/api/patients/\{cin\}/} & Secrétaire & Mise à jour partielle & 200, 400 \\
+  \hline
+  DELETE & \texttt{/api/patients/\{cin\}/} & Secrétaire & Désactivation logique & 204, 404 \\
+  \hline
+  GET & \texttt{/api/patients/?search=} & Tous & Recherche par CIN/nom & 200 \\
+  \hline
+\end{longtable}
+
+\section{Gestion de l'agenda – \texttt{/api/agenda/}}
+
+\begin{longtable}{|p{1.5cm}|p{5cm}|p{2.5cm}|p{3cm}|p{1.5cm}|}
+  \caption{Endpoints agenda\_api} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endfirsthead
+  \multicolumn{5}{l}{\small\textit{(suite)}} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endhead
+  \hline
+  \endfoot
+  GET & \texttt{/api/agenda/rdv/} & Tous & Liste des RDV & 200 \\
+  \hline
+  POST & \texttt{/api/agenda/rdv/} & Tous & Planifier un RDV & 201, 400 \\
+  \hline
+  GET & \texttt{/api/agenda/rdv/\{id\}/} & Tous & Détail d'un RDV & 200, 404 \\
+  \hline
+  PUT & \texttt{/api/agenda/rdv/\{id\}/} & Tous & Modifier un RDV & 200, 400 \\
+  \hline
+  DELETE & \texttt{/api/agenda/rdv/\{id\}/} & Tous & Supprimer un RDV & 204 \\
+  \hline
+  POST & \texttt{/api/agenda/rdv/\{id\}/avancer/} & Tous & Avancer le statut du RDV & 200, 400 \\
+  \hline
+  POST & \texttt{/api/agenda/rdv/\{id\}/annuler/} & Tous & Annuler un RDV & 200, 400 \\
+  \hline
+  GET & \texttt{/api/agenda/rdv/salle-attente/} & Tous & Patients en salle d'attente & 200 \\
+  \hline
+  GET & \texttt{/api/agenda/medecins/} & Tous & Liste des médecins & 200 \\
+  \hline
+\end{longtable}
+
+\section{Dossiers médicaux – \texttt{/api/consultations/}}
+
+\begin{longtable}{|p{1.5cm}|p{5cm}|p{2.5cm}|p{3cm}|p{1.5cm}|}
+  \caption{Endpoints dossier\_medical\_api} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endfirsthead
+  \multicolumn{5}{l}{\small\textit{(suite)}} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endhead
+  \hline
+  \endfoot
+  GET & \texttt{/api/consultations/} & Médecin & Liste des consultations & 200 \\
+  \hline
+  POST & \texttt{/api/consultations/} & Médecin & Créer une consultation & 201, 400 \\
+  \hline
+  GET & \texttt{/api/consultations/\{id\}/} & Médecin & Détail d'une consultation & 200, 404 \\
+  \hline
+  PUT & \texttt{/api/consultations/\{id\}/} & Médecin & Modifier une consultation & 200, 400 \\
+  \hline
+  DELETE & \texttt{/api/consultations/\{id\}/} & Médecin & Supprimer une consultation & 204 \\
+  \hline
+  GET & \texttt{/api/consultations/?patient=} & Médecin & Historique par patient & 200 \\
+  \hline
+\end{longtable}
+
+\section{Ordonnances – \texttt{/api/ordonnances/}}
+
+\begin{longtable}{|p{1.5cm}|p{5.5cm}|p{2cm}|p{3cm}|p{1.5cm}|}
+  \caption{Endpoints ordonnances\_api} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endfirsthead
+  \multicolumn{5}{l}{\small\textit{(suite)}} \\
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Méth.} & \textbf{Endpoint} & \textbf{Rôle} & \textbf{Description} & \textbf{Codes} \\
+  \hline
+  \endhead
+  \hline
+  \endfoot
+  GET & \texttt{/api/ordonnances/} & Médecin & Liste des ordonnances & 200 \\
+  \hline
+  POST & \texttt{/api/ordonnances/} & Médecin & Créer une ordonnance & 201, 400 \\
+  \hline
+  GET & \texttt{/api/ordonnances/\{id\}/} & Médecin & Détail d'une ordonnance & 200, 404 \\
+  \hline
+  POST & \texttt{/api/ordonnances/\{id\}/ajouter-ligne/} & Médecin & Ajouter un médicament & 201, 400, 409 \\
+  \hline
+  POST & \texttt{/api/ordonnances/\{id\}/valider/} & Médecin & Valider l'ordonnance & 200, 400 \\
+  \hline
+\end{longtable}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 7 : SÉCURITÉ
+% ══════════════════════════════════════════════════════
+\chapter{Sécurité}
+
+\section{Authentification JWT}
+
+MedConnect utilise \textbf{djangorestframework-simplejwt} pour l'authentification sans état. Les paramètres clés sont :
+
+\begin{table}[H]
+\centering
+\caption{Configuration SimpleJWT}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|p{4cm}|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Paramètre} & \textbf{Valeur} & \textbf{Description} \\
+  \hline
+  \texttt{ACCESS\_TOKEN\_LIFETIME} & 30 minutes & Durée de vie du token access \\
+  \hline
+  \texttt{REFRESH\_TOKEN\_LIFETIME} & 1 jour & Durée de vie du token refresh \\
+  \hline
+  \texttt{ALGORITHM} & HS256 & Algorithme de signature \\
+  \hline
+  \texttt{AUTH\_HEADER\_TYPES} & Bearer & Format du header Authorization \\
+  \hline
+  \texttt{ROTATE\_REFRESH\_TOKENS} & True & Rotation automatique des refresh tokens \\
+  \hline
+  \texttt{BLACKLIST\_AFTER\_ROTATION} & True & Blacklist des tokens après rotation \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Contrôle d'accès RBAC}
+
+Deux classes de permission personnalisées sont définies dans le projet :
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{\texttt{HasCabinetRole}} : Vérifie que l'utilisateur authentifié appartient au groupe Django \texttt{Medecin} \textbf{ou} \texttt{Secretaire}. Utilisé sur la majorité des endpoints.
+  \item \textbf{\texttt{IsMedecin}} : Restreint l'accès aux membres du groupe \texttt{Medecin} uniquement. Appliqué aux endpoints \texttt{dossier\_medical\_api} et \texttt{ordonnances\_api}.
+\end{itemize}
+
+Les groupes sont gérés nativement par Django (\texttt{django.contrib.auth.models.Group}) et assignés lors de la création des comptes utilisateurs.
+
+\section{Algorithme de détection des allergies}
+
+Lors de l'ajout d'une ligne d'ordonnance (médicament), le système effectue automatiquement une vérification des allergies déclarées du patient :
+
+\begin{enumerate}[leftmargin=*]
+  \item Récupérer les \texttt{allergies} du patient (champ texte libre).
+  \item Normaliser en minuscules et tokeniser par virgule/espace.
+  \item Comparer avec le nom du médicament saisi (normalisation identique).
+  \item Si correspondance partielle détectée : retourner un avertissement \texttt{HTTP 200} avec le champ \texttt{"avertissement\_allergie": true}.
+  \item L'ajout n'est \textbf{pas bloqué} – le médecin reste responsable de la décision clinique.
+\end{enumerate}
+
+\section{Immuabilité des ordonnances}
+
+Une fois qu'une ordonnance est validée (\texttt{validee = True}), toute tentative d'ajout de ligne ou de modification retourne \texttt{HTTP 400} avec le message \texttt{"Cette ordonnance est déjà validée et ne peut plus être modifiée"}. Cette règle garantit l'intégrité médico-légale des prescriptions.
+
+% ══════════════════════════════════════════════════════
+%  SECTION 8 : INTERFACES UTILISATEUR
+% ══════════════════════════════════════════════════════
+\chapter{Interfaces Utilisateur}
+
+L'interface de MedConnect est une \textbf{Single Page Application (SPA)} développée en JavaScript natif et CSS3. La navigation s'effectue via un menu latéral dynamique dont les options varient selon le rôle de l'utilisateur connecté.
+
+\section{Authentification}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{login.png}
+  \caption{Page de connexion MedConnect – authentification JWT}
+  \label{fig:login}
+\end{figure}
+
+\section{Gestion des patients}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{patient1.png}
+  \caption{Liste des patients avec recherche par CIN ou nom}
+  \label{fig:patients-list}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{patient2.png}
+  \caption{Formulaire d'ajout d'un nouveau patient}
+  \label{fig:patients-add}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{patient3.png}
+  \caption{Détail et modification des informations d'un patient}
+  \label{fig:patients-detail}
+\end{figure}
+
+\section{Gestion de l'agenda et des rendez-vous}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{Agenda1.png}
+  \caption{Vue principale de l'agenda – liste des rendez-vous planifiés}
+  \label{fig:agenda-list}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{Agenda2.png}
+  \caption{Formulaire de prise de rendez-vous avec sélection du médecin}
+  \label{fig:agenda-create}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{agenda3.png}
+  \caption{Avancement du statut d'un rendez-vous (Planifié → Salle d'attente)}
+  \label{fig:agenda-advance}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{agenda4.png}
+  \caption{Vue de la salle d'attente – patients arrivés en attente de consultation}
+  \label{fig:salle-attente}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{agenda_anulation.png}
+  \caption{Confirmation d'annulation d'un rendez-vous}
+  \label{fig:agenda-cancel}
+\end{figure}
+
+\section{Dossier médical}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{dossier medical.png}
+  \caption{Dossier médical électronique – historique des consultations}
+  \label{fig:dossier-list}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{dossier medical2.png}
+  \caption{Formulaire de création d'une nouvelle consultation}
+  \label{fig:dossier-create}
+\end{figure}
+
+\section{Ordonnances}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ordonnace1.png}
+  \caption{Création d'une ordonnance et ajout de médicaments}
+  \label{fig:ordonnance-create}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ordonnace2.png}
+  \caption{Validation de l'ordonnance – état immuable après validation}
+  \label{fig:ordonnance-validate}
+\end{figure}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 9 : TESTS ET ASSURANCE QUALITÉ
+% ══════════════════════════════════════════════════════
+\chapter{Campagne de Tests et Assurance Qualité}
+
+\section{Stratégie de test}
+
+La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Tests unitaires (Pytest)} : 23 tests couvrant la logique métier indépendamment du framework Django (sérialisation, règles métier, algorithme d'allergie).
+  \item \textbf{Tests d'intégration API (Django TestCase)} : 45 tests couvrant l'intégralité des endpoints REST avec simulation de requêtes HTTP authentifiées, vérification des codes de réponse et validation des payloads JSON.
+\end{itemize}
+
+\section{Tests unitaires Pytest}
+
+\begin{table}[H]
+\centering
+\caption{Résultats des tests unitaires Pytest (23 tests)}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|c|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Fichier de test} & \textbf{Tests} & \textbf{Réussis} & \textbf{Statut} \\
+  \hline
+  \texttt{test\_patients.py} & 6 & 6 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{test\_agenda.py} & 7 & 7 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{test\_dossier.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{test\_ordonnances.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \rowcolor{medgreen!20}
+  \textbf{Total} & \textbf{23} & \textbf{23} & \textcolor{medgreen}{\textbf{100\% PASS}} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Tests d'intégration API Django REST}
+
+\begin{table}[H]
+\centering
+\caption{Résultats des tests API Django (45 tests)}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|c|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Module} & \textbf{Tests} & \textbf{Réussis} & \textbf{Statut} \\
+  \hline
+  \texttt{patients\_api} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{agenda\_api} & 16 & 16 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{dossier\_medical\_api} & 14 & 14 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \texttt{ordonnances\_api} & 10 & 10 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \hline
+  \rowcolor{medgreen!20}
+  \textbf{Total} & \textbf{45} & \textbf{45} & \textcolor{medgreen}{\textbf{100\% PASS}} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\textbf{Récapitulatif global :} \textbf{68/68 tests réussis} (100\% de taux de succès).
+
+\section{Résultats visuels}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{pytest terminal.png}
+  \caption{Résultats Pytest en sortie terminal – 23/23 tests passants}
+  \label{fig:pytest-terminal}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{pytest htmlreport.png}
+  \caption{Rapport HTML pytest-html – détail des 23 tests unitaires}
+  \label{fig:pytest-html}
+\end{figure}
+
+\section{Détail des scénarios de test clés}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Création patient avec CIN en doublon} : retourne \texttt{HTTP 400} avec message d'erreur explicite.
+  \item \textbf{Avancement de statut hors séquence} : tentative de passer de Planifié à Terminé directement → \texttt{HTTP 400}.
+  \item \textbf{Annulation d'un RDV déjà Terminé} : retourne \texttt{HTTP 400}.
+  \item \textbf{Ajout de ligne sur ordonnance validée} : retourne \texttt{HTTP 400} (immuabilité).
+  \item \textbf{Détection d'allergie} : médicament correspondant à une allergie déclarée → avertissement dans la réponse.
+  \item \textbf{Accès secrétaire aux dossiers médicaux} : retourne \texttt{HTTP 403} (RBAC).
+  \item \textbf{Requête sans token JWT} : retourne \texttt{HTTP 401} sur tout endpoint protégé.
+  \item \textbf{Refresh token expiré} : retourne \texttt{HTTP 401} avec message de réauthentification.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 10 : DÉPLOIEMENT ET EXÉCUTION
+% ══════════════════════════════════════════════════════
+\chapter{Déploiement et Exécution}
+
+\section{Prérequis}
+
+\begin{itemize}[leftmargin=*]
+  \item Python 3.11+ (testé sur Python 3.14.2)
+  \item Git
+  \item Navigateur web moderne (Chrome, Firefox, Edge)
+  \item Connexion Internet pour l'installation des dépendances
+\end{itemize}
+
+\section{Installation et lancement}
+
+\begin{lstlisting}[language=bash, caption={Procédure d'installation complète}]
+# 1. Cloner le dépôt
+git clone https://github.com/[organisation]/MedConnect-WS-IL-EQ12.git
+cd MedConnect-WS-IL-EQ12/backend
+
+# 2. Créer et activer l'environnement virtuel
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux / macOS
+source venv/bin/activate
+
+# 3. Installer les dépendances
+pip install -r requirements.txt
+
+# 4. Appliquer les migrations
+python manage.py migrate
+
+# 5. Peupler la base de données de démo
+python seed_demo.py
+
+# 6. Lancer le serveur de développement
+python manage.py runserver
+\end{lstlisting}
+
+\section{Lanceur universel \texttt{exe.py}}
+
+Le script \texttt{exe.py} automatise l'ensemble des étapes de lancement en un seul appel, compatible Windows et Linux/macOS :
+
+\begin{lstlisting}[language=bash, caption={Utilisation du lanceur universel}]
+# Depuis le répertoire backend/
+python exe.py
+\end{lstlisting}
+
+Le script réalise automatiquement : vérification de l'environnement virtuel, installation des dépendances si absentes, exécution des migrations en attente, démarrage du serveur Django sur \texttt{http://127.0.0.1:8000}.
+
+\section{Exécution des tests}
+
+\begin{lstlisting}[language=bash, caption={Lancement de la suite de tests complète}]
+# Tests unitaires Pytest (23 tests)
+cd backend
+pytest tests/ -v --html=pytest-report.html
+
+# Tests API Django (45 tests)
+python manage.py test patients_api agenda_api dossier_medical_api ordonnances_api -v
+\end{lstlisting}
+
+\section{Comptes de démonstration}
+
+\begin{table}[H]
+\centering
+\caption{Comptes de démonstration créés par \texttt{seed\_demo.py}}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Identifiant} & \textbf{Mot de passe} & \textbf{Rôle} & \textbf{Groupe Django} \\
+  \hline
+  \texttt{dr.demo} & \texttt{Demo@1234} & Médecin & Medecin \\
+  \hline
+  \texttt{sec.demo} & \texttt{Demo@1234} & Secrétaire & Secretaire \\
+  \hline
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 11 : ORGANISATION DU TRAVAIL
+% ══════════════════════════════════════════════════════
+\chapter{Organisation du Travail}
+
+\section{Répartition des tâches}
+
+\begin{table}[H]
+\centering
+\caption{Répartition des responsabilités par membre}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|p{3.5cm}|p{3cm}|X|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Membre} & \textbf{Rôle} & \textbf{Contributions} \\
+  \hline
+  Allabouch Anass & Chef de Projet & Architecture globale, \texttt{patients\_api}, configuration Django/JWT, script \texttt{seed\_demo.py}, intégration et rapport \\
+  \hline
+  Ahmed Lahmaine & Product Owner / BA & \texttt{agenda\_api}, gestion des statuts RDV, salle d'attente, liste des médecins, feature branch \\
+  \hline
+  Achraf Ait Damnat & Lead Tech / Architecte & \texttt{dossier\_medical\_api}, modèle de consultation, paramètres cliniques, intégration frontend \\
+  \hline
+  Abdellah Rahel & QA / Conformité & \texttt{ordonnances\_api}, algorithme d'allergie, règle d'immuabilité, campagne de tests \\
+  \hline
+\end{tabularx}
+\end{table}
+
+\section{Workflow Git}
+
+L'équipe a adopté un workflow Git structuré inspiré de Gitflow :
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{\texttt{main}} : Branche de production – contient le code stable et intégré.
+  \item \textbf{\texttt{develop}} : Branche d'intégration – fusion de toutes les features avant promotion vers main.
+  \item \textbf{\texttt{feature/agenda-api}} : Développement de l'agenda (Ahmed Lahmaine) – mergée via Pull Request.
+  \item \textbf{\texttt{feature/dossier-medical-api}} : Développement du dossier médical (Achraf Ait Damnat).
+  \item \textbf{\texttt{feature/ordonnances-api}} : Développement des ordonnances (Abdellah Rahel).
+\end{itemize}
+
+Chaque Pull Request requiert une revue de code et la réussite des tests avant fusion.
+
+\section{Instructions de fusion pour les membres de l'équipe}
+
+Les instructions détaillées pour que chaque membre pousse son module vers \texttt{main} se trouvent dans \texttt{README.md} du dépôt (branche \texttt{develop}). La procédure type est :
+
+\begin{lstlisting}[language=bash, caption={Procédure de contribution individuelle}]
+# 1. Se positionner sur sa feature branch
+git checkout feature/[mon-module]-api
+
+# 2. Synchroniser avec develop
+git fetch origin
+git rebase origin/develop
+
+# 3. Ouvrir une Pull Request sur GitHub : feature/* -> develop
+# 4. Après validation de l'équipe : merge dans develop
+# 5. Chef de projet : merge develop -> main après validation globale
+\end{lstlisting}
+
+\section{Difficultés rencontrées}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Incompatibilité PowerShell} : L'opérateur \texttt{\&\&} n'est pas supporté nativement dans PowerShell Windows, ce qui a nécessité l'utilisation du script \texttt{exe.py} comme alternative cross-platform.
+  \item \textbf{Avertissement clé JWT} : Django 6.0 avec SimpleJWT génère un avertissement si la \texttt{SECRET\_KEY} est trop courte – résolu en générant une clé de 50 caractères.
+  \item \textbf{Peuplement BDD} : Le script \texttt{seed\_demo.py} doit gérer le cas où les données de démo existent déjà (utilisation de \texttt{get\_or\_create}).
+  \item \textbf{Noms de fichiers avec espaces} : Certains screenshots contiennent des espaces dans leur nom (\texttt{dossier medical.png}, \texttt{salle attente.png}) – gérés directement dans le \texttt{.tex} sans renommage.
+  \item \textbf{Coordination multi-branches} : Synchronisation des quatre feature branches sans conflits a nécessité une discipline stricte dans les périmètres de modèles.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 12 : BILAN QUALITÉ
+% ══════════════════════════════════════════════════════
+\chapter{Bilan Qualité}
+
+\section{Couverture des tests}
+
+\begin{table}[H]
+\centering
+\caption{Bilan de la couverture de tests par module}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|c|c|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Module} & \textbf{Tests U.} & \textbf{Tests API} & \textbf{Total} & \textbf{Taux} \\
+  \hline
+  \texttt{patients\_api} & 6 & 5 & 11 & \textcolor{medgreen}{100\%} \\
+  \hline
+  \texttt{agenda\_api} & 7 & 16 & 23 & \textcolor{medgreen}{100\%} \\
+  \hline
+  \texttt{dossier\_medical\_api} & 5 & 14 & 19 & \textcolor{medgreen}{100\%} \\
+  \hline
+  \texttt{ordonnances\_api} & 5 & 10 & 15 & \textcolor{medgreen}{100\%} \\
+  \hline
+  \rowcolor{medgreen!20}
+  \textbf{Total} & \textbf{23} & \textbf{45} & \textbf{68} & \textcolor{medgreen}{\textbf{100\%}} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Qualité du code}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Conformité REST} : Codes HTTP sémantiquement corrects (201 pour création, 204 pour suppression, 400 pour erreur client, 401/403 pour sécurité).
+  \item \textbf{Séparation des responsabilités} : Chaque module respecte la séparation \texttt{models.py / serializers.py / views.py / urls.py}.
+  \item \textbf{Pas de logique dans les vues} : Les règles métier (détection allergie, immuabilité, flux de statut) sont encapsulées dans les sérialiseurs ou des méthodes de modèle.
+  \item \textbf{Pas de code dupliqué} : Les permissions \texttt{HasCabinetRole} et \texttt{IsMedecin} sont définies une seule fois dans un module \texttt{permissions.py} partagé.
+  \item \textbf{Nommage cohérent} : Conventions snake\_case Python respectées, noms de variables et commentaires en français.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════
+%  SECTION 13 : LIMITES ET PERSPECTIVES
+% ══════════════════════════════════════════════════════
+\chapter{Limites et Perspectives}
+
+\section{Limites fonctionnelles}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Interface multi-médecins limitée} : Le filtre par médecin dans la vue agenda est opérationnel côté API mais l'interface frontend ne propose pas encore de sélecteur de médecin dans la vue calendrier.
+  \item \textbf{Pas de notifications} : Aucune notification email ou SMS n'est implémentée pour rappeler les rendez-vous aux patients.
+  \item \textbf{Pas de gestion documentaire} : Les ordonnances sont stockées en JSON uniquement – pas de génération PDF à ce stade.
+  \item \textbf{Pas de pagination avancée} : La pagination est implémentée mais sans navigation par curseur pour les très grandes listes.
+  \item \textbf{Mono-cabinet} : L'application gère un seul cabinet – pas de support multi-sites.
+\end{itemize}
+
+\section{Dettes techniques}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{SQLite en développement} : SQLite ne supporte pas la concurrence – migration vers PostgreSQL requise pour un déploiement production.
+  \item \textbf{Absence de CI/CD} : Pas de pipeline d'intégration continue configuré (GitHub Actions ou équivalent).
+  \item \textbf{Pas de documentation Swagger/OpenAPI} : L'API n'expose pas encore de documentation interactive (drf-spectacular ou drf-yasg).
+  \item \textbf{\texttt{db.sqlite3} hors Git} : Le fichier de base de données est exclu du versionning (\texttt{.gitignore}) – le script \texttt{seed\_demo.py} compense pour le développement.
+  \item \textbf{Pas de Docker} : Le déploiement requiert une installation manuelle de Python et des dépendances.
+\end{itemize}
+
+\section{Perspectives d'évolution}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Migration PostgreSQL} : Passage à PostgreSQL pour la production – les modèles Django sont déjà agnostiques à la base de données.
+  \item \textbf{Conteneurisation Docker} : Création d'un \texttt{Dockerfile} et d'un \texttt{docker-compose.yml} pour faciliter le déploiement.
+  \item \textbf{Documentation API Swagger} : Intégration de \texttt{drf-spectacular} pour générer automatiquement une documentation OpenAPI 3.0 interactive.
+  \item \textbf{Frontend React} : Migration de la SPA JavaScript natif vers React avec TypeScript pour une meilleure maintenabilité.
+  \item \textbf{Notifications} : Intégration d'un service email (Django Email + Celery) pour les rappels de rendez-vous.
+  \item \textbf{Génération PDF} : Utilisation de WeasyPrint ou ReportLab pour générer des ordonnances au format PDF imprimable.
+  \item \textbf{CI/CD} : Configuration GitHub Actions pour exécuter automatiquement les 68 tests à chaque push.
+  \item \textbf{Tableau de bord analytique} : Statistiques sur les consultations, les pathologies fréquentes, les taux d'annulation.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════
+%  CONCLUSION
+% ══════════════════════════════════════════════════════
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+Le projet MedConnect illustre la mise en œuvre concrète d'une architecture web distribuée, développée dans le cadre du module \textit{Web Services et Applications Distribuées}. En s'appuyant sur Django REST Framework, SimpleJWT et une organisation en quatre micro-services REST, le Groupe 12 a livré une plateforme fonctionnelle couvrant l'intégralité du cycle de vie médical : gestion des patients, planification des rendez-vous, tenue du dossier médical et prescription d'ordonnances sécurisées.
+
+La rigueur dans la répartition des tâches, le workflow Git structuré et la suite de tests exhaustive (68 tests, 100\% de réussite) démontrent une approche professionnelle du développement logiciel collaboratif. Les limites identifiées (SQLite, absence de Docker, pas de CI/CD) constituent une feuille de route claire pour une version V2 orientée production.
+
+MedConnect constitue une base solide, maintenable et extensible pour une application de santé numérique à l'échelle d'un cabinet médical réel.
+
+% ══════════════════════════════════════════════════════
+%  ANNEXES
+% ══════════════════════════════════════════════════════
+\appendix
+
+\chapter{Arborescence du Dépôt}
+
+\begin{lstlisting}
+MedConnect-WS-IL-EQ12/
+|
+|-- backend/
+|   |-- medconnect/
+|   |   |-- __init__.py
+|   |   |-- settings.py
+|   |   |-- urls.py
+|   |   +-- wsgi.py
+|   |-- patients_api/
+|   |   |-- migrations/
+|   |   |-- __init__.py
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- permissions.py
+|   |   |-- serializers.py
+|   |   |-- urls.py
+|   |   |-- views.py
+|   |   +-- tests.py
+|   |-- agenda_api/
+|   |   |-- migrations/
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- urls.py
+|   |   |-- views.py
+|   |   +-- tests.py
+|   |-- dossier_medical_api/
+|   |   |-- migrations/
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- urls.py
+|   |   |-- views.py
+|   |   +-- tests.py
+|   |-- ordonnances_api/
+|   |   |-- migrations/
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- urls.py
+|   |   |-- views.py
+|   |   +-- tests.py
+|   |-- tests/
+|   |   |-- test_patients.py
+|   |   |-- test_agenda.py
+|   |   |-- test_dossier.py
+|   |   +-- test_ordonnances.py
+|   |-- exe.py
+|   |-- seed_demo.py
+|   |-- manage.py
+|   |-- requirements.txt
+|   +-- db.sqlite3            (non versionne - genere par migrate)
+|
+|-- report/
+|   |-- main.tex              (ce document)
+|   +-- screenshots/
+|
+|-- assests/
+|   |-- MIL3_Dossier_Spec_Fonctionnelles_E12_V4.pdf
+|   +-- Atelier 02 cahier de charges-1.pdf
+|
++-- README.md
+\end{lstlisting}
+
+\chapter{Checklist des Livrables}
+
+\begin{table}[H]
+\centering
+\caption{Checklist des livrables du projet}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{7cm}|c|p{5cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Livrable} & \textbf{Statut} & \textbf{Localisation} \\
+  \hline
+  Code source backend Django & \textcolor{medgreen}{\checkmark} & \texttt{backend/} \\
+  \hline
+  4 micro-services REST & \textcolor{medgreen}{\checkmark} & \texttt{backend/*\_api/} \\
+  \hline
+  Frontend SPA & \textcolor{medgreen}{\checkmark} & \texttt{backend/} \\
+  \hline
+  Tests unitaires (23 Pytest) & \textcolor{medgreen}{\checkmark} & \texttt{backend/tests/} \\
+  \hline
+  Tests API (45 Django) & \textcolor{medgreen}{\checkmark} & \texttt{backend/*\_api/tests.py} \\
+  \hline
+  Script de démonstration & \textcolor{medgreen}{\checkmark} & \texttt{backend/seed\_demo.py} \\
+  \hline
+  Lanceur universel & \textcolor{medgreen}{\checkmark} & \texttt{backend/exe.py} \\
+  \hline
+  Rapport technique LaTeX & \textcolor{medgreen}{\checkmark} & \texttt{report/main.tex} \\
+  \hline
+  README avec instructions & \textcolor{medgreen}{\checkmark} & \texttt{README.md} \\
+  \hline
+  Dépôt Git structuré (branches) & \textcolor{medgreen}{\checkmark} & GitHub \\
+  \hline
+  Documentation API Swagger & \textcolor{medred}{\texttimes} & Prévu en V2 \\
+  \hline
+  Docker / docker-compose & \textcolor{medred}{\texttimes} & Prévu en V2 \\
+  \hline
+\end{tabular}
+\end{table}
+
+\chapter{Comptes de Démonstration}
+
+\begin{table}[H]
+\centering
+\caption{Comptes de démonstration – accès à l'interface}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Identifiant} & \textbf{Mot de passe} & \textbf{Rôle} & \textbf{Accès} \\
+  \hline
+  \texttt{dr.demo} & \texttt{Demo@1234} & Médecin & Complet (sauf CRUD patients) \\
+  \hline
+  \texttt{sec.demo} & \texttt{Demo@1234} & Secrétaire & Patients, Agenda, Salle d'attente \\
+  \hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{URL d'accès :} \texttt{http://127.0.0.1:8000} (après \texttt{python manage.py runserver})
+
+\chapter{Références}
+
+\begin{enumerate}[leftmargin=*, label={[R\arabic*]}]
+  \item Django REST Framework – Documentation officielle. \url{https://www.django-rest-framework.org/}
+  \item djangorestframework-simplejwt – Documentation. \url{https://django-rest-framework-simplejwt.readthedocs.io/}
+  \item Django Documentation (v6.0). \url{https://docs.djangoproject.com/}
+  \item Spécification Fonctionnelle MedConnect – \texttt{MIL3\_Dossier\_Spec\_Fonctionnelles\_E12\_V4.pdf}
+  \item Cahier des charges – \texttt{Atelier 02 cahier de charges-1.pdf}
+  \item Pytest Documentation. \url{https://docs.pytest.org/}
+  \item JWT RFC 7519. \url{https://datatracker.ietf.org/doc/html/rfc7519}
+\end{enumerate}
+
+\end{document}
