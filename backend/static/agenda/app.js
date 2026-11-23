@@ -689,36 +689,75 @@ async function pageSalle() {
         <h1>Salle d'attente</h1>
         <span class="live">Mise à jour automatique</span>
       </div>
+      <a href="#/agenda" class="btn btn-sm">📅 Voir l'Agenda</a>
     </div>
     <div id="msg"></div>
     <div class="card">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border,#e2e8f0);display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0;font-size:15px;color:var(--text,#1e293b)">👥 Patients actuellement en attente</h3>
+        <span id="count-attente" class="badge b-salle">0 en attente</span>
+      </div>
       <table>
-        <thead><tr><th>HEURE</th><th>PATIENT</th><th>MÉDECIN</th><th>STATUT</th><th></th></tr></thead>
+        <thead><tr><th>HEURE</th><th>PATIENT</th><th>MÉDECIN</th><th>STATUT</th><th>ACTION</th></tr></thead>
         <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:24px">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border,#e2e8f0);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h3 style="margin:0;font-size:15px;color:var(--text,#1e293b)">📋 Rendez-vous du jour attendus (Enregistrer l'arrivée)</h3>
+          <p style="margin:4px 0 0;font-size:12px;color:var(--muted,#64748b)">Tableau 10 du SFD : Enregistrer l'arrivée fait passer le rendez-vous de <i>Planifié</i> à <i>Salle d'attente</i>.</p>
+        </div>
+        <span id="count-planifie" class="badge b-plan">0 attendu(s)</span>
+      </div>
+      <table>
+        <thead><tr><th>HEURE</th><th>PATIENT</th><th>MÉDECIN</th><th>MOTIF</th><th>ACTION</th></tr></thead>
+        <tbody id="rows-planifies"></tbody>
       </table>
     </div>
   `);
 
   const load = async () => {
     try {
-      const list = await api("/api/agenda/rdv/salle-attente/");
+      const [listAttente, tousRdvJour] = await Promise.all([
+        api("/api/agenda/rdv/salle-attente/"),
+        api(`/api/agenda/rdv/?date=${today()}`)
+      ]);
       if (my !== routeId) return;
       $("msg").innerHTML = "";
-      $("rows").innerHTML = list.length ? list.map((r) => `
+
+      // 1. Patients en salle d'attente
+      $("count-attente").textContent = `${listAttente.length} en attente`;
+      $("rows").innerHTML = listAttente.length ? listAttente.map((r) => `
         <tr>
           <td><b>${esc(r.heure)}</b></td>
           <td><a href="#/rdv/${r.id}"><b>${esc(r.patient_nom)}</b></a></td>
           <td>${esc(r.medecin_nom)}</td>
           <td>${badge(r.statut)}</td>
-          <td class="act"><button class="btn btn-primary btn-sm" data-id="${r.id}">Appeler le patient</button></td>
+          <td class="act"><button class="btn btn-primary btn-sm" data-id="${r.id}">🩺 Appeler le patient</button></td>
         </tr>
-      `).join("") : `<tr><td colspan="5" class="empty">Aucun patient en salle d'attente.</td></tr>`;
+      `).join("") : `<tr><td colspan="5" class="empty">Aucun patient en salle d'attente pour le moment.<br><small style="color:var(--muted)">Pour faire entrer un patient, enregistrez son arrivée ci-dessous ou depuis l'Agenda.</small></td></tr>`;
+
+      // 2. Rendez-vous du jour au statut Planifié
+      const listPlanifies = (tousRdvJour || []).filter((r) => r.statut === "Planifié");
+      $("count-planifie").textContent = `${listPlanifies.length} attendu(s)`;
+      $("rows-planifies").innerHTML = listPlanifies.length ? listPlanifies.map((r) => `
+        <tr>
+          <td><b>${esc(r.heure)}</b></td>
+          <td><a href="#/rdv/${r.id}"><b>${esc(r.patient_nom)}</b></a></td>
+          <td>${esc(r.medecin_nom)}</td>
+          <td>${esc(r.motif || "—")}</td>
+          <td class="act"><button class="btn btn-sm" data-id="${r.id}" style="background:#0d9488;color:#fff">✅ Enregistrer l'arrivée</button></td>
+        </tr>
+      `).join("") : `<tr><td colspan="5" class="empty">Aucun autre rendez-vous planifié en attente d'arrivée aujourd'hui.</td></tr>`;
+
     } catch (e) {
       if (my === routeId) $("msg").innerHTML = `<div class="alert">${esc(e.message)}</div>`;
     }
   };
 
-  $("rows").onclick = async (e) => {
+  const handleAction = async (e) => {
     const b = e.target.closest("button[data-id]");
     if (!b) return;
     b.disabled = true;
@@ -729,6 +768,9 @@ async function pageSalle() {
     }
     load();
   };
+
+  $("rows").onclick = handleAction;
+  $("rows-planifies").onclick = handleAction;
 
   await load();
   timer = setInterval(load, 5000);
