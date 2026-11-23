@@ -4,3 +4,7 @@ __pycache__/
 .pytest_cache/
 *.html
 
+
+# Frontend Django (backend/templates)
+!backend/templates/*.html
+backend/db.sqlite3
