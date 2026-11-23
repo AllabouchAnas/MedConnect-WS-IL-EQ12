@@ -77,7 +77,16 @@ def run_django_tests():
     return res.returncode
 
 
-def run_pytest():
+def run_pytest(html=False):
+    if html:
+        report_file = os.path.join(ROOT, "rapport_tests.html")
+        print(f"▶  Generation du rapport HTML complet : {report_file}")
+        res = subprocess.run([PYTHON, "-m", "pytest", f"--html={report_file}", "--self-contained-html"], cwd=ROOT)
+        if res.returncode == 0:
+            print(f"✅  Rapport HTML pret : {report_file}")
+            threading.Thread(target=lambda: (time.sleep(0.5), webbrowser.open(f"file://{report_file}")), daemon=True).start()
+        return res.returncode
+
     print("▶  Execution des tests unitaires pytest...")
     res = subprocess.run([PYTHON, "-m", "pytest", "-v", "--tb=short"], cwd=ROOT)
     return res.returncode
@@ -100,9 +109,10 @@ def menu():
     choices = {
         "1": ("🚀 Lancer MedConnect (Django REST API + SPA Web - Port 8000)", lambda: run_django(8000)),
         "2": ("🧪 Lancer la suite de tests Django REST (45 tests)",          run_django_tests),
-        "3": ("🧪 Lancer la suite de tests pytest (23 tests)",              run_pytest),
-        "4": ("🗄️  Reinitialiser la base SQLite de demo (seed_demo)",        reset_db_cmd),
-        "5": ("🌐 Lancer le prototype Flask historique (Port 5000)",        run_flask),
+        "3": ("🧪 Lancer la suite de tests pytest (23 tests)",              lambda: run_pytest(html=False)),
+        "4": ("📄 Generer le rapport HTML interactif des tests",            lambda: run_pytest(html=True)),
+        "5": ("🗄️  Reinitialiser la base SQLite de demo (seed_demo)",        reset_db_cmd),
+        "6": ("🌐 Lancer le prototype Flask historique (Port 5000)",        run_flask),
         "0": ("Quitter",                                                    lambda: sys.exit(0)),
     }
 
@@ -110,7 +120,7 @@ def menu():
         print(f"  [{k}]  {label}")
     print()
 
-    choix = input("Votre choix [0-5] : ").strip()
+    choix = input("Votre choix [0-6] : ").strip()
     if choix in choices:
         print()
         choices[choix][1]()
@@ -126,6 +136,8 @@ if __name__ == "__main__":
         run_django(8000)
     elif "--flask" in args:
         run_flask()
+    elif "--html" in args:
+        sys.exit(run_pytest(html=True))
     elif "--tests" in args or "-t" in args:
         code1 = run_django_tests()
         code2 = run_pytest()
