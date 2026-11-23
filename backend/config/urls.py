@@ -13,5 +13,6 @@ urlpatterns = [
     path("api/", include("agenda_api.urls")),
     path("api/", include("patients_api.urls")),
     path("api/", include("dossier_medical_api.urls")),
+    path("api/", include("ordonnances_api.urls")),
     path("", TemplateView.as_view(template_name="index.html")),
 ]
