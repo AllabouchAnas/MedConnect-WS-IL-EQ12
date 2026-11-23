@@ -318,4 +318,20 @@ Cette phase couvre les tests unitaires en mémoire. La prochaine étape du proje
 
 ---
 
+## 🚀 Guide d'intégration sur `main` pour les équipiers (Academic Attribution)
+
+Afin que l'historique Git et les contributions individuelles reflètent fidèlement le travail de chaque membre pour l'évaluation académique, chaque équipier pousse son module depuis sa machine avec son propre identifiant Git :
+
+| Équipier | Rôle | Module | Commande de test | Statut sur `main` |
+| :--- | :--- | :--- | :--- | :--- |
+| **Ahmed LAHMAINE** | Product Owner / BA | `agenda_api` | `python backend/manage.py test agenda_api` | ✅ Fusionné via `feature/agenda-api` |
+| **Allabouch ANASS** | Chef de Projet | `patients_api` | `python backend/manage.py test patients_api` | ✅ Poussé sur `main` |
+| **Achraf AIT DAMNAT** | Lead Tech / Architecte | `dossier_medical_api` | `python backend/manage.py test dossier_medical_api` | ⏳ Prêt sur `develop` |
+| **Abdellah RAHEL** | Responsable QA | `ordonnances_api` | `python backend/manage.py test ordonnances_api` | ⏳ Prêt sur `develop` |
+
+### Instructions pas-à-pas pour Achraf et Abdellah :
+Consultez le guide complet dans [backend/README.md](file:///c:/Users/Dell%205520/Desktop/Projects/MedConnect-WS-IL-EQ12/backend/README.md) pour les commandes exactes permettant d'extraire votre module depuis `develop`, de le tester et de le pousser sur `main` sous votre propre identifiant Git sans aucun conflit de fusion.
+
+---
+
 *MedConnect — Groupe 12 | Master Excellence IL | Ibn Zohr FSA Agadir | 2026–2027*
