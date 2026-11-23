@@ -35,8 +35,9 @@ MedConnect-WS-IL-EQ12/
 ├── dossier_medical/                 ← Module Achraf AIT DAMNAT
 │   ├── __init__.py
 │   ├── consultation.py              # Modèle Consultation ✅ (fourni)
-│   ├── dossier_service.py           # Stub — À IMPLÉMENTER
-│   └── test_dossier_service.py      # 5 tests — À faire passer
+│   ├── dossier_service.py           # Service métier (en mémoire) ✅
+│   └── test_dossier_service.py      # 5 tests unitaires ✅
+│                                    # (version web : backend/dossier_medical_api/)
 │
 ├── ordonnances/                     ← Module ABDELLAH RAHEL
 │   ├── __init__.py
@@ -168,7 +169,7 @@ python -m pytest agenda/test_agenda_service.py -v --html=rapport_tests_agenda.ht
 
 ---
 
-## 🩺 Module Dossier Médical — Achraf AIT DAMNAT (À faire)
+## 🩺 Module Dossier Médical — Achraf AIT DAMNAT (Terminé)
 
 ### Ce que tu dois implémenter
 
@@ -194,6 +195,30 @@ python -m pytest agenda/test_agenda_service.py -v --html=rapport_tests_agenda.ht
 **Lancer :**
 ```bash
 python -m pytest dossier_medical/test_dossier_service.py -v --html=rapport_tests_dossier.html --self-contained-html
+```
+
+### Version web — API REST `backend/dossier_medical_api/`
+
+Accès **réservé aux médecins** (la secrétaire reçoit `403`, côté API comme dans l'interface).
+Le médecin d'une consultation est toujours l'utilisateur connecté.
+
+| Méthode | URL | Rôle |
+|---------|-----|------|
+| GET | `/api/consultations/?patient=CIN` | Historique d'un patient, le plus récent d'abord (liste vide si aucune) |
+| POST | `/api/consultations/` | Ajouter : `patient_cin`, `date`, `motif` (obligatoire) + constantes facultatives |
+| GET / PATCH | `/api/consultations/{id}/` | Consulter / modifier (le patient ne peut pas changer) |
+| DELETE | `/api/consultations/{id}/` | Supprimer |
+
+Filtres facultatifs : `medecin`, `date_debut`, `date_fin`, `search` (motif / diagnostic).
+
+Règles de validation : motif non vide · date pas dans le futur · tension `12/8` ou `120/80` ·
+poids 0,5–500 kg · température 30–45 °C · pouls 20–300 bpm.
+
+```bash
+cd backend
+python manage.py migrate
+python manage.py seed_demo && python manage.py seed_dossier   # données de démo
+python manage.py test dossier_medical_api                     # 21 tests API
 ```
 
 ---

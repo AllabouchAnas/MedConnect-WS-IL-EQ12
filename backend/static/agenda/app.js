@@ -107,7 +107,7 @@ function shell(active, html) {
           ${link("#/patients", "Patients", "patients")}
           ${link("#/agenda", "Agenda", "agenda")}
           ${link("#/salle", "Salle d'attente", "salle")}
-          ${link("#/dossier", "Dossier médical", "dossier")}
+          ${isMed ? link("#/dossier", "Dossier médical", "dossier") : ""}
         </nav>
         <div class="user">
           <span>${esc(s.user.username)} · ${esc(ROLES[s.user.role] || s.user.role)}</span>
@@ -351,7 +351,7 @@ async function pagePatientDetail(cin) {
     <div class="row-btns" style="margin-top:24px">
       <a class="btn btn-primary" href="#/patients/${encodeURIComponent(p.cin)}/edit">Modifier</a>
       <button class="btn btn-danger" id="del">Supprimer</button>
-      <a class="btn" href="#/dossier/${encodeURIComponent(p.cin)}" style="margin-left:auto">🩺 Ouvrir Dossier Médical</a>
+      ${isMedecin() ? `<a class="btn" href="#/dossier/${encodeURIComponent(p.cin)}" style="margin-left:auto">🩺 Ouvrir Dossier Médical</a>` : ""}
     </div>
   `;
 
@@ -736,7 +736,29 @@ async function pageSalle() {
 /* ══════════════════════════════════════════════════════════════════════════
    F005 — Dossier Médical & Consultations (Figures 13 à 17)
    ══════════════════════════════════════════════════════════════════════════ */
+const isMedecin = () => { const s = loadSession(); return !!(s && s.user && s.user.role === "Medecin"); };
+
+/* Le dossier médical est confidentiel : l'API refuse la secrétaire (403), l'interface l'explique. */
+function dossierRefuse() {
+  if (isMedecin()) return false;
+  routeId++;
+  shell("dossier", `
+    <div class="card">
+      <div class="alert">Accès réservé aux médecins : le dossier médical est confidentiel.</div>
+      <a class="btn" href="#/patients">← Patients</a>
+    </div>`);
+  return true;
+}
+
+const constantes = (c) => [
+  c.tension && `TA ${c.tension}`,
+  c.poids != null && `${c.poids} kg`,
+  c.temperature != null && `${c.temperature} °C`,
+  c.pouls != null && `${c.pouls} bpm`
+].filter(Boolean).map(esc).join(" · ") || "—";
+
 async function pageDossierIndex() {
+  if (dossierRefuse()) return;
   const my = ++routeId;
   shell("dossier", `
     <div class="page-head">
@@ -765,6 +787,7 @@ async function pageDossierIndex() {
 }
 
 async function pageDossierPatient(cin) {
+  if (dossierRefuse()) return;
   const my = ++routeId;
   shell("dossier", `<div class="card" id="box">Chargement…</div>`);
   let p, consultations, ordonnances;
@@ -772,7 +795,8 @@ async function pageDossierPatient(cin) {
     [p, consultations, ordonnances] = await Promise.all([
       api(`/api/patients/${encodeURIComponent(cin)}/`),
       api(`/api/consultations/?patient=${encodeURIComponent(cin)}`),
-      api(`/api/ordonnances/?patient=${encodeURIComponent(cin)}`)
+      // Module Ordonnances (autre membre) : son absence ne doit pas bloquer le dossier.
+      api(`/api/ordonnances/?patient=${encodeURIComponent(cin)}`).catch(() => null)
     ]);
   } catch (e) {
     if (my === routeId) $("box").innerHTML = `<div class="alert">${esc(e.message)}</div><a class="btn" href="#/dossier">← Retour</a>`;
@@ -798,27 +822,30 @@ async function pageDossierPatient(cin) {
       <a class="btn btn-primary btn-sm" href="#/dossier/${encodeURIComponent(p.cin)}/consultation/new">+ Nouvelle consultation</a>
     </div>
     <table>
-      <thead><tr><th>DATE</th><th>MOTIF</th><th>DIAGNOSTIC</th><th></th></tr></thead>
+      <thead><tr><th>DATE</th><th>MOTIF</th><th>DIAGNOSTIC</th><th>CONSTANTES</th><th>MÉDECIN</th><th></th></tr></thead>
       <tbody>
         ${consultations.length ? consultations.map((c) => `
           <tr>
             <td>${fmtDate(c.date)}</td>
             <td><b>${esc(c.motif)}</b></td>
             <td>${esc(c.diagnostic) || "—"}</td>
+            <td style="font-size:12px">${constantes(c)}</td>
+            <td>${esc(c.medecin_nom)}</td>
             <td class="act">
               <a class="btn btn-sm" href="#/consultation/${c.id}/edit">Modifier</a>
               <button class="btn btn-danger btn-sm" data-delcons="${c.id}">Supprimer</button>
             </td>
           </tr>
-        `).join("") : `<tr><td colspan="4" class="empty">Aucune consultation enregistrée.</td></tr>`}
+        `).join("") : `<tr><td colspan="6" class="empty">Aucune consultation enregistrée.</td></tr>`}
       </tbody>
     </table>
 
     <!-- Ordonnances -->
     <div class="page-head" style="margin-top:32px">
       <h2 style="font-size:16px; margin:0">Ordonnances</h2>
-      <a class="btn btn-primary btn-sm" href="#/dossier/${encodeURIComponent(p.cin)}/ordonnance/new">+ Nouvelle ordonnance</a>
+      ${ordonnances ? `<a class="btn btn-primary btn-sm" href="#/dossier/${encodeURIComponent(p.cin)}/ordonnance/new">+ Nouvelle ordonnance</a>` : ""}
     </div>
+    ${ordonnances ? `
     <table>
       <thead><tr><th>N°</th><th>DATE</th><th>LIGNES</th><th>STATUT</th><th></th></tr></thead>
       <tbody>
@@ -832,7 +859,7 @@ async function pageDossierPatient(cin) {
           </tr>
         `).join("") : `<tr><td colspan="5" class="empty">Aucune ordonnance émise.</td></tr>`}
       </tbody>
-    </table>
+    </table>` : `<p style="color:var(--muted); font-size:13px">Le module Ordonnances n'est pas encore disponible sur ce serveur.</p>`}
   `;
 
   // Suppression consultation avec confirmation modale (Figure 17)
@@ -868,21 +895,49 @@ async function pageDossierPatient(cin) {
   };
 }
 
+/* Formulaire de consultation partagé par « nouvelle » et « modifier ». */
+function consultationFields(cin, medecinNom, c = {}) {
+  const v = (x) => (x == null ? "" : esc(x));
+  return `
+    <div id="err"></div>
+    <div class="grid">
+      <div><label>Patient (CIN)</label><input value="${esc(cin)}" disabled style="background:#f3f4f6"></div>
+      <div><label>Médecin</label><input value="${esc(medecinNom)}" disabled style="background:#f3f4f6"></div>
+      <div><label for="cd">Date *</label><input type="date" id="cd" value="${esc(c.date || today())}" max="${today()}"></div>
+      <div class="full"><label for="cm">Motif *</label><input id="cm" maxlength="255" value="${v(c.motif)}" placeholder="ex : Fièvre et toux, Contrôle annuel…"></div>
+      <div><label for="ct">Tension</label><input id="ct" value="${v(c.tension)}" placeholder="ex : 12/8 ou 120/80"></div>
+      <div><label for="cpo">Poids (kg)</label><input id="cpo" type="number" step="0.1" min="0" value="${v(c.poids)}"></div>
+      <div><label for="cte">Température (°C)</label><input id="cte" type="number" step="0.1" min="0" value="${v(c.temperature)}"></div>
+      <div><label for="cpu">Pouls (bpm)</label><input id="cpu" type="number" step="1" min="0" value="${v(c.pouls)}"></div>
+      <div class="full"><label for="cdiag">Diagnostic</label><textarea id="cdiag" rows="3" placeholder="Observations cliniques…">${v(c.diagnostic)}</textarea></div>
+    </div>`;
+}
+
+/* Lit le formulaire ; renvoie null (et affiche l'erreur) si le motif manque. Champ numérique vide → null. */
+function readConsultation() {
+  const num = (id) => { const t = $(id).value.trim().replace(",", "."); return t === "" ? null : Number(t); };
+  const motif = $("cm").value.trim();
+  if (!motif) {
+    $("err").innerHTML = `<div class="alert">Le motif de la consultation est obligatoire.</div>`;
+    return null;
+  }
+  return {
+    date: $("cd").value, motif, tension: $("ct").value.trim(),
+    poids: num("cpo"), temperature: num("cte"), pouls: num("cpu"),
+    diagnostic: $("cdiag").value.trim()
+  };
+}
+
 async function pageConsultationNew(cin) {
+  if (dossierRefuse()) return;
+  const s = loadSession();
   shell("dossier", `
     <div class="page-head">
       <h1>Nouvelle consultation</h1>
       <a class="btn" href="#/dossier/${encodeURIComponent(cin)}">← Retour</a>
     </div>
     <div class="card">
-      <div id="err"></div>
-      <div class="grid">
-        <div><label>Patient (CIN)</label><input value="${esc(cin)}" disabled style="background:#f3f4f6"></div>
-        <div><label>Médecin</label><input value="Dr. Demo" disabled style="background:#f3f4f6"></div>
-        <div><label for="cd">Date *</label><input type="date" id="cd" value="2026-11-13"></div>
-        <div class="full"><label for="cm">Motif *</label><input id="cm" placeholder="ex : Fièvre et toux, Contrôle annuel…"></div>
-        <div class="full"><label for="cdiag">Diagnostic</label><textarea id="cdiag" rows="3" placeholder="Observations cliniques…"></textarea></div>
-      </div>
+      ${consultationFields(cin, s.user.nom || s.user.username)}
       <div class="row-btns">
         <button class="btn btn-primary" id="save">Enregistrer</button>
         <a class="btn" href="#/dossier/${encodeURIComponent(cin)}">Annuler</a>
@@ -892,19 +947,54 @@ async function pageConsultationNew(cin) {
 
   $("save").onclick = async () => {
     $("err").innerHTML = "";
-    const motif = $("cm").value.trim();
-    if (!motif) {
-      $("err").innerHTML = `<div class="alert">Le motif de la consultation est obligatoire.</div>`;
-      return;
-    }
+    const body = readConsultation();
+    if (!body) return;
     $("save").disabled = true;
     try {
-      await api("/api/consultations/", {
-        method: "POST",
-        body: { patient_cin: cin, date: $("cd").value, motif, diagnostic: $("cdiag").value.trim() }
-      });
+      await api("/api/consultations/", { method: "POST", body: { patient_cin: cin, ...body } });
       state.flash = "Consultation ajoutée au dossier.";
       location.hash = `#/dossier/${encodeURIComponent(cin)}`;
+    } catch (e) {
+      $("save").disabled = false;
+      $("err").innerHTML = `<div class="alert">${esc(e.message)}</div>`;
+    }
+  };
+}
+
+async function pageConsultationEdit(id) {
+  if (dossierRefuse()) return;
+  const my = ++routeId;
+  shell("dossier", `<div class="card" id="box">Chargement…</div>`);
+  let c;
+  try { c = await api(`/api/consultations/${id}/`); }
+  catch (e) {
+    if (my === routeId) $("box").innerHTML = `<div class="alert">${esc(e.message)}</div><a class="btn" href="#/dossier">← Retour</a>`;
+    return;
+  }
+  if (my !== routeId) return;
+
+  const retour = `#/dossier/${encodeURIComponent(c.patient_cin)}`;
+  $("box").innerHTML = `
+    <div class="page-head">
+      <h1>Modifier la consultation du ${fmtDate(c.date)}</h1>
+      <a class="btn" href="${retour}">← Retour</a>
+    </div>
+    ${consultationFields(c.patient_cin, c.medecin_nom, c)}
+    <div class="row-btns">
+      <button class="btn btn-primary" id="save">Enregistrer</button>
+      <a class="btn" href="${retour}">Annuler</a>
+    </div>
+  `;
+
+  $("save").onclick = async () => {
+    $("err").innerHTML = "";
+    const body = readConsultation();
+    if (!body) return;
+    $("save").disabled = true;
+    try {
+      await api(`/api/consultations/${id}/`, { method: "PATCH", body });
+      state.flash = "Consultation modifiée.";
+      location.hash = retour;
     } catch (e) {
       $("save").disabled = false;
       $("err").innerHTML = `<div class="alert">${esc(e.message)}</div>`;
@@ -1140,6 +1230,8 @@ function route() {
   if (h === "#/dossier") return pageDossierIndex();
   m = h.match(/^#\/dossier\/([^/]+)\/consultation\/new$/);
   if (m) return pageConsultationNew(decodeURIComponent(m[1]));
+  m = h.match(/^#\/consultation\/(\d+)\/edit$/);
+  if (m) return pageConsultationEdit(m[1]);
   m = h.match(/^#\/dossier\/([^/]+)\/ordonnance\/new$/);
   if (m) return pageOrdonnanceNew(decodeURIComponent(m[1]));
   m = h.match(/^#\/dossier\/([^/]+)$/);
