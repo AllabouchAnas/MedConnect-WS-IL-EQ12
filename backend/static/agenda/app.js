@@ -102,8 +102,9 @@ function shell(active, html) {
   $app.innerHTML = `
     <header class="topbar">
       <div class="wrap">
-        <a class="logo" href="#/patients">Med<b>Connect</b></a>
+        <a class="logo" href="#/">Med<b>Connect</b></a>
         <nav>
+          ${link("#/", "Accueil", "accueil")}
           ${link("#/patients", "Patients", "patients")}
           ${link("#/agenda", "Agenda", "agenda")}
           ${link("#/salle", "Salle d'attente", "salle")}
@@ -191,7 +192,7 @@ function pageLogin() {
     try {
       const d = await api("/api/auth/login/", { method: "POST", body: { username, password }, auth: false });
       saveSession({ access: d.access, refresh: d.refresh, user: d.user }, $("r").checked);
-      location.hash = "#/patients";
+      location.hash = "#/";
     } catch (e) {
       $("err").innerHTML = `<div class="alert">${esc(e.message)}</div>`;
     }
@@ -1198,18 +1199,174 @@ async function pageOrdonnancePdf(id) {
 /* ══════════════════════════════════════════════════════════════════════════
    Routeur d'application SPA
    ══════════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════════
+   Accueil — tableau de bord (adapté au rôle ; l'API ne renvoie les données
+   médicales qu'au médecin)
+   ══════════════════════════════════════════════════════════════════════════ */
+const fmtLong = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("fr-FR",
+  { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+const JOURS_COURTS = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."];
+
+function accueilKpis(d) {
+  const k = d.kpis, med = d.role === "Medecin";
+  const pl = (n, un, plur) => `${n} ${n > 1 ? plur : un}`;
+  const cards = [
+    ["Rendez-vous aujourd'hui", k.rdv_total,
+      `${k.termines} terminé(s) · ${k.restants} restant(s) · ${pl(k.annules, "annulé", "annulés")}`],
+    ["En salle d'attente", k.en_attente,
+      k.attente_moyenne_min == null ? "personne n'attend" : `attente moyenne : ${k.attente_moyenne_min} min`],
+    ["Patients", k.patients_total, "enregistrés au cabinet"],
+    ["Annulations (semaine)", k.annulations_semaine, med ? "parmi vos rendez-vous" : "tous médecins"]
+  ];
+  return `<div class="kpis">${cards.map(([l, v, n]) =>
+    `<div class="kpi"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div><div class="n">${esc(n)}</div></div>`
+  ).join("")}</div>`;
+}
+
+function accueilPlanning(d) {
+  const med = d.role === "Medecin";
+  const rows = d.rdvs.length ? d.rdvs.map((r) => `
+    <tr>
+      <td><a href="#/rdv/${r.id}"><b>${esc(r.heure)}</b></a></td>
+      <td>${esc(r.patient_nom)}${r.motif ? `<div class="s" style="font-size:12.5px;color:var(--muted)">${esc(r.motif)}</div>` : ""}</td>
+      ${med ? "" : `<td>${esc(r.medecin_nom)}</td>`}
+      <td>${badge(r.statut)}${r.statut === "Annulé" && r.motif_annulation ? `<div class="sub">${esc(r.motif_annulation)}</div>` : ""}</td>
+      <td class="act">${med
+        ? `<a class="btn btn-sm" href="#/dossier/${encodeURIComponent(r.patient_cin)}">Dossier</a>`
+        : `<a class="btn btn-sm" href="#/rdv/${r.id}">Détail</a>`}</td>
+    </tr>`).join("")
+    : `<tr><td colspan="${med ? 4 : 5}" class="empty">Aucun rendez-vous aujourd'hui.</td></tr>`;
+  return `
+    <section class="card flush">
+      <div class="head"><h2>${med ? "Ma journée" : "Planning du jour"}</h2><a href="#/agenda" style="color:var(--teal);font-weight:600">Voir l'agenda</a></div>
+      <table>
+        <thead><tr><th>HEURE</th><th>PATIENT</th>${med ? "" : "<th>MÉDECIN</th>"}<th>STATUT</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </section>`;
+}
+
+function accueilSalle(d) {
+  const med = d.role === "Medecin";
+  const rows = d.salle_attente.length ? d.salle_attente.map((a) => `
+    <div class="list-row">
+      <div>
+        <div class="t"><a href="#/rdv/${a.id}">${esc(a.patient_nom)}</a></div>
+        <div class="s">${a.arrivee_heure ? `Arrivé à ${esc(a.arrivee_heure)} · ` : ""}RDV ${esc(a.heure)}${med ? "" : ` · ${esc(a.medecin_nom)}`}</div>
+      </div>
+      <div class="w">${a.attente_min == null ? "" : esc(a.attente_min) + " min"}</div>
+    </div>`).join("")
+    : `<div class="list-empty">Aucun patient en salle d'attente.</div>`;
+  return `
+    <section class="card flush">
+      <div class="head"><h2>Salle d'attente</h2><a href="#/salle" style="color:var(--teal);font-weight:600">Gérer</a></div>
+      ${rows}
+    </section>`;
+}
+
+function accueilCote(d) {
+  if (d.role === "Medecin") {
+    const rows = d.consultations_recentes.length ? d.consultations_recentes.map((c) => `
+      <div class="list-row">
+        <div style="min-width:0">
+          <div class="t">${esc(c.patient_nom)}</div>
+          <div class="s">${esc(c.motif)} · ${esc(fmtDate(c.date))}</div>
+        </div>
+        <a class="btn btn-sm" href="#/dossier/${encodeURIComponent(c.patient_cin)}">Ouvrir</a>
+      </div>`).join("")
+      : `<div class="list-empty">Aucune consultation enregistrée.</div>`;
+    return `<section class="card flush"><div class="head"><h2>Dernières consultations</h2><a href="#/dossier" style="color:var(--teal);font-weight:600">Dossiers</a></div>${rows}</section>`;
+  }
+  const dem = d.demain;
+  const rows = dem.par_medecin.length ? dem.par_medecin.map((m) => `
+    <div class="list-row"><div class="t">${esc(m.medecin_nom)}</div><div class="s">${esc(m.n)} rendez-vous</div></div>`).join("")
+    : `<div class="list-empty">Aucun rendez-vous demain.</div>`;
+  return `<section class="card flush"><div class="head"><h2>Demain · ${esc(fmtDate(dem.date))}</h2><span class="s" style="font-size:12.5px;color:var(--muted)">${esc(dem.total)} au total</span></div>${rows}</section>`;
+}
+
+function accueilActivite(d) {
+  if (d.role !== "Medecin") return "";
+  const max = Math.max(1, ...d.activite.map((j) => j.n)), total = d.activite.reduce((s, j) => s + j.n, 0);
+  const bars = d.activite.map((j, i) => `
+    <div class="bar ${i === d.activite.length - 1 ? "today" : ""}">
+      <b>${esc(j.n)}</b><i style="height:${j.n ? Math.round((j.n / max) * 90) : 3}px"></i>
+    </div>`).join("");
+  const labels = d.activite.map((j, i) => `<span>${i === d.activite.length - 1 ? "auj." : JOURS_COURTS[new Date(j.date + "T12:00:00").getDay()]}</span>`).join("");
+  return `
+    <section class="card" style="margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <h2 style="margin:0;font-size:15px">Consultations des 7 derniers jours</h2>
+        <span style="font-size:12.5px;color:var(--muted)">${esc(total)} au total</span>
+      </div>
+      <div class="bars">${bars}</div><div class="bar-labels">${labels}</div>
+    </section>`;
+}
+
+async function pageAccueil() {
+  const my = ++routeId;
+  shell("accueil", `
+    <div class="page-head">
+      <div id="hd"><h1>Accueil</h1></div>
+      <div class="actions" style="flex-wrap:wrap">
+        <form id="qs" class="actions" role="search">
+          <input type="text" id="qq" placeholder="Rechercher un patient (CIN, nom)…" aria-label="Rechercher un patient" style="width:230px">
+          <button class="btn" type="submit">Rechercher</button>
+        </form>
+        <a class="btn" href="#/patients/new">Nouveau patient</a>
+        <a class="btn btn-primary" href="#/rdv/new">+ Nouveau rendez-vous</a>
+      </div>
+    </div>
+    <div id="msg"></div>
+    <div id="dyn"><div class="card">Chargement…</div></div>
+  `);
+
+  $("qs").onsubmit = (e) => {
+    e.preventDefault();
+    state.searchQ = $("qq").value.trim();
+    location.hash = "#/patients";
+  };
+
+  const load = async () => {
+    let d;
+    try { d = await api("/api/dashboard/"); }
+    catch (e) {
+      if (my === routeId) $("msg").innerHTML = `<div class="alert">${esc(e.message)}</div>`;
+      return;
+    }
+    if (my !== routeId) return;
+    const med = d.role === "Medecin";
+    $("msg").innerHTML = "";
+    $("hd").innerHTML = `<h1>Bonjour, ${esc(d.nom)}</h1>
+      <span style="color:var(--muted);font-size:13.5px">${esc(fmtLong(d.date))}${med
+        ? ` · ${d.kpis.restants} patient(s) restant(s) aujourd'hui` : ""}</span>`;
+    $("dyn").innerHTML = `
+      ${accueilKpis(d)}
+      <div class="cols">
+        <div class="main">${accueilPlanning(d)}</div>
+        <div class="side">${accueilSalle(d)}${accueilCote(d)}</div>
+      </div>
+      ${accueilActivite(d)}`;
+  };
+
+  await load();
+  timer = setInterval(load, 30000);
+}
+
 function route() {
   clearInterval(timer);
   timer = null;
-  const h = location.hash || "#/patients", s = loadSession();
+  const h = location.hash || "#/", s = loadSession();
   if (h === "#/login") {
     routeId++;
-    return s ? (location.hash = "#/patients") : pageLogin();
+    return s ? (location.hash = "#/") : pageLogin();
   }
   if (!s) {
     location.hash = "#/login";
     return;
   }
+
+  // Accueil (tableau de bord)
+  if (h === "#/") return pageAccueil();
 
   // Routes Patients (F002)
   if (h === "#/patients") return pagePatients();
@@ -1243,7 +1400,7 @@ function route() {
   m = h.match(/^#\/ordonnances\/(\d+)$/);
   if (m) return pageOrdonnanceDetail(m[1]);
 
-  return pagePatients();
+  return pageAccueil();
 }
 
 window.addEventListener("hashchange", route);
