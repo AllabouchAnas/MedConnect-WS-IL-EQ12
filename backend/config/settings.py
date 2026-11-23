@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "patients_api",
     "agenda_api",
+    "dossier_medical_api",
 ]
 
 MIDDLEWARE = [
