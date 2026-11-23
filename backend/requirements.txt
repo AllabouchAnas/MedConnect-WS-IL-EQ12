@@ -1,0 +1,4 @@
+Django>=5.2.8,<6.1
+djangorestframework>=3.15
+djangorestframework-simplejwt>=5.3
+# PostgreSQL (optionnel) : psycopg2-binary
