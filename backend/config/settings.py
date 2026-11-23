@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "agenda_api",
     "dossier_medical_api",
     "ordonnances_api",
+    "dashboard_api",
 ]
 
 MIDDLEWARE = [

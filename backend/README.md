@@ -12,13 +12,14 @@
 Ouvrir http://127.0.0.1:8000/ - comptes : sec.demo ou dr.demo, mot de passe Demo@1234
 
 ## Tests
-    python manage.py test        (42 tests API : agenda, patients, dossier médical)
+    python manage.py test        (57 tests API : agenda, patients, dossier médical, accueil)
 
 ## API
 POST /api/auth/login/ | /refresh/ | /logout/
 GET, POST /api/agenda/rdv/ (?date=AAAA-MM-JJ&medecin=&statut=) ; GET /api/agenda/rdv/{id}/
 POST /api/agenda/rdv/{id}/avancer/ ; POST /api/agenda/rdv/{id}/annuler/ {motif_annulation}
 GET /api/agenda/rdv/salle-attente/ ; GET /api/agenda/medecins/ ; GET /api/patients/
+Accueil (tableau de bord, adapté au rôle) : GET /api/dashboard/
 Dossier médical (médecins uniquement) :
 GET /api/consultations/?patient=CIN ; POST /api/consultations/ ; GET, PATCH, DELETE /api/consultations/{id}/
 

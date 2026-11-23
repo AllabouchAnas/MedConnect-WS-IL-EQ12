@@ -223,6 +223,27 @@ python manage.py test dossier_medical_api                     # 21 tests API
 
 ---
 
+## 🏠 Page d'accueil — tableau de bord (`backend/dashboard_api/`)
+
+Page affichée après la connexion (`#/`), adaptée au rôle. Une seule requête : `GET /api/dashboard/`.
+
+| | Médecin | Secrétaire |
+|---|---|---|
+| Indicateurs | RDV du jour, salle d'attente, patients, annulations de la semaine (ses RDV) | idem, tous médecins confondus |
+| Liste principale | « Ma journée » + lien vers le dossier | « Planning du jour » (colonne médecin) |
+| Colonne de droite | salle d'attente + dernières consultations | salle d'attente + RDV de demain par médecin |
+| Graphique | consultations des 7 derniers jours | — |
+
+**Confidentialité** : les données médicales (consultations, graphique) ne sont jamais présentes dans la réponse de la secrétaire (testé).
+Actualisation automatique toutes les 30 s. Recherche rapide de patient et boutons « Nouveau patient » / « Nouveau rendez-vous » en haut de page.
+
+```bash
+cd backend
+python manage.py test dashboard_api    # 15 tests API
+```
+
+---
+
 ## 💊 Module Ordonnances — ABDELLAH RAHEL (À faire)
 
 ### Ce que tu dois implémenter

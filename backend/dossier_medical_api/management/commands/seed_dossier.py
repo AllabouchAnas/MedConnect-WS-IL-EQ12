@@ -15,6 +15,9 @@ DEMO = [
     ("AB123", 120, "Contrôle annuel", "12/8", "61.5", "36.8", 72, "RAS. Bilan sanguin à refaire dans un an."),
     ("AB123", 14, "Toux persistante", "11/7", "61.0", "37.6", 84, "Bronchite virale, repos et hydratation."),
     ("CD456", 30, "Douleurs lombaires", "13/8", "82.0", "36.9", 76, "Lombalgie commune, antalgiques."),
+    # Récentes : alimentent le graphique « 7 derniers jours » de la page d'accueil.
+    ("AB123", 1, "Contrôle tension", "12/8", "61.0", "36.7", 70, "Tension normale, traitement inchangé."),
+    ("CD456", 3, "Suivi lombalgie", "13/8", "81.5", "36.8", 74, "Amélioration, poursuite de la kinésithérapie."),
 ]
 
 
