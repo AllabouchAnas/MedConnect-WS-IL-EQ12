@@ -1,57 +1,91 @@
-import datetime
-
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from datetime import date
+from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from agenda_api.models import RendezVous, Statut
+from config.permissions import ROLE_MEDECIN, ROLE_SECRETAIRE
 from patients_api.models import Patient
-
-User = get_user_model()
-MDP = "Demo@1234"
+from dossier_medical_api.models import Consultation
+from ordonnances_api.models import Ordonnance, LigneOrdonnance
 
 
 class Command(BaseCommand):
-    help = "Crée les rôles, utilisateurs, patients et rendez-vous de démonstration."
+    help = "Initialise les données de démonstration conformes au SFD V4 (F001 à F007)."
 
-    def handle(self, *args, **opts):
-        med, _ = Group.objects.get_or_create(name="Medecin")
-        sec, _ = Group.objects.get_or_create(name="Secretaire")
-        for username, first, last, group in [("dr.demo", "Dr.", "Demo", med), ("dr.alami", "Dr.", "Alami", med),
-                                             ("sec.demo", "Secrétaire", "Demo", sec)]:
-            u, created = User.objects.get_or_create(username=username,
-                                                    defaults={"first_name": first, "last_name": last})
-            if created:
-                u.set_password(MDP)
-                u.save()
-            u.groups.add(group)
+    def handle(self, *args, **options):
+        # 1. Groupes et rôles
+        grp_med, _ = Group.objects.get_or_create(name=ROLE_MEDECIN)
+        grp_sec, _ = Group.objects.get_or_create(name=ROLE_SECRETAIRE)
 
-        data = [("AB123", "Benali", "Sara", "1990-05-01", "0600000001", "O+", "Pénicilline", "0600000009"),
-                ("CD456", "Alaoui", "Omar", "1985-01-02", "0600000002", "A+", "", "0600000008"),
-                ("EF789", "Tazi", "Leila", "1978-11-23", "0600000003", "B+", "", "0600000007")]
-        for cin, nom, prenom, nais, tel, gs, all_, urg in data:
-            Patient.objects.get_or_create(cin=cin, defaults=dict(
-                nom=nom, prenom=prenom, date_naissance=nais, telephone=tel,
-                groupe_sanguin=gs, allergies=all_, contact_urgence=urg))
+        # 2. Utilisateurs
+        dr, _ = User.objects.get_or_create(username="dr.demo", defaults={
+            "first_name": "Dr.", "last_name": "Demo", "email": "dr.demo@medconnect.ma",
+            "is_staff": True
+        })
+        dr.set_password("Demo@1234")
+        dr.save()
+        dr.groups.set([grp_med])
 
-        today = timezone.localdate()
-        if not RendezVous.objects.filter(date_heure__date=today).exists():
-            dr = User.objects.get(username="dr.demo")
-            s = User.objects.get(username="sec.demo")
-            tz = timezone.get_current_timezone()
-            rows = [("AB123", 9, 0, "Contrôle annuel", Statut.SALLE_ATTENTE),
-                    ("CD456", 9, 30, "Toux persistante", Statut.CONSULTATION),
-                    ("EF789", 10, 0, "Renouvellement", Statut.PLANIFIE),
-                    ("AB123", 10, 30, "Suivi", Statut.ANNULE)]
-            for cin, h, m, motif, statut in rows:
-                dt = datetime.datetime.combine(today, datetime.time(h, m), tzinfo=tz)
-                r = RendezVous(patient=Patient.objects.get(cin=cin), medecin=dr, date_heure=dt,
-                               motif=motif, statut=statut)
-                if statut in (Statut.SALLE_ATTENTE, Statut.CONSULTATION):
-                    r.arrivee_a, r.arrivee_par = dt - datetime.timedelta(minutes=8), s
-                if statut == Statut.ANNULE:
-                    r.motif_annulation = "Patient indisponible"
-                r.save()
-        self.stdout.write(self.style.SUCCESS(
-            f"Données de démo prêtes. Comptes : dr.demo / sec.demo (mot de passe {MDP})"))
+        sec, _ = User.objects.get_or_create(username="sec.demo", defaults={
+            "first_name": "Secrétaire", "last_name": "Démo", "email": "sec.demo@medconnect.ma",
+            "is_staff": True
+        })
+        sec.set_password("Demo@1234")
+        sec.save()
+        sec.groups.set([grp_sec])
+
+        # 3. Patients (Figures 2 & 5)
+        patients_data = [
+            {"cin": "CD456", "nom": "Alaoui", "prenom": "Omar", "date_naissance": date(1985, 1, 2), "telephone": "0600000002"},
+            {"cin": "AB123", "nom": "Benali", "prenom": "Sara", "date_naissance": date(1990, 5, 1), "telephone": "0600000001",
+             "groupe_sanguin": "O+", "allergies": "Pénicilline", "contact_urgence": "0600000009"},
+            {"cin": "EF789", "nom": "Tazi", "prenom": "Leila", "date_naissance": date(1978, 11, 23), "telephone": "0600000003"},
+        ]
+        patients = {}
+        for p in patients_data:
+            obj, _ = Patient.objects.update_or_create(cin=p["cin"], defaults=p)
+            patients[p["cin"]] = obj
+
+        # 4. Rendez-vous (Figures 7 à 11)
+        tz = timezone.get_current_timezone()
+        rdv_data = [
+            {"patient": patients["AB123"], "medecin": dr, "date_heure": timezone.datetime(2026, 11, 13, 9, 0, tzinfo=tz),
+             "motif": "Contrôle annuel", "statut": Statut.SALLE_ATTENTE},
+            {"patient": patients["CD456"], "medecin": dr, "date_heure": timezone.datetime(2026, 11, 13, 9, 30, tzinfo=tz),
+             "motif": "Toux persistante", "statut": Statut.CONSULTATION},
+            {"patient": patients["EF789"], "medecin": dr, "date_heure": timezone.datetime(2026, 11, 13, 10, 0, tzinfo=tz),
+             "motif": "Renouvellement", "statut": Statut.PLANIFIE},
+            {"patient": patients["AB123"], "medecin": dr, "date_heure": timezone.datetime(2026, 11, 13, 10, 30, tzinfo=tz),
+             "motif": "Suivi", "statut": Statut.ANNULE, "motif_annulation": "Patient indisponible"},
+        ]
+        for r in rdv_data:
+            RendezVous.objects.update_or_create(patient=r["patient"], medecin=r["medecin"], date_heure=r["date_heure"], defaults=r)
+
+        # 5. Consultations (Figure 13)
+        c1, _ = Consultation.objects.update_or_create(
+            patient=patients["AB123"], medecin=dr, date=date(2026, 10, 14),
+            defaults={"motif": "Fièvre et toux", "diagnostic": "Bronchite virale — repos et hydratation, contrôle dans 7 jours."}
+        )
+        c2, _ = Consultation.objects.update_or_create(
+            patient=patients["AB123"], medecin=dr, date=date(2025, 10, 9),
+            defaults={"motif": "Contrôle annuel", "diagnostic": "RAS"}
+        )
+
+        # 6. Ordonnances (Figures 13, 18, 20, 22)
+        # Ordonnance N° 1 (Validée)
+        o1, _ = Ordonnance.objects.update_or_create(
+            patient=patients["AB123"], medecin=dr, date=date(2026, 11, 13), est_validee=True,
+            defaults={"consultation": c1}
+        )
+        LigneOrdonnance.objects.get_or_create(ordonnance=o1, medicament="Paracétamol", dosage="1000 mg", posologie="3 fois par jour", duree_jours=5)
+        LigneOrdonnance.objects.get_or_create(ordonnance=o1, medicament="Ibuprofène", dosage="400 mg", posologie="2 fois par jour", duree_jours=3)
+
+        # Ordonnance N° 2 (Brouillon)
+        o2, _ = Ordonnance.objects.update_or_create(
+            patient=patients["AB123"], medecin=dr, date=date(2026, 11, 13), est_validee=False
+        )
+        LigneOrdonnance.objects.get_or_create(ordonnance=o2, medicament="Paracétamol", dosage="1000 mg", posologie="3 fois par jour", duree_jours=5)
+
+        self.stdout.write(self.style.SUCCESS("✅ Données de démonstration initialisées avec succès !"))
+        self.stdout.write(self.style.SUCCESS("   Comptes : dr.demo / sec.demo  |  Mot de passe : Demo@1234"))

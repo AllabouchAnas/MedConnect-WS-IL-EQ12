@@ -8,3 +8,5 @@ __pycache__/
 # Frontend Django (backend/templates)
 !backend/templates/*.html
 backend/db.sqlite3
+medconnect.db
+*.sqlite3

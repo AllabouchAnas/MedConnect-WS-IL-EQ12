@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import serializers, viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from config.permissions import HasCabinetRole
 from .models import Patient
@@ -8,19 +9,40 @@ from .models import Patient
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["cin", "nom", "prenom", "date_naissance", "telephone",
-                  "groupe_sanguin", "allergies", "contact_urgence"]
+        fields = [
+            "id", "cin", "nom", "prenom", "date_naissance", "telephone",
+            "groupe_sanguin", "allergies", "contact_urgence"
+        ]
+
+    def validate_cin(self, value):
+        val = value.strip().upper()
+        qs = Patient.objects.filter(cin__iexact=val)
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError("Un patient avec ce CIN existe déjà.")
+        return val
+
+    def validate_telephone(self, value):
+        val = value.strip()
+        qs = Patient.objects.filter(telephone=val)
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError("Un patient avec ce numéro de téléphone existe déjà.")
+        return val
 
 
-class PatientViewSet(viewsets.ReadOnlyModelViewSet):
-    """Lecture seule : sert à choisir le patient lors de la planification d'un RDV."""
+class PatientViewSet(viewsets.ModelViewSet):
+    """CRUD complet pour les patients : accessible Médecin et Secrétaire."""
+    queryset = Patient.objects.all().order_by("nom", "prenom")
     serializer_class = PatientSerializer
     permission_classes = [HasCabinetRole]
     lookup_field = "cin"
 
     def get_queryset(self):
-        qs = Patient.objects.all()
-        q = self.request.query_params.get("search")
+        qs = super().get_queryset()
+        q = self.request.query_params.get("search") or self.request.query_params.get("q")
         if q:
             qs = qs.filter(Q(cin__icontains=q) | Q(nom__icontains=q) | Q(prenom__icontains=q))
         return qs

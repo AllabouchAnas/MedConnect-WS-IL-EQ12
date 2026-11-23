@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-insecure-key-change-me")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "medconnect-fsa-agadir-master-excellence-il-2026-secret-key-32chars")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = ["*"] if DEBUG else os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "patients_api",
     "agenda_api",
+    "dossier_medical_api",
+    "ordonnances_api",
 ]
 
 MIDDLEWARE = [
@@ -45,8 +47,7 @@ TEMPLATES = [{
     ]},
 }]
 
-# SQLite par défaut (zéro configuration). PostgreSQL : définir DB_ENGINE=postgres
-# + DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT (et pip install psycopg2-binary).
+# SQLite par défaut. Définir DB_ENGINE=postgres pour PostgreSQL.
 if os.environ.get("DB_ENGINE") == "postgres":
     DATABASES = {"default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -63,12 +64,18 @@ AUTH_PASSWORD_VALIDATORS = [{"NAME": "django.contrib.auth.password_validation.Mi
                              "OPTIONS": {"min_length": 6}}]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
-    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "BLACKLIST_AFTER_ROTATION": True,
 }

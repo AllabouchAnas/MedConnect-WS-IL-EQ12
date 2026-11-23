@@ -20,3 +20,12 @@ class HasCabinetRole(BasePermission):
     def has_permission(self, request, view):
         u = request.user
         return bool(u and u.is_authenticated and (u.is_superuser or role_of(u)))
+
+
+class IsMedecin(BasePermission):
+    """Dossier médical et prescriptions : strictement réservé au Médecin (secret médical)."""
+    message = "Accès refusé : cette action est strictement réservée au Médecin."
+
+    def has_permission(self, request, view):
+        u = request.user
+        return bool(u and u.is_authenticated and (u.is_superuser or role_of(u) == ROLE_MEDECIN))

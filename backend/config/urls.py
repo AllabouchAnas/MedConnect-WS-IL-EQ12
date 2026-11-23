@@ -7,10 +7,17 @@ from agenda_api.auth_views import LoginView, LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/auth/login/", LoginView.as_view()),
-    path("api/auth/refresh/", TokenRefreshView.as_view()),
-    path("api/auth/logout/", LogoutView.as_view()),
-    path("api/", include("agenda_api.urls")),
+    # Authentification JWT (F001)
+    path("api/auth/login/", LoginView.as_view(), name="jwt-login"),
+    path("api/auth/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
+    path("api/auth/logout/", LogoutView.as_view(), name="jwt-logout"),
+
+    # Web Services REST : Un module, un service (Diapo 4)
     path("api/", include("patients_api.urls")),
+    path("api/", include("agenda_api.urls")),
+    path("api/", include("dossier_medical_api.urls")),
+    path("api/", include("ordonnances_api.urls")),
+
+    # Interface Web
     path("", TemplateView.as_view(template_name="index.html")),
 ]
