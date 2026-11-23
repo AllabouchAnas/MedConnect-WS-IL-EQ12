@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.html
+data/
 
 
 # Frontend Django (backend/templates)

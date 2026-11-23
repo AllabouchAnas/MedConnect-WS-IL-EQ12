@@ -72,12 +72,16 @@ class DossierService:
         consultation = self._consultations[consult_id]
 
         champs_autorisés = {
-            "motif", "tension", "poids", "temperature",
-            "pouls", "diagnostic", "date"
+            "patient_cin", "medecin_id", "motif", "tension", "poids",
+            "temperature", "pouls", "diagnostic", "date",
         }
         for champ, valeur in modifications.items():
             if champ not in champs_autorisés:
                 raise ValueError(f"Champ inconnu : '{champ}'.")
+            if champ == "motif" and (not valeur or str(valeur).strip() == ""):
+                raise ValueError("Le champ 'motif' est obligatoire.")
+
+        for champ, valeur in modifications.items():
             setattr(consultation, champ, valeur)
 
         return consultation
