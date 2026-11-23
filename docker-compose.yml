@@ -1,0 +1,39 @@
+# MedConnect : application Django + PostgreSQL.   Lancer :  docker compose up --build
+# Application : http://localhost:8000      Comptes de démo : dr.demo / sec.demo  (mot de passe Demo@1234)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: medconnect
+      POSTGRES_USER: medconnect
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-medconnect-dev}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medconnect -d medconnect"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: "0"
+      # Pour un vrai déploiement : définir DJANGO_SECRET_KEY, DB_PASSWORD et SEED_DEMO=0 (variables d'environnement).
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-docker-dev-only-key-change-me-before-any-real-use-0123456789}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DB_ENGINE: postgres
+      DB_NAME: medconnect
+      DB_USER: medconnect
+      DB_PASSWORD: ${DB_PASSWORD:-medconnect-dev}
+      DB_HOST: db
+      DB_PORT: "5432"
+      SEED_DEMO: ${SEED_DEMO:-1}
+
+volumes:
+  pgdata:
