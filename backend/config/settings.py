@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "patients_api",
     "agenda_api",
     "dossier_medical_api",
+    "ordonnances_api",
 ]
 
 MIDDLEWARE = [
