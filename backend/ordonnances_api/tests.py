@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 
 from config.permissions import ROLE_MEDECIN, ROLE_SECRETAIRE
 from patients_api.models import Patient
-from ordonnances_api.models import Ordonnance, LigneOrdonnance
+from ordonnances_api.models import Ordonnance
 
 
 class OrdonnancesApiTests(TestCase):

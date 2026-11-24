@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Ordonnance, LigneOrdonnance
 from patients_api.models import Patient
-from dossier_medical_api.models import Consultation
 
 
 class LigneOrdonnanceSerializer(serializers.ModelSerializer):
