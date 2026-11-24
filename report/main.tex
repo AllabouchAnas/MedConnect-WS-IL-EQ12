@@ -115,7 +115,7 @@
     {\small ROYAUME DU MAROC}\\[0.3em]
     {\small Faculte de Science Agadir (FSA)}\\[0.1em]
     \rule{\linewidth}{0.5pt}\\[0.5em]
-    {\small Module : \textbf{Web Services et Applications Distribuées}}\\[0.2em]
+    {\small Module : \textbf{Qualité Logiciel}}\\[0.2em]
     {\small Année universitaire 2026--2027}
   \end{center}
 
@@ -143,7 +143,7 @@
   % Sous-titre
   \begin{center}
     {\normalsize Rapport Technique Final}\\[0.2em]
-    {\normalsize Référence : \texttt{MC-2026-RPT-001} \quad Version 1.0}\\[0.2em]
+    {\normalsize Version 1.0}\\[0.2em]
     {\normalsize Date : 23 novembre 2026}
   \end{center}
 
@@ -173,7 +173,7 @@
   \vspace{0.8cm}
 
   \begin{center}
-    {\normalsize Encadrant : \underline{\hspace{6cm}}}\\[1.5em]
+    {\normalsize Encadrant : Jaafar Idrais}[1.5em]
     {\small\textit{23 novembre 2026}}
   \end{center}
 
@@ -490,7 +490,16 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
 
 \section{Vue d'ensemble de l'architecture distribuée}
 
-MedConnect adopte une architecture REST distribuée monorepo, où chaque micro-service correspond à un module Django indépendant. La figure ci-dessous illustre les cinq couches de l'architecture :
+MedConnect applique le principe architectural fondamental \textbf{« un module, un service »}. L'ensemble du système s'articule autour d'un client web communiquant via requêtes sécurisées REST / HTTPS avec une passerelle d'API (\textit{API Gateway}) chargée du routage, de l'authentification par jeton JWT et du contrôle d'accès basé sur les rôles (RBAC). Cette passerelle distribue les flux vers quatre services web REST indépendants (\texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api}), persistant leurs états dans une base relationnelle PostgreSQL.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{architecture_distribuee.png}
+  \caption{Architecture distribuée MedConnect -- Un module, un service}
+  \label{fig:architecture-distribuee}
+\end{figure}
+
+Le tableau ci-dessous détaille l'organisation en cinq couches logiques de cette architecture distribuée :
 
 \begin{table}[H]
 \centering
