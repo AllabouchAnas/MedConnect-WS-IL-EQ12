@@ -3,7 +3,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.html
-
+*.log
+.coverage
+*/.coverage
+brain_ref_full.txt
+*.db
+report/compile_tectonic.txt
 
 # Frontend Django (backend/templates)
 !backend/templates/*.html

@@ -29,8 +29,8 @@ MedConnect-WS-IL-EQ12/
 ├── agenda/                          ← Module Ahmed LAHMAINE
 │   ├── __init__.py
 │   ├── rendez_vous.py               # Modèle RendezVous ✅ (fourni)
-│   ├── agenda_service.py            # Stub — À IMPLÉMENTER
-│   └── test_agenda_service.py       # 5 tests — À faire passer
+│   ├── agenda_service.py            # Service métier (en mémoire) ✅
+│   └── test_agenda_service.py       # 5 tests unitaires — tous PASSED
 │
 ├── dossier_medical/                 ← Module Achraf AIT DAMNAT
 │   ├── __init__.py
@@ -42,8 +42,8 @@ MedConnect-WS-IL-EQ12/
 ├── ordonnances/                     ← Module ABDELLAH RAHEL
 │   ├── __init__.py
 │   ├── ordonnance.py                # Modèles Ordonnance + Ligne ✅ (fourni)
-│   ├── ordonnance_service.py        # Stub — À IMPLÉMENTER
-│   └── test_ordonnance_service.py   # 5 tests — À faire passer
+│   ├── ordonnance_service.py        # Service métier (en mémoire) ✅
+│   └── test_ordonnance_service.py   # 5 tests unitaires — tous PASSED
 │
 ├── venv/                            # Environnement virtuel Python (ne pas commit)
 ├── requirements.txt                 # Dépendances : pytest, pytest-html
@@ -335,9 +335,27 @@ python manage.py migrate
 
 ---
 
+## ✅ Campagne QA complète
+
+La campagne détaillée au chapitre 9 de `report/main.tex` est reproductible depuis `tests/qualite/README.md` :
+
+| Outil | Résultat |
+|---|---|
+| Pytest | 23/23 tests unitaires |
+| Django TestCase | 45/45 tests API |
+| Postman / Newman | 16 requêtes, 26 assertions, 0 échec |
+| Selenium | 4 parcours navigateur |
+| JMeter | 250 requêtes, 0 erreur |
+| Coverage.py | 88 % métier / 93 % API |
+| Ruff / pip-audit | 0 erreur bloquante / aucune vulnérabilité connue |
+
+Les preuves d'exécution sont dans `reports/`, les figures LaTeX dans `report/screenshots/` et le rapport final compilé dans `report/main.pdf` (59 pages, sans la partie modélisation UML). Le **DAT** (Dossier d'Analyse et de Tests, 68 cas) est livré dans `report/MedConnect_DAT.docx` avec un miroir Markdown `report/MedConnect_DAT.md`.
+
+---
+
 ## 🔮 Améliorations Futures
 
-Cette phase couvre les tests unitaires en mémoire. La prochaine étape du projet :
+La campagne QA est désormais exécutée ; les axes suivants restent ouverts :
 
 ### Backend — Django REST Framework
 - [ ] Remplacer les dictionnaires par des **modèles Django + PostgreSQL**
@@ -360,7 +378,7 @@ Cette phase couvre les tests unitaires en mémoire. La prochaine étape du proje
 - [ ] Séparation stricte médecin / secrétaire appliquée côté API
 - [ ] Déploiement backend (Railway / Render / VPS Nginx + Gunicorn)
 - [ ] Déploiement frontend (Vercel / Netlify)
-- [ ] Tests d'intégration Postman sur tous les endpoints
+- [x] Tests d'intégration Postman sur tous les endpoints
 
 ---
 
