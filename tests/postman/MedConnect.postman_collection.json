@@ -1,0 +1,344 @@
+{
+  "info": {
+    "_postman_id": "medconnect-qa-collection",
+    "name": "MedConnect — Campagne API (Postman / Newman)",
+    "description": "Suite de tests API automatisés du projet MedConnect (Groupe 12). 15 requêtes : authentification JWT, patients, agenda, dossier médical, ordonnances, tableau de bord et contrôles RBAC.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 — Connexion médecin (JWT)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Tokens JWT présents', function () { var j = pm.response.json(); pm.expect(j).to.have.property('access'); pm.expect(j).to.have.property('refresh'); });",
+              "pm.collectionVariables.set('token', pm.response.json().access);",
+              "pm.collectionVariables.set('refresh', pm.response.json().refresh);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\"username\":\"dr.demo\",\"password\":\"Demo@1234\"}"},
+        "url": "{{baseUrl}}/api/auth/login/"
+      }
+    },
+    {
+      "name": "02 — Renouvellement du token (refresh)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Nouveau token access', function () { pm.expect(pm.response.json()).to.have.property('access'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\"refresh\":\"{{refresh}}\"}"},
+        "url": "{{baseUrl}}/api/auth/refresh/"
+      }
+    },
+    {
+      "name": "03 — Liste des patients",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Liste non vide', function () { pm.expect(pm.response.json().length).to.be.above(0); });",
+              "pm.collectionVariables.set('cin', pm.response.json()[0].cin);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/patients/"
+      }
+    },
+    {
+      "name": "04 — Recherche d'un patient",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Résultat de recherche', function () { pm.expect(pm.response.json().length).to.be.at.least(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/patients/?search=AB1"
+      }
+    },
+    {
+      "name": "05 — Détail d'un patient",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('CIN conforme', function () { pm.expect(pm.response.json().cin).to.eql(pm.collectionVariables.get('cin')); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/patients/{{cin}}/"
+      }
+    },
+    {
+      "name": "06 — Création d'un patient (CIN dynamique)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 201', function () { pm.response.to.have.status(201); });",
+              "pm.collectionVariables.set('nouveauCin', pm.response.json().cin);",
+              "pm.collectionVariables.set('tel', pm.response.json().telephone);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Authorization", "value": "Bearer {{token}}"}
+        ],
+        "body": {"mode": "raw", "raw": "{\"cin\":\"QA{{$timestamp}}\",\"nom\":\"QATest\",\"prenom\":\"Newman\",\"date_naissance\":\"1995-04-12\",\"telephone\":\"06{{$timestamp}}\"}"},
+        "url": "{{baseUrl}}/api/patients/"
+      }
+    },
+    {
+      "name": "07 — Modification du patient créé (PATCH)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Téléphone valide', function () { pm.expect(pm.response.json().telephone).to.eql(pm.collectionVariables.get('tel')); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Authorization", "value": "Bearer {{token}}"}
+        ],
+        "body": {"mode": "raw", "raw": "{\"telephone\":\"{{tel}}\"}"},
+        "url": "{{baseUrl}}/api/patients/{{nouveauCin}}/"
+      }
+    },
+    {
+      "name": "08 — Liste des rendez-vous",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Format liste', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/agenda/rdv/"
+      }
+    },
+    {
+      "name": "09 — Liste des médecins",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Liste non vide', function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/agenda/medecins/"
+      }
+    },
+    {
+      "name": "10 — Salle d'attente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Statut 200', function () { pm.response.to.have.status(200); });"]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/agenda/rdv/salle-attente/"
+      }
+    },
+    {
+      "name": "11 — Liste des consultations",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Format liste', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/consultations/"
+      }
+    },
+    {
+      "name": "12 — Liste des ordonnances",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Statut 200', function () { pm.response.to.have.status(200); });"]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/ordonnances/"
+      }
+    },
+    {
+      "name": "13 — Tableau de bord",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('KPI présents', function () { pm.expect(pm.response.json().kpis).to.have.property('rdv_total'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": "{{baseUrl}}/api/dashboard/"
+      }
+    },
+    {
+      "name": "14 — Accès sans JWT (401 attendu)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Statut 401', function () { pm.response.to.have.status(401); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/patients/"
+      }
+    },
+    {
+      "name": "15 — Secrétaire bloquée sur les consultations (403 attendu)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Connexion secrétaire 200', function () { pm.response.to.have.status(200); });",
+              "pm.collectionVariables.set('secToken', pm.response.json().access);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\"username\":\"sec.demo\",\"password\":\"Demo@1234\"}"},
+        "url": "{{baseUrl}}/api/auth/login/"
+      }
+    },
+    {
+      "name": "16 — RBAC : consultation refusée à la secrétaire",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Statut 403', function () { pm.response.to.have.status(403); });"]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{secToken}}"}],
+        "url": "{{baseUrl}}/api/consultations/"
+      }
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://127.0.0.1:8000"},
+    {"key": "token", "value": ""},
+    {"key": "refresh", "value": ""},
+    {"key": "cin", "value": ""},
+    {"key": "nouveauCin", "value": ""},
+    {"key": "secToken", "value": ""},
+    {"key": "tel", "value": ""}
+  ]
+}
