@@ -34,7 +34,7 @@
 
 % ── Graphiques & figures ───────────────────────────────────
 \usepackage{graphicx}
-\graphicspath{{screenshots/}}
+\graphicspath{{screenshots/}{./}}
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -555,184 +555,35 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
 
 \section{Diagramme de cas d'utilisation}
 
-Le diagramme ci-dessous représente les cas d'utilisation des deux acteurs principaux du système MedConnect.
+Le diagramme de cas d'utilisation représente les interactions entre les deux acteurs principaux (Secrétaire médicale et Médecin) et le système MedConnect, incluant les relations d'inclusion (\textit{«include»} pour la vérification des doublons et des chevauchements de créneaux) et d'extension (\textit{«extend»} pour l'ajout de pièces jointes à la consultation).
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.7cm and 1.4cm]
-
-  % ── Acteur Secrétaire ──────────────────────────
-  \node[actorbox] (sec) at (-5.5, 0) {Secrétaire};
-
-  % ── Use-cases Secrétaire ───────────────────────
-  \node[usecase, right=2cm of sec, yshift= 3.5cm] (uc01) {S'authentifier};
-  \node[usecase, right=2cm of sec, yshift= 2.0cm] (uc02) {Gérer les patients\\(CRUD)};
-  \node[usecase, right=2cm of sec, yshift= 0.6cm] (uc03) {Rechercher\\un patient};
-  \node[usecase, right=2cm of sec, yshift=-0.9cm] (uc04) {Planifier\\un RDV};
-  \node[usecase, right=2cm of sec, yshift=-2.3cm] (uc05) {Annuler\\un RDV};
-  \node[usecase, right=2cm of sec, yshift=-3.7cm] (uc06) {Enregistrer\\l'arrivée};
-
-  % ── Acteur Médecin ─────────────────────────────
-  \node[actorbox] (med) at (5.5, 0) {Médecin};
-
-  % ── Use-cases Médecin ──────────────────────────
-  \node[usecase, left=2cm of med, yshift= 2.8cm] (uc07) {Consulter\\salle d'attente};
-  \node[usecase, left=2cm of med, yshift= 1.3cm] (uc08) {Ouvrir dossier\\médical};
-  \node[usecase, left=2cm of med, yshift=-0.2cm] (uc09) {Créer\\une consultation};
-  \node[usecase, left=2cm of med, yshift=-1.7cm] (uc10) {Rédiger\\une ordonnance};
-  \node[usecase, left=2cm of med, yshift=-3.2cm] (uc11) {Valider\\une ordonnance};
-
-  % ── Boîte système ──────────────────────────────
-  \begin{scope}[on background layer]
-    \node[system, fit=(uc01)(uc02)(uc03)(uc04)(uc05)(uc06)(uc07)(uc08)(uc09)(uc10)(uc11),
-          label={[font=\small\bfseries\color{medprimary}]above:Système MedConnect}] (sys) {};
-  \end{scope}
-
-  % ── Associations Secrétaire ────────────────────
-  \draw[link] (sec) -- (uc01);
-  \draw[link] (sec) -- (uc02);
-  \draw[link] (sec) -- (uc03);
-  \draw[link] (sec) -- (uc04);
-  \draw[link] (sec) -- (uc05);
-  \draw[link] (sec) -- (uc06);
-
-  % ── Associations Médecin ───────────────────────
-  \draw[link] (med) -- (uc01);
-  \draw[link] (med) -- (uc04);
-  \draw[link] (med) -- (uc07);
-  \draw[link] (med) -- (uc08);
-  \draw[link] (med) -- (uc09);
-  \draw[link] (med) -- (uc10);
-  \draw[link] (med) -- (uc11);
-
-\end{tikzpicture}
+\includegraphics[width=0.88\textwidth]{uml_usecase.jpg}
 \caption{Diagramme de cas d'utilisation – MedConnect}
 \label{fig:uml-usecase}
 \end{figure}
 
 \section{Diagramme de classes}
 
-Le diagramme de classes reflète exactement les modèles Django implémentés dans le projet.
+Le diagramme de classes illustre le modèle conceptuel de données de la plateforme MedConnect, détaillant les entités métier (\texttt{Patient}, \texttt{Medecin}, \texttt{DossierMedical}, \texttt{RendezVous}, \texttt{Consultation}, \texttt{Ordonnance}, \texttt{LignePrescription}), leurs attributs, leurs opérations et les cardinalités des relations.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=1.6cm and 2.4cm]
-
-  % ── Patient ───────────────────────────────────
-  \node[classbox] (patient) {
-    \textbf{\color{white} Patient}
-    \nodepart{two}
-    \texttt{cin : CharField (PK)}\\
-    \texttt{nom : CharField}\\
-    \texttt{prenom : CharField}\\
-    \texttt{date\_naissance : DateField}\\
-    \texttt{telephone : CharField}\\
-    \texttt{groupe\_sanguin : CharField}\\
-    \texttt{allergies : TextField}\\
-    \texttt{contact\_urgence : CharField}
-    \nodepart{three}
-    \texttt{nom\_complet : property}
-  };
-
-  % ── User (Django) ─────────────────────────────
-  \node[classbox, right=3.2cm of patient] (user) {
-    \textbf{\color{white} User (Django)}
-    \nodepart{two}
-    \texttt{username : CharField}\\
-    \texttt{password : CharField}\\
-    \texttt{groups : ManyToMany}
-    \nodepart{three}
-    \textit{(modèle intégré Django)}
-  };
-
-  % ── RendezVous ────────────────────────────────
-  \node[classbox, below=2.4cm of patient] (rdv) {
-    \textbf{\color{white} RendezVous}
-    \nodepart{two}
-    \texttt{id : AutoField (PK)}\\
-    \texttt{patient : FK → Patient}\\
-    \texttt{medecin : FK → User}\\
-    \texttt{date\_heure : DateTimeField}\\
-    \texttt{motif : CharField}\\
-    \texttt{statut : CharField (choices)}\\
-    \texttt{motif\_annulation : CharField}\\
-    \texttt{arrivee\_a : DateTimeField}\\
-    \texttt{arrivee\_par : FK → User}\\
-    \texttt{cree\_a : DateTimeField}
-    \nodepart{three}
-    \texttt{avancer(user)}\\
-    \texttt{annuler(motif)}
-  };
-
-  % ── Consultation ──────────────────────────────
-  \node[classbox, below=2.4cm of user] (consult) {
-    \textbf{\color{white} Consultation}
-    \nodepart{two}
-    \texttt{id : AutoField (PK)}\\
-    \texttt{patient : FK → Patient}\\
-    \texttt{medecin : FK → User}\\
-    \texttt{date : DateField}\\
-    \texttt{motif : CharField}\\
-    \texttt{tension : CharField}\\
-    \texttt{poids : DecimalField}\\
-    \texttt{temperature : DecimalField}\\
-    \texttt{pouls : PositiveSmallInt}\\
-    \texttt{diagnostic : TextField}
-    \nodepart{three}
-    \textit{ordering: -date, -id}
-  };
-
-  % ── Ordonnance ────────────────────────────────
-  \node[classbox, below=2.4cm of rdv] (ordonnance) {
-    \textbf{\color{white} Ordonnance}
-    \nodepart{two}
-    \texttt{id : AutoField (PK)}\\
-    \texttt{patient : FK → Patient}\\
-    \texttt{medecin : FK → User}\\
-    \texttt{consultation : FK → Consultation}\\
-    \texttt{date : DateField}\\
-    \texttt{est\_validee : BooleanField}\\
-    \texttt{cree\_a : DateTimeField}
-    \nodepart{three}
-    \texttt{valider()}
-  };
-
-  % ── LigneOrdonnance ───────────────────────────
-  \node[classbox, below=2.4cm of consult] (ligne) {
-    \textbf{\color{white} LigneOrdonnance}
-    \nodepart{two}
-    \texttt{id : AutoField (PK)}\\
-    \texttt{ordonnance : FK → Ordonnance}\\
-    \texttt{medicament : CharField}\\
-    \texttt{dosage : CharField}\\
-    \texttt{posologie : CharField}\\
-    \texttt{duree\_jours : PositiveInt}
-    \nodepart{three}
-    \textit{ordering: id}
-  };
-
-  % ── Relations ─────────────────────────────────
-  % Patient -> RendezVous (1..N)
-  \draw[assoc] (patient.south) -- node[left,font=\tiny]{1} (rdv.north) node[left,font=\tiny,near end]{N};
-  % Patient -> Consultation (1..N)
-  \draw[assoc] (patient.east) -- ++(0.6,0) |- node[right,font=\tiny,pos=0.8]{N} (consult.east);
-  % Patient -> Ordonnance (1..N)
-  \draw[assoc] (patient.south) -- ++(0,-0.4) -| node[right,font=\tiny,near start]{N} (ordonnance.north);
-  % User -> RendezVous medecin
-  \draw[assoc] (user.south) -- ++(0,-0.4) -| node[right,font=\tiny,pos=0.3]{N} (rdv.east);
-  % User -> Consultation
-  \draw[assoc] (user.south) -- (consult.north) node[right,font=\tiny,near start]{N};
-  % User -> Ordonnance
-  \draw[assoc] (user.south) -- ++(0,-0.4) -| node[near start,font=\tiny]{N} (ordonnance.east);
-  % Consultation -> Ordonnance (1..N)
-  \draw[assoc] (consult.south) -- (ligne.north) node[right,font=\tiny,near start]{};
-  \draw[assoc] (ordonnance.east) -- node[below,font=\tiny]{1} ++(0.6,0) |- node[right,font=\tiny,near end]{N} (ligne.east);
-  % Consultation -> Ordonnance FK
-  \draw[dlink] (ordonnance.north) -- node[right,font=\tiny]{N→1} (consult.south);
-
-\end{tikzpicture}
-\caption{Diagramme de classes – modèles Django MedConnect}
+\includegraphics[width=\textwidth]{uml_classes.png}
+\caption{Diagramme de classes – Modèle conceptuel et entités MedConnect}
 \label{fig:uml-classes}
+\end{figure}
+
+\section{Diagramme d'activité – Flux métier et parcours patient}
+
+Le diagramme d'activité en couloirs (\textit{swimlanes}) ci-après modélise l'enchaînement opérationnel entre la Secrétaire médicale, le Système MedConnect et le Médecin, depuis la recherche initiale du patient jusqu'à la clôture de la consultation et la génération de l'ordonnance non modifiable.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{uml_activite.jpg}
+\caption{Diagramme d'activité – Parcours patient et flux de consultation}
+\label{fig:uml-activite}
 \end{figure}
 
 \section{Diagramme de composants}
