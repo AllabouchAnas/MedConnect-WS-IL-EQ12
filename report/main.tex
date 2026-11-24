@@ -1,6 +1,6 @@
 % ============================================================
-%  MedConnect – Rapport Technique Final
-%  Groupe 12 – Web Services et Applications Distribuées
+%  MedConnect -- Rapport Technique Final
+%  Groupe 12 -- Web Services et Applications Distribuées
 %  Structure calquée sur le rapport Atlas Trips (Équipe 8)
 %  Compilé avec pdflatex (Overleaf)
 % ============================================================
@@ -56,6 +56,8 @@
 
 % ── Mathématiques ─────────────────────────────────────────
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
 
 % ── Listes ────────────────────────────────────────────────
 \usepackage{enumitem}
@@ -67,13 +69,13 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.5pt}
-\fancyhead[L]{\small\textcolor{medprimary}{\textbf{MedConnect}} – Rapport Technique}
+\fancyhead[L]{\small\textcolor{medprimary}{\textbf{MedConnect}} -- Rapport Technique}
 \fancyhead[R]{\small Groupe 12}
 \fancyfoot[C]{\small Page \thepage\ sur \pageref{LastPage}}
 
 % ── Liens hypertexte ──────────────────────────────────────
 \usepackage[hidelinks,
-            pdftitle={MedConnect – Rapport Technique},
+            pdftitle={MedConnect -- Rapport Technique},
             pdfauthor={Groupe 12},
             pdfsubject={Web Services et Applications Distribuées}]{hyperref}
 
@@ -88,73 +90,6 @@
   {\normalfont\large\bfseries\color{medsecondary}}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}
   {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
-
-% ── TikZ (diagrammes UML) ─────────────────────────────────
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric,shapes.multipart,arrows.meta,fit,positioning,calc,backgrounds}
-
-% Styles UML réutilisables
-\tikzset{
-  % --- Use-case ---
-  actor/.style={
-    draw=medprimary, fill=medaccent, text=medprimary,
-    ellipse, minimum width=2.2cm, minimum height=0.8cm,
-    font=\small\bfseries, align=center
-  },
-  usecase/.style={
-    draw=medsecondary, fill=white, text=black,
-    ellipse, minimum width=3.2cm, minimum height=0.9cm,
-    font=\small, align=center
-  },
-  actorbox/.style={
-    draw=medprimary, fill=medprimary!10,
-    rectangle, rounded corners=4pt,
-    font=\small\bfseries\color{medprimary}, align=center,
-    minimum width=2.4cm, minimum height=1cm
-  },
-  system/.style={
-    draw=medprimary, thick, dashed, fill=medaccent!30,
-    rectangle, rounded corners=6pt
-  },
-  % --- Classe ---
-  classbox/.style={
-    draw=medprimary, fill=white,
-    rectangle split, rectangle split parts=3,
-    rectangle split part fill={medprimary!80, white, white},
-    font=\small, align=left,
-    minimum width=3.8cm
-  },
-  inherit/.style={-{Triangle[open,length=8pt]}, draw=medprimary, thick},
-  assoc/.style={-{Latex[length=6pt]}, draw=medsecondary, thick},
-  comp/.style={-{Diamond[length=8pt]}, draw=medred, thick},
-  % --- Composant ---
-  compbox/.style={
-    draw=medprimary, fill=medaccent, thick,
-    rectangle, rounded corners=5pt,
-    font=\small\bfseries\color{medprimary}, align=center,
-    minimum width=3cm, minimum height=1.1cm
-  },
-  dbbox/.style={
-    draw=medprimary, fill=medprimary!15, thick,
-    cylinder, shape border rotate=90, aspect=0.15,
-    font=\small\bfseries, align=center,
-    minimum width=2.5cm, minimum height=1.2cm
-  },
-  nodebox/.style={
-    draw=medprimary, fill=white, thick,
-    rectangle, rounded corners=3pt,
-    font=\small, align=center,
-    minimum width=2.8cm, minimum height=0.9cm
-  },
-  serverbox/.style={
-    draw=medsecondary, fill=medsecondary!10, thick,
-    rectangle, rounded corners=5pt,
-    font=\small\bfseries\color{medsecondary}, align=center,
-    minimum width=4.5cm, minimum height=1.2cm
-  },
-  link/.style={-{Latex[length=5pt]}, draw=medprimary, thick},
-  dlink/.style={-{Latex[length=5pt]}, draw=medsecondary, thick, dashed},
-}
 
 % ── Utilitaire ────────────────────────────────────────────
 \usepackage{pdfpages}
@@ -262,7 +197,7 @@
   \rowcolor{medaccent}
   \textbf{Champ} & \textbf{Valeur} \\
   \hline
-  Nom du projet & MedConnect – Plateforme de Gestion de Cabinet Médical \\
+  Nom du projet & MedConnect -- Plateforme de Gestion de Cabinet Médical \\
   \hline
   Référence & MC-2026-RPT-001 \\
   \hline
@@ -311,7 +246,7 @@
 \vspace{0.5cm}
 
 \noindent\textbf{Résumé :}\\
-MedConnect est une plateforme web distribuée dédiée à la gestion de cabinets médicaux, développée en Python 3.14 avec Django REST Framework (DRF) et sécurisée par des jetons JWT. L'architecture repose sur quatre micro-services REST indépendants (\texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api}) intégrés dans un monorepo Django, exposant des API conformes aux contraintes REST avec contrôle d'accès basé sur les rôles (RBAC). La base de données SQLite est utilisée en phase de développement, avec migration PostgreSQL prévue. La suite de tests couvre 68 cas (23 unitaires Pytest + 45 API Django), tous en succès.
+MedConnect est une plateforme web distribuée dédiée à la gestion de cabinets médicaux, développée en Python 3.14 avec Django REST Framework (DRF) et sécurisée par des jetons JWT. L'architecture repose sur quatre micro-services REST indépendants (\texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api}) intégrés dans un monorepo Django, exposant des API conformes aux contraintes REST avec contrôle d'accès basé sur les rôles (RBAC). La base de données SQLite est utilisée en phase de développement, avec migration PostgreSQL prévue. La suite de tests couvre 68 cas (23 unitaires Pytest + 45 API Django), tous en succès. Cette campagne est complétée par les outils qualité exigés : Postman/Newman (16 requêtes, 26 assertions), Selenium (4 parcours navigateur), JMeter (25 utilisateurs virtuels, 250 requêtes, 0 erreur), Coverage.py (88\,\% sur la logique métier, 93\,\% sur les API), une analyse statique et un contrôle de sécurité des dépendances.
 
 \vspace{0.4cm}
 
@@ -369,8 +304,8 @@ Les objectifs fonctionnels et techniques du projet sont les suivants :
 \begin{enumerate}[leftmargin=*, label=\textbf{O\arabic*.}]
   \item \textbf{Modularité} : Concevoir une architecture REST modulaire avec quatre services indépendants, chacun géré par un membre de l'équipe.
   \item \textbf{Sécurité} : Implémenter une authentification JWT et un contrôle d'accès RBAC différenciant médecin et secrétaire.
-  \item \textbf{Couverture fonctionnelle} : Couvrir l'intégralité du cycle de vie d'un patient (inscription → RDV → consultation → ordonnance).
-  \item \textbf{Qualité} : Atteindre 100\% de réussite sur la suite de tests (68 cas de test).
+  \item \textbf{Couverture fonctionnelle} : Couvrir l'intégralité du cycle de vie d'un patient (inscription \textrightarrow{} RDV \textrightarrow{} consultation \textrightarrow{} ordonnance).
+  \item \textbf{Qualité} : Atteindre 100\% de réussite sur la suite de tests (68 cas de test) et couvrir les outils qualité du référentiel (Pytest, Postman, Selenium, JMeter, analyse statique, couverture et sécurité).
   \item \textbf{Maintenabilité} : Structurer le code pour faciliter la migration vers PostgreSQL et le déploiement Docker en V2.
 \end{enumerate}
 
@@ -391,17 +326,17 @@ Les objectifs fonctionnels et techniques du projet sont les suivants :
   \hline
   \textbf{RDV} & Rendez-vous médical planifié entre un patient et un médecin \\
   \hline
-  \textbf{DME} & Dossier Médical Électronique – ensemble des consultations d'un patient \\
+  \textbf{DME} & Dossier Médical Électronique -- ensemble des consultations d'un patient \\
   \hline
-  \textbf{JWT} & JSON Web Token – mécanisme d'authentification sans état (stateless) \\
+  \textbf{JWT} & JSON Web Token -- mécanisme d'authentification sans état (stateless) \\
   \hline
-  \textbf{RBAC} & Role-Based Access Control – contrôle d'accès basé sur les rôles \\
+  \textbf{RBAC} & Role-Based Access Control -- contrôle d'accès basé sur les rôles \\
   \hline
-  \textbf{DRF} & Django REST Framework – bibliothèque Python pour la création d'API REST \\
+  \textbf{DRF} & Django REST Framework -- bibliothèque Python pour la création d'API REST \\
   \hline
   \textbf{Ordonnance} & Document médical prescrivant des médicaments, immuable après validation \\
   \hline
-  \textbf{Statut RDV} & État du rendez-vous : Planifié → Salle d'attente → En cours → Terminé / Annulé \\
+  \textbf{Statut RDV} & État du rendez-vous : Planifié \textrightarrow{} Salle d'attente \textrightarrow{} En cours \textrightarrow{} Terminé / Annulé \\
   \hline
   \textbf{SimpleJWT} & Bibliothèque Django implémentant l'authentification JWT \\
   \hline
@@ -484,9 +419,9 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
     Création d'un RDV &
     Date/heure future obligatoire ; patient existant requis \\
   \cline{2-3}
-  & Annulation d'un RDV & Statut → Annulé ; impossible si déjà Terminé \\
+  & Annulation d'un RDV & Statut \textrightarrow{} Annulé ; impossible si déjà Terminé \\
   \cline{2-3}
-  & Avancement du statut & Flux strict : Planifié → Salle d'attente → En cours → Terminé \\
+  & Avancement du statut & Flux strict : Planifié \textrightarrow{} Salle d'attente \textrightarrow{} En cours \textrightarrow{} Terminé \\
   \cline{2-3}
   & Salle d'attente & Liste des patients arrivés (statut = Salle d'attente) \\
   \cline{2-3}
@@ -508,7 +443,7 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
   \cline{2-3}
   & Ajout de lignes & Médicament + posologie ; vérification allergie automatique \\
   \cline{2-3}
-  & Validation & Statut → validée ; immuable après validation \\
+  & Validation & Statut \textrightarrow{} validée ; immuable après validation \\
   \cline{2-3}
   & Visualisation & PDF ou JSON ; accessible médecin et secrétaire \\
   \hline
@@ -549,216 +484,6 @@ Le tableau ci-dessous synthétise les fonctionnalités accessibles par acteur :
 \end{table}
 
 % ══════════════════════════════════════════════════════
-%  SECTION 3 : MODÈLES UML
-% ══════════════════════════════════════════════════════
-\chapter{Modèles UML et Diagrammes}
-
-\section{Diagramme de cas d'utilisation}
-
-Le diagramme de cas d'utilisation représente les interactions entre les deux acteurs principaux (Secrétaire médicale et Médecin) et le système MedConnect, incluant les relations d'inclusion (\textit{«include»} pour la vérification des doublons et des chevauchements de créneaux) et d'extension (\textit{«extend»} pour l'ajout de pièces jointes à la consultation).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.88\textwidth]{uml_usecase.jpg}
-\caption{Diagramme de cas d'utilisation – MedConnect}
-\label{fig:uml-usecase}
-\end{figure}
-
-\section{Diagramme de classes}
-
-Le diagramme de classes illustre le modèle conceptuel de données de la plateforme MedConnect, détaillant les entités métier (\texttt{Patient}, \texttt{Medecin}, \texttt{DossierMedical}, \texttt{RendezVous}, \texttt{Consultation}, \texttt{Ordonnance}, \texttt{LignePrescription}), leurs attributs, leurs opérations et les cardinalités des relations.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{uml_classes.png}
-\caption{Diagramme de classes – Modèle conceptuel et entités MedConnect}
-\label{fig:uml-classes}
-\end{figure}
-
-\section{Diagramme d'activité – Flux métier et parcours patient}
-
-Le diagramme d'activité en couloirs (\textit{swimlanes}) ci-après modélise l'enchaînement opérationnel entre la Secrétaire médicale, le Système MedConnect et le Médecin, depuis la recherche initiale du patient jusqu'à la clôture de la consultation et la génération de l'ordonnance non modifiable.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth]{uml_activite.jpg}
-\caption{Diagramme d'activité – Parcours patient et flux de consultation}
-\label{fig:uml-activite}
-\end{figure}
-
-\section{Diagramme de composants}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=1cm and 1.6cm]
-
-  % ── Couche Client ─────────────────────────────
-  \node[compbox, fill=medgreen!20, draw=medgreen, text=black, minimum width=10cm]
-    (spa) {Frontend SPA\\{\small JavaScript ES6 + CSS3 – \texttt{fetch()} vers \texttt{/api/*}}};
-
-  % ── Couche Gateway ────────────────────────────
-  \node[compbox, below=0.9cm of spa, minimum width=10cm]
-    (gw) {API Gateway – Django URL Dispatcher (\texttt{config/urls.py})\\{\small Routage vers les services + JWT middleware}};
-
-  % ── Ligne Auth ────────────────────────────────
-  \node[compbox, below left=1.2cm and -0.5cm of gw, minimum width=3cm, fill=medred!10, draw=medred]
-    (auth) {auth\_service\\{\small SimpleJWT\\login / refresh / logout}};
-
-  % ── 4 services ────────────────────────────────
-  \node[compbox, right=0.4cm of auth] (p)   {patients\_api\\{\small PatientViewSet}};
-  \node[compbox, right=0.4cm of p]    (ag)  {agenda\_api\\{\small RendezVousViewSet\\MedecinListView}};
-  \node[compbox, right=0.4cm of ag]   (dm)  {dossier\_medical\_api\\{\small ConsultationViewSet}};
-  \node[compbox, right=0.4cm of dm, minimum width=2.6cm]  (ord) {ordonnances\_api\\{\small OrdonnanceViewSet}};
-
-  % ── ORM ───────────────────────────────────────
-  \node[compbox, below=1.2cm of ag, minimum width=10cm, fill=medprimary!10]
-    (orm) {Django ORM\\{\small models.py par service – migrations appliquées sur SQLite}};
-
-  % ── BDD ───────────────────────────────────────
-  \node[dbbox, below=0.9cm of orm, text width=2.5cm]
-    (db) {SQLite 3\\db.sqlite3};
-
-  % ── Liens ─────────────────────────────────────
-  \draw[link] (spa)  -- (gw);
-  \draw[link] (gw)   -- (auth);
-  \draw[link] (gw)   -- (p);
-  \draw[link] (gw)   -- (ag);
-  \draw[link] (gw)   -- (dm);
-  \draw[link] (gw)   -- (ord);
-  \draw[link] (auth.south) |- (orm.west);
-  \draw[link] (p.south)    -- (orm.north -| p.south);
-  \draw[link] (ag.south)   -- (orm.north);
-  \draw[link] (dm.south)   -- (orm.north -| dm.south);
-  \draw[link] (ord.south)  |- (orm.east);
-  \draw[link] (orm) -- (db);
-
-  % ── Labels HTTP ───────────────────────────────
-  \node[font=\tiny\itshape,color=medsecondary] at ($(spa)!0.5!(gw)+(3,0)$) {HTTP/REST JSON};
-  \node[font=\tiny\itshape,color=medsecondary] at ($(orm)!0.5!(db)+(2,0)$) {SQL};
-
-\end{tikzpicture}
-\caption{Diagramme de composants – architecture MedConnect}
-\label{fig:uml-composants}
-\end{figure}
-
-\section{Diagramme de séquence – Cycle de vie d'un RDV}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=0cm]
-
-  % ── Lignes de vie ─────────────────────────────
-  \node[nodebox] (sec)    at (0,0)    {Secrétaire};
-  \node[nodebox] (client) at (3.5,0)  {Frontend\\SPA};
-  \node[nodebox] (api)    at (7,0)    {Django API};
-  \node[nodebox] (db)     at (10.5,0) {SQLite};
-  \node[nodebox] (med)    at (14,0)   {Médecin};
-
-  % traits de vie
-  \foreach \x in {0,3.5,7,10.5,14} {
-    \draw[draw=medprimary!40, dashed] (\x,-0.5) -- (\x,-12.5);
-  }
-
-  % ── Messages ──────────────────────────────────
-  % 1. Création RDV
-  \draw[link] (0,-1.0)  -- node[above,font=\tiny]{POST /api/agenda/rdv/} (7,-1.0);
-  \draw[link] (7,-1.3)  -- node[above,font=\tiny]{INSERT RendezVous} (10.5,-1.3);
-  \draw[dlink](10.5,-1.6) -- node[above,font=\tiny]{201 Created} (7,-1.6);
-  \draw[dlink](7,-1.9)  -- node[above,font=\tiny]{statut=Planifié} (0,-1.9);
-
-  \node[font=\tiny\bfseries\color{medprimary}] at (-1.2,-1.4) {RDV planifié};
-
-  % 2. Arrivée patient
-  \draw[link] (0,-2.8)  -- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-2.8);
-  \draw[link] (7,-3.1)  -- node[above,font=\tiny]{UPDATE statut='Salle d'attente'} (10.5,-3.1);
-  \draw[dlink](10.5,-3.4) -- node[above,font=\tiny]{200 OK} (7,-3.4);
-  \draw[dlink](7,-3.7)  -- node[above,font=\tiny]{statut=Salle d'attente} (0,-3.7);
-
-  \node[font=\tiny\bfseries\color{medprimary}] at (-1.2,-3.2) {Arrivée};
-
-  % 3. Consultation
-  \draw[link] (14,-4.6) -- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-4.6);
-  \draw[link] (7,-4.9)  -- node[above,font=\tiny]{UPDATE statut='Consultation'} (10.5,-4.9);
-  \draw[dlink](10.5,-5.2) -- node[above,font=\tiny]{200 OK} (7,-5.2);
-  \draw[dlink](7,-5.5)  -- node[above,font=\tiny]{statut=Consultation} (14,-5.5);
-
-  \node[font=\tiny\bfseries\color{medprimary}] at (15.3,-5.0) {Consultation};
-
-  % 4. Création dossier médical
-  \draw[link] (14,-6.4) -- node[above,font=\tiny]{POST /api/consultations/} (7,-6.4);
-  \draw[link] (7,-6.7)  -- node[above,font=\tiny]{INSERT Consultation} (10.5,-6.7);
-  \draw[dlink](10.5,-7.0) -- node[above,font=\tiny]{201 Created} (7,-7.0);
-  \draw[dlink](7,-7.3)  -- node[above,font=\tiny]{consultation\_id} (14,-7.3);
-
-  % 5. Ordonnance
-  \draw[link] (14,-8.2) -- node[above,font=\tiny]{POST /api/ordonnances/ + ajouter-ligne} (7,-8.2);
-  \draw[link] (7,-8.5)  -- node[above,font=\tiny]{INSERT Ordonnance + LigneOrdonnance} (10.5,-8.5);
-  \draw[dlink](10.5,-8.8) -- node[above,font=\tiny]{201 Created} (7,-8.8);
-  \draw[dlink](7,-9.1)  -- node[above,font=\tiny]{ordonnance\_id} (14,-9.1);
-
-  % 6. Validation ordonnance
-  \draw[link] (14,-10.0)-- node[above,font=\tiny]{POST /api/ordonnances/\{id\}/valider/} (7,-10.0);
-  \draw[link] (7,-10.3) -- node[above,font=\tiny]{UPDATE est\_validee=True} (10.5,-10.3);
-  \draw[dlink](10.5,-10.6)-- node[above,font=\tiny]{200 OK} (7,-10.6);
-
-  % 7. Clôture RDV
-  \draw[link] (14,-11.5)-- node[above,font=\tiny]{POST /api/agenda/rdv/\{id\}/avancer/} (7,-11.5);
-  \draw[link] (7,-11.8) -- node[above,font=\tiny]{UPDATE statut='Terminé'} (10.5,-11.8);
-  \draw[dlink](10.5,-12.1)-- node[above,font=\tiny]{200 OK – statut=Terminé} (7,-12.1);
-
-  \node[font=\tiny\bfseries\color{medgreen}] at (15.3,-11.8) {Terminé};
-
-\end{tikzpicture}
-\caption{Diagramme de séquence – cycle de vie complet d'un rendez-vous médical}
-\label{fig:uml-sequence}
-\end{figure}
-
-\section{Diagramme de déploiement}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=1.2cm and 2cm]
-
-  % ── Nœud Poste Client ─────────────────────────
-  \node[serverbox, minimum width=5.5cm, minimum height=2.4cm, label={[font=\small\bfseries]above:«node» Poste Client}]
-    (client_node) at (0,0) {};
-  \node[nodebox, fill=medgreen!10] (browser) at (0,0) {Navigateur Web\\{\small Chrome / Firefox / Edge}};
-  \node[nodebox, fill=medgreen!10, below=0.3cm of browser] (spa_art) {{\small \texttt{index.html + JS/CSS SPA}}};
-
-  % ── Nœud Serveur Django ───────────────────────
-  \node[serverbox, minimum width=6cm, minimum height=5.2cm,
-        label={[font=\small\bfseries]above:«node» Serveur Django (Python 3.14)},
-        right=3.5cm of client_node] (server_node) {};
-
-  \node[nodebox, fill=medaccent] (django) at (server_node.center) [yshift=1.6cm]
-    {Django 6.0 + DRF 3.18\\{\small \texttt{config/urls.py + wsgi.py}}};
-  \node[nodebox, fill=medaccent, below=0.25cm of django] (jwt_art)
-    {SimpleJWT 5.5\\{\small \texttt{/api/auth/*}}};
-  \node[nodebox, fill=medaccent, below=0.25cm of jwt_art] (services_art)
-    {4 DRF Services\\{\small patients / agenda / dossier / ordonnances}};
-  \node[nodebox, fill=medaccent, below=0.25cm of services_art] (perm_art)
-    {Permissions RBAC\\{\small \texttt{IsMedecin / HasCabinetRole}}};
-
-  % ── Nœud Base de données ──────────────────────
-  \node[serverbox, minimum width=4cm, minimum height=2cm,
-        label={[font=\small\bfseries]above:«node» Stockage},
-        below=2cm of server_node] (db_node) {};
-  \node[dbbox] (sqlite_art) at (db_node.center) {SQLite 3\\{\small \texttt{db.sqlite3}}};
-
-  % ── Liens de déploiement ──────────────────────
-  \draw[link, ultra thick] (client_node.east) -- node[above,font=\small]{HTTP REST / JSON\\port 8000} (server_node.west);
-  \draw[link, ultra thick] (server_node.south) -- node[right,font=\small]{SQL / Django ORM} (db_node.north);
-
-  % ── Protocoles ────────────────────────────────
-  \node[font=\footnotesize\itshape\color{medsecondary}, below=0.2cm of client_node]
-    {\texttt{Authorization: Bearer <JWT>}};
-
-\end{tikzpicture}
-\caption{Diagramme de déploiement – infrastructure MedConnect (développement)}
-\label{fig:uml-deploiement}
-\end{figure}
-
-% ══════════════════════════════════════════════════════
 %  SECTION 4 : ARCHITECTURE
 % ══════════════════════════════════════════════════════
 \chapter{Architecture Système et Stack Technologique}
@@ -776,9 +501,9 @@ MedConnect adopte une architecture REST distribuée monorepo, où chaque micro-s
   \rowcolor{medaccent}
   \textbf{Couche} & \textbf{Composant} & \textbf{Description} \\
   \hline
-  5 (Client) & Frontend SPA & JavaScript natif – appels \texttt{fetch()} vers l'API \\
+  5 (Client) & Frontend SPA & JavaScript natif -- appels \texttt{fetch()} vers l'API \\
   \hline
-  4 (Gateway) & Django URL Dispatcher & \texttt{urls.py} racine – routage \texttt{/api/<service>/} \\
+  4 (Gateway) & Django URL Dispatcher & \texttt{urls.py} racine -- routage \texttt{/api/<service>/} \\
   \hline
   3 (Services) & 4 DRF Apps + Auth & \texttt{patients\_api}, \texttt{agenda\_api}, \texttt{dossier\_medical\_api}, \texttt{ordonnances\_api} + \texttt{SimpleJWT} \\
   \hline
@@ -818,9 +543,9 @@ MedConnect adopte une architecture REST distribuée monorepo, où chaque micro-s
   \hline
   Frontend & JavaScript ES6 + CSS3 & SPA natif (aucun framework) \\
   \hline
-  Tests unitaires & pytest 8.x + pytest-django & 23 tests unitaires \\
+  Tests unitaires & pytest 9.x + coverage.py & 23 tests unitaires (88\,\% de couverture) \\
   \hline
-  Tests API & Django TestCase & 45 tests d'intégration API \\
+  Tests API & Django TestCase + Postman/Newman & 45 tests d'intégration API (93\,\% de couverture) \\
   \hline
   Lanceur universel & \texttt{exe.py} & Script Python multi-OS (Windows/Linux) \\
   \hline
@@ -855,18 +580,27 @@ MedConnect-WS-IL-EQ12/
 |   |   |-- serializers.py
 |   |   |-- views.py
 |   |   |-- urls.py
-|   |   +-- tests.py             # 14 tests API
+|   |   +-- tests.py             # 21 tests API
 |   |-- ordonnances_api/         # Module ordonnances (Abdellah Rahel)
 |   |   |-- models.py
 |   |   |-- serializers.py
 |   |   |-- views.py
 |   |   |-- urls.py
-|   |   +-- tests.py             # 10 tests API
-|   |-- tests/                   # Tests unitaires Pytest
-|   |   +-- test_*.py            # 23 tests unitaires
+|   |   +-- tests.py             # 3 tests API
 |   |-- exe.py                   # Lanceur universel
 |   |-- seed_demo.py             # Peuplement de la BDD de démo
 |   +-- requirements.txt
+|-- patients/                    # test_patient_service.py (8 tests unitaires)
+|-- agenda/                      # test_agenda_service.py (5 tests unitaires)
+|-- dossier_medical/             # test_dossier_service.py (5 tests unitaires)
+|-- ordonnances/                 # test_ordonnance_service.py (5 tests unitaires)
+|-- tests/                       # Campagne QA (outils du référentiel)
+|   |-- postman/                 # Collection + environnement Newman
+|   |-- e2e/                     # Scénarios Selenium
+|   |-- performance/             # Plan JMeter (medconnect.jmx)
+|   |-- security/                # Scans et contrôles de sécurité
+|   +-- qualite/                 # Scripts de capture et synthèses QA
+|-- reports/                     # Preuves d'exécution (coverage, newman, jmeter, ...)
 |-- report/                      # Rapport LaTeX (ce document)
 |-- assests/                     # Spécifications et ressources
 +-- README.md
@@ -890,7 +624,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 % ══════════════════════════════════════════════════════
 \chapter{Modèle de Données}
 
-\section{Module \texttt{patients\_api} – Entité Patient}
+\section{Module \texttt{patients\_api} -- Entité Patient}
 
 \begin{table}[H]
 \centering
@@ -920,7 +654,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \end{tabular}
 \end{table}
 
-\section{Module \texttt{agenda\_api} – Entité RendezVous}
+\section{Module \texttt{agenda\_api} -- Entité RendezVous}
 
 \begin{table}[H]
 \centering
@@ -956,7 +690,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 
 \noindent\textbf{Contrainte d'intégrité métier :} Un médecin ne peut avoir qu'un seul rendez-vous actif par créneau (\texttt{UniqueConstraint(fields=['medecin', 'date\_heure'], condition=\~{}Q(statut='Annulé'))}).
 
-\section{Module \texttt{dossier\_medical\_api} – Entité Consultation}
+\section{Module \texttt{dossier\_medical\_api} -- Entité Consultation}
 
 \begin{table}[H]
 \centering
@@ -994,7 +728,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \end{tabular}
 \end{table}
 
-\section{Module \texttt{ordonnances\_api} – Entités Ordonnance et LigneOrdonnance}
+\section{Module \texttt{ordonnances\_api} -- Entités Ordonnance et LigneOrdonnance}
 
 \begin{table}[H]
 \centering
@@ -1051,7 +785,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 % ══════════════════════════════════════════════════════
 \chapter{API REST}
 
-\section{Authentification – \texttt{/api/auth/}}
+\section{Authentification -- \texttt{/api/auth/}}
 
 \begin{table}[H]
 \centering
@@ -1071,7 +805,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
 \end{tabular}
 \end{table}
 
-\section{Gestion des patients – \texttt{/api/patients/}}
+\section{Gestion des patients -- \texttt{/api/patients/}}
 
 \begin{longtable}{|p{1.5cm}|p{4cm}|p{2.5cm}|p{3.5cm}|p{1.5cm}|}
   \caption{Endpoints patients\_api} \\
@@ -1104,7 +838,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
 \end{longtable}
 
-\section{Gestion de l'agenda – \texttt{/api/agenda/}}
+\section{Gestion de l'agenda -- \texttt{/api/agenda/}}
 
 \begin{longtable}{|p{1.5cm}|p{5cm}|p{2.5cm}|p{3cm}|p{1.5cm}|}
   \caption{Endpoints agenda\_api} \\
@@ -1141,7 +875,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
 \end{longtable}
 
-\section{Dossiers médicaux – \texttt{/api/consultations/}}
+\section{Dossiers médicaux -- \texttt{/api/consultations/}}
 
 \begin{longtable}{|p{1.5cm}|p{5cm}|p{2.5cm}|p{3cm}|p{1.5cm}|}
   \caption{Endpoints dossier\_medical\_api} \\
@@ -1172,7 +906,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
 \end{longtable}
 
-\section{Ordonnances – \texttt{/api/ordonnances/}}
+\section{Ordonnances -- \texttt{/api/ordonnances/}}
 
 \begin{longtable}{|p{1.5cm}|p{5.5cm}|p{2cm}|p{3cm}|p{1.5cm}|}
   \caption{Endpoints ordonnances\_api} \\
@@ -1201,7 +935,7 @@ Chaque requête vers une ressource protégée suit le flux suivant :
   \hline
 \end{longtable}
 
-\section{Tableau de bord – \texttt{/api/dashboard/}}
+\section{Tableau de bord -- \texttt{/api/dashboard/}}
 
 \begin{table}[H]
 \centering
@@ -1270,7 +1004,7 @@ Lors de l'ajout d'une ligne d'ordonnance (médicament), le système effectue aut
   \item Normaliser en minuscules et tokeniser par virgule/espace.
   \item Comparer avec le nom du médicament saisi (normalisation identique).
   \item Si correspondance partielle détectée : retourner un avertissement \texttt{HTTP 200} avec le champ \texttt{"avertissement\_allergie": true}.
-  \item L'ajout n'est \textbf{pas bloqué} – le médecin reste responsable de la décision clinique.
+  \item L'ajout n'est \textbf{pas bloqué} -- le médecin reste responsable de la décision clinique.
 \end{enumerate}
 
 \section{Immuabilité des ordonnances}
@@ -1289,7 +1023,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.75\textwidth]{login.png}
-  \caption{Page de connexion MedConnect – authentification JWT}
+  \caption{Page de connexion MedConnect -- authentification JWT}
   \label{fig:login}
 \end{figure}
 
@@ -1321,7 +1055,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{Agenda1.png}
-  \caption{Vue principale de l'agenda – liste des rendez-vous planifiés}
+  \caption{Vue principale de l'agenda -- liste des rendez-vous planifiés}
   \label{fig:agenda-list}
 \end{figure}
 
@@ -1335,7 +1069,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{agenda3.png}
-  \caption{Avancement du statut d'un rendez-vous (Planifié → Salle d'attente)}
+  \caption{Avancement du statut d'un rendez-vous (Planifié \textrightarrow{} Salle d'attente)}
   \label{fig:agenda-advance}
 \end{figure}
 
@@ -1349,7 +1083,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{salle attente.png}
-  \caption{Salle d'attente – gestion de la file d'attente et appel en consultation}
+  \caption{Salle d'attente -- gestion de la file d'attente et appel en consultation}
   \label{fig:salle-attente-dedicated}
 \end{figure}
 
@@ -1365,7 +1099,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{dossier medical.png}
-  \caption{Dossier médical électronique – historique des consultations}
+  \caption{Dossier médical électronique -- historique des consultations}
   \label{fig:dossier-list}
 \end{figure}
 
@@ -1388,7 +1122,7 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{ordonnace2.png}
-  \caption{Validation de l'ordonnance – état immuable après validation}
+  \caption{Validation de l'ordonnance -- état immuable après validation}
   \label{fig:ordonnance-validate}
 \end{figure}
 
@@ -1399,12 +1133,17 @@ L'interface de MedConnect est une \textbf{Single Page Application (SPA)} dévelo
 
 \section{Stratégie de test}
 
-La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
+La stratégie de test de MedConnect couvre cinq niveaux complémentaires, conformes au référentiel \textit{Outils Qualité logicielle} fourni avec le projet :
 
 \begin{itemize}[leftmargin=*]
   \item \textbf{Tests unitaires (Pytest)} : 23 tests couvrant la logique métier indépendamment du framework Django (sérialisation, règles métier, algorithme d'allergie).
   \item \textbf{Tests d'intégration API (Django TestCase)} : 45 tests couvrant l'intégralité des endpoints REST avec simulation de requêtes HTTP authentifiées, vérification des codes de réponse et validation des payloads JSON.
+  \item \textbf{Tests API outillés (Postman / Newman)} : 16 requêtes et 26 assertions rejouables en ligne de commande, incluant les cas d'erreur JWT (401) et RBAC (403).
+  \item \textbf{Tests End-to-End (Selenium)} : 4 parcours navigateur Chrome couvrant la connexion, la recherche patient, le refus du dossier à la secrétaire et la création d'une consultation.
+  \item \textbf{Performance, sécurité et qualité} : scénario de charge JMeter (25 utilisateurs virtuels), contrôle des dépendances (pip-audit / Snyk), analyse statique (Ruff, repli SonarQube) et mesure de couverture (coverage.py).
 \end{itemize}
+
+Le c\oe{}ur fonctionnel reste évalué par les \textbf{68 cas de test} historiques (23 + 45) ; les outils supplémentaires apportent une preuve d'exécution, une mesure de couverture et une validation transversale sans modifier ce décompte.
 
 \section{Tests unitaires Pytest}
 
@@ -1412,18 +1151,18 @@ La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
 \centering
 \caption{Résultats des tests unitaires Pytest (23 tests)}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{5cm}|c|c|c|}
+\begin{tabular}{|p{6cm}|c|c|c|}
   \hline
   \rowcolor{medaccent}
   \textbf{Fichier de test} & \textbf{Tests} & \textbf{Réussis} & \textbf{Statut} \\
   \hline
-  \texttt{test\_patients.py} & 6 & 6 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \texttt{test\_patient\_service.py} & 8 & 8 & \textcolor{medgreen}{\textbf{PASS}} \\
   \hline
-  \texttt{test\_agenda.py} & 7 & 7 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \texttt{test\_agenda\_service.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
   \hline
-  \texttt{test\_dossier.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \texttt{test\_dossier\_service.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
   \hline
-  \texttt{test\_ordonnances.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
+  \texttt{test\_ordonnance\_service.py} & 5 & 5 & \textcolor{medgreen}{\textbf{PASS}} \\
   \hline
   \rowcolor{medgreen!20}
   \textbf{Total} & \textbf{23} & \textbf{23} & \textcolor{medgreen}{\textbf{100\% PASS}} \\
@@ -1463,14 +1202,14 @@ La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{pytest terminal.png}
-  \caption{Résultats Pytest en sortie terminal – 23/23 tests passants}
+  \caption{Résultats Pytest en sortie terminal -- 23/23 tests passants}
   \label{fig:pytest-terminal}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{pytest htmlreport.png}
-  \caption{Rapport HTML pytest-html – détail des 23 tests unitaires}
+  \caption{Rapport HTML pytest-html -- détail des 23 tests unitaires}
   \label{fig:pytest-html}
 \end{figure}
 
@@ -1478,14 +1217,228 @@ La stratégie de test de MedConnect repose sur deux niveaux complémentaires :
 
 \begin{itemize}[leftmargin=*]
   \item \textbf{Création patient avec CIN en doublon} : retourne \texttt{HTTP 400} avec message d'erreur explicite.
-  \item \textbf{Avancement de statut hors séquence} : tentative de passer de Planifié à Terminé directement → \texttt{HTTP 400}.
+  \item \textbf{Avancement de statut hors séquence} : tentative de passer de Planifié à Terminé directement \textrightarrow{} \texttt{HTTP 400}.
   \item \textbf{Annulation d'un RDV déjà Terminé} : retourne \texttt{HTTP 400}.
   \item \textbf{Ajout de ligne sur ordonnance validée} : retourne \texttt{HTTP 400} (immuabilité).
-  \item \textbf{Détection d'allergie} : médicament correspondant à une allergie déclarée → avertissement dans la réponse.
+  \item \textbf{Détection d'allergie} : médicament correspondant à une allergie déclarée \textrightarrow{} avertissement dans la réponse.
   \item \textbf{Accès secrétaire aux dossiers médicaux} : retourne \texttt{HTTP 403} (RBAC).
   \item \textbf{Requête sans token JWT} : retourne \texttt{HTTP 401} sur tout endpoint protégé.
   \item \textbf{Refresh token expiré} : retourne \texttt{HTTP 401} avec message de réauthentification.
 \end{itemize}
+
+\section{Tests d'API avec Postman et Newman}
+
+La collection Postman \texttt{MedConnect.postman\_collection.json} rejoue 16 requêtes sur l'environnement local. Elle couvre l'authentification JWT (login et refresh), le CRUD patients, les listes agenda/consultations/ordonnances, le tableau de bord et deux contrôles de sécurité (401 sans jeton, 403 pour la secrétaire sur les consultations). Son exécution par Newman produit 26 assertions, toutes réussies.
+
+\begin{table}[H]
+\centering
+\caption{Résultats de la campagne Postman / Newman}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5cm}|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Métrique} & \textbf{Valeur} & \textbf{Observation} \\
+  \hline
+  Requêtes exécutées & 16 & \textcolor{medgreen}{0 échec} \\
+  \hline
+  Assertions & 26 & \textcolor{medgreen}{0 échec} \\
+  \hline
+  Durée totale & 2,6 s & 1 itération \\
+  \hline
+  Temps de réponse moyen & 86 ms & min 5 ms / max 645 ms \\
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{qa_postman_newman.png}
+  \caption{Exécution Newman --- 16 requêtes et 26 assertions réussies}
+  \label{fig:qa-newman}
+\end{figure}
+
+\section{Tests End-to-End avec Selenium}
+
+Quatre scénarios navigateur (Chrome headless) valident les parcours critiques de la SPA. Les captures sont produites directement par le test et versées dans \texttt{report/screenshots/}.
+
+\begin{table}[H]
+\centering
+\caption{Scénarios End-to-End Selenium}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{2.6cm}|p{9.4cm}|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Identifiant} & \textbf{Parcours validé} & \textbf{Statut} \\
+  \hline
+  UT-E2E-01 & Connexion secrétaire, liste et recherche d'un patient & \textcolor{medgreen}{PASS} \\
+  \hline
+  UT-E2E-02 & Refus du dossier médical à la secrétaire (RBAC) & \textcolor{medgreen}{PASS} \\
+  \hline
+  UT-E2E-03 & Ouverture d'un dossier par le médecin & \textcolor{medgreen}{PASS} \\
+  \hline
+  UT-E2E-04 & Création d'une consultation depuis l'interface & \textcolor{medgreen}{PASS} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.78\textwidth]{e2e_01_patients.png}
+  \caption{Selenium --- liste et recherche des patients (secrétaire)}
+  \label{fig:qa-e2e-01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.78\textwidth]{e2e_04_consultation_creee.png}
+  \caption{Selenium --- consultation créée par le médecin}
+  \label{fig:qa-e2e-04}
+\end{figure}
+
+\section{Tests de performance avec JMeter}
+
+Le scénario \texttt{tests/performance/medconnect.jmx} simule 25 utilisateurs virtuels montés en 10 secondes, chacun exécutant deux itérations sur cinq endpoints (login JWT, patients, rendez-vous, tableau de bord, consultations). L'exécution en mode non graphique via le conteneur \texttt{justb4/jmeter} génère un tableau de bord HTML.
+
+\begin{table}[H]
+\centering
+\caption{Synthèse du test de charge JMeter}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4.5cm}|c|p{6cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Métrique} & \textbf{Valeur} & \textbf{Commentaire} \\
+  \hline
+  Utilisateurs virtuels & 25 & montée en charge sur 10 s \\
+  \hline
+  Échantillons & 250 & \textcolor{medgreen}{0 erreur (0,00\,\%)} \\
+  \hline
+  Temps de réponse moyen & 825,72 ms & médiane 35 ms \\
+  \hline
+  Percentiles 95 / 99 & 3970,6 / 5612,1 ms & pic à 6541 ms (login) \\
+  \hline
+  Débit & 13,47 requêtes/s & service local Django \\
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{qa_jmeter_dashboard.png}
+  \caption{Tableau de bord JMeter --- 250 échantillons sans erreur}
+  \label{fig:qa-jmeter}
+\end{figure}
+
+\section{Analyse statique et qualité du code}
+
+L'analyse statique avec Ruff (règles bloquantes E9 et F) a identifié cinq imports inutilisés, tous corrigés. Le serveur SonarQube a été prévu et l'image Docker téléchargée, mais le daemon Docker de l'environnement est devenu indisponible (erreur HTTP 500) : l'analyse Sonar n'a pas pu être finalisée. Ruff constitue la solution de repli documentée. Les outils Java (\texttt{Checkstyle}, \texttt{JUnit/TestNG}, \texttt{JaCoCo}) et JavaScript (\texttt{Istanbul}) du référentiel sont déclarés non applicables à la pile Python/Django ; leurs objectifs sont couverts respectivement par Ruff, Pytest/Django TestCase et coverage.py.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_ruff.png}
+  \caption{Analyse statique Ruff --- 0 erreur bloquante après correction}
+  \label{fig:qa-ruff}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_sonarqube.png}
+  \caption{SonarQube --- tentative de lancement et solution de repli}
+  \label{fig:qa-sonar}
+\end{figure}
+
+\section{Sécurité applicative : OWASP ZAP et dépendances}
+
+Le scan OWASP ZAP baseline n'a pas pu être mené à terme : le téléchargement de l'image Docker a échoué (erreur \texttt{unexpected EOF} après un pull partiel), en complément d'un daemon Docker indisponible. Les contrôles de sécurité ont néanmoins été validés par ailleurs : absence de jeton \textrightarrow{} \texttt{HTTP 401} et accès secrétaire aux consultations \textrightarrow{} \texttt{HTTP 403} dans Newman, refus du dossier médical dans Selenium. Snyk nécessite un compte/token non disponible ici ; \texttt{pip-audit} a été exécuté sur les deux fichiers de dépendances et ne signale aucune vulnérabilité connue.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_zap.png}
+  \caption{OWASP ZAP --- état du scan et contrôles de repli}
+  \label{fig:qa-zap}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_pip_audit.png}
+  \caption{Snyk / pip-audit --- aucune vulnérabilité connue}
+  \label{fig:qa-pip-audit}
+\end{figure}
+
+\section{Mesure de couverture avec Coverage.py}
+
+La couverture instrumentée complète le décompte des cas de test. Elle atteint 88\,\% sur les modules métier et 93\,\% sur les quatre applications Django (hors migrations, tests et commandes d'administration).
+
+\begin{table}[H]
+\centering
+\caption{Couverture de code mesurée par coverage.py}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{5.5cm}|c|c|c|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Périmètre} & \textbf{Instructions} & \textbf{Non couvertes} & \textbf{Couverture} \\
+  \hline
+  Logique métier (4 services Pytest) & 197 & 23 & \textcolor{medgreen}{88\,\%} \\
+  \hline
+  API Django (4 applications) & 465 & 33 & \textcolor{medgreen}{93\,\%} \\
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_coverage_unitaire.png}
+  \caption{Coverage.py --- couverture de la logique métier (88\,\%)}
+  \label{fig:qa-cov-u}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{qa_coverage_api.png}
+  \caption{Coverage.py --- couverture des API Django (93\,\%)}
+  \label{fig:qa-cov-a}
+\end{figure}
+
+\section{Conformité au référentiel « Outils Qualité logicielle »}
+
+Le tableau suivant synthétise le traitement de chaque outil exigé par le PDF \texttt{Outils Qualité logicielle (3).pdf}.
+
+\begin{table}[H]
+\centering
+\caption{Matrice de conformité aux outils qualité exigés}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{3.4cm}|p{2.4cm}|p{4.4cm}|p{4.4cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Outil exigé} & \textbf{Statut} & \textbf{Résultat} & \textbf{Preuve} \\
+  \hline
+  SonarQube & \textcolor{medsecondary}{Partiel} & Serveur indisponible, repli Ruff & Fig.~\ref{fig:qa-ruff}, \ref{fig:qa-sonar} \\
+  \hline
+  Checkstyle (Java) & \textcolor{medred}{\texttimes} & Non applicable (pile Python) & --- \\
+  \hline
+  JUnit / TestNG (Java) & \textcolor{medred}{\texttimes} & Non applicable (Pytest / Django TestCase) & Fig.~\ref{fig:pytest-terminal} \\
+  \hline
+  Pytest (Python) & \textcolor{medgreen}{\checkmark} & 23/23 tests unitaires & Fig.~\ref{fig:pytest-terminal} \\
+  \hline
+  Postman (API) & \textcolor{medgreen}{\checkmark} & 16 requêtes / 26 assertions & Fig.~\ref{fig:qa-newman} \\
+  \hline
+  JMeter & \textcolor{medgreen}{\checkmark} & 25 VU / 250 requêtes / 0 erreur & Fig.~\ref{fig:qa-jmeter} \\
+  \hline
+  Selenium & \textcolor{medgreen}{\checkmark} & 4 parcours navigateur & Fig.~\ref{fig:qa-e2e-01}, \ref{fig:qa-e2e-04} \\
+  \hline
+  Cypress (JavaScript) & \textcolor{medred}{\texttimes} & Non applicable (SPA sans build JS) & --- \\
+  \hline
+  OWASP ZAP & \textcolor{medsecondary}{Partiel} & Scan bloqué, contrôles 401/403 validés & Fig.~\ref{fig:qa-zap} \\
+  \hline
+  Snyk & \textcolor{medsecondary}{Partiel} & Token indisponible, repli pip-audit & Fig.~\ref{fig:qa-pip-audit} \\
+  \hline
+  JaCoCo (Java) & \textcolor{medred}{\texttimes} & Non applicable (coverage.py) & Fig.~\ref{fig:qa-cov-u} \\
+  \hline
+  Istanbul (JavaScript) & \textcolor{medred}{\texttimes} & Non applicable & --- \\
+  \hline
+  Coverage.py (Python) & \textcolor{medgreen}{\checkmark} & 88\,\% métier / 93\,\% API & Fig.~\ref{fig:qa-cov-u}, \ref{fig:qa-cov-a} \\
+  \hline
+\end{tabular}
+\end{table}
 
 % ══════════════════════════════════════════════════════
 %  SECTION 10 : DÉPLOIEMENT ET EXÉCUTION
@@ -1602,12 +1555,34 @@ docker compose down -v
 \section{Exécution des tests}
 
 \begin{lstlisting}[language=bash, caption={Lancement de la suite de tests complète}]
-# Tests unitaires Pytest (23 tests)
-cd backend
-pytest tests/ -v --html=pytest-report.html
+# Tests unitaires Pytest (23 tests) -- a la racine du depot
+python -m pytest -v --html=reports/pytest.html --self-contained-html
+
+# Couverture de la logique metier (coverage.py)
+python -m coverage run --source=patients,agenda,dossier_medical,ordonnances --omit='*/test_*.py' -m pytest -q
+python -m coverage report -m
 
 # Tests API Django (45 tests)
-python manage.py test patients_api agenda_api dossier_medical_api ordonnances_api -v
+cd backend
+python manage.py test patients_api agenda_api dossier_medical_api ordonnances_api -v 1
+cd ..
+
+# Campagne API Postman / Newman (16 requetes, 26 assertions)
+newman run tests/postman/MedConnect.postman_collection.json \
+  -e tests/postman/MedConnect.postman_environment.json -r cli,html \
+  --reporter-html-export reports/newman/newman.html
+
+# Tests End-to-End Selenium (serveur Django demarre)
+python -m pytest tests/e2e/test_parcours_patient.py -v --html=reports/e2e.html
+
+# Test de charge JMeter (25 utilisateurs virtuels)
+docker run --rm -v "$PWD:/jmeter" -w /jmeter justb4/jmeter:latest \
+  -n -t /jmeter/tests/performance/medconnect.jmx \
+  -l /jmeter/reports/jmeter/results.jtl -e -o /jmeter/reports/jmeter/dashboard
+
+# Securite des dependances et analyse statique
+python -m pip_audit -r backend/requirements.txt
+python -m ruff check --select E9,F patients agenda dossier_medical ordonnances backend
 \end{lstlisting}
 
 \section{Comptes de démonstration}
@@ -1660,9 +1635,9 @@ python manage.py test patients_api agenda_api dossier_medical_api ordonnances_ap
 L'équipe a adopté un workflow Git structuré inspiré de Gitflow :
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{\texttt{main}} : Branche de production – contient le code stable et intégré.
-  \item \textbf{\texttt{develop}} : Branche d'intégration – fusion de toutes les features avant promotion vers main.
-  \item \textbf{\texttt{feature/agenda-api}} : Développement de l'agenda (Ahmed Lahmaine) – mergée via Pull Request.
+  \item \textbf{\texttt{main}} : Branche de production -- contient le code stable et intégré.
+  \item \textbf{\texttt{develop}} : Branche d'intégration -- fusion de toutes les features avant promotion vers main.
+  \item \textbf{\texttt{feature/agenda-api}} : Développement de l'agenda (Ahmed Lahmaine) -- mergée via Pull Request.
   \item \textbf{\texttt{feature/dossier-medical-api}} : Développement du dossier médical (Achraf Ait Damnat).
   \item \textbf{\texttt{feature/ordonnances-api}} : Développement des ordonnances (Abdellah Rahel).
 \end{itemize}
@@ -1690,9 +1665,9 @@ git rebase origin/develop
 
 \begin{itemize}[leftmargin=*]
   \item \textbf{Incompatibilité PowerShell} : L'opérateur \texttt{\&\&} n'est pas supporté nativement dans PowerShell Windows, ce qui a nécessité l'utilisation du script \texttt{exe.py} comme alternative cross-platform.
-  \item \textbf{Avertissement clé JWT} : Django 6.0 avec SimpleJWT génère un avertissement si la \texttt{SECRET\_KEY} est trop courte – résolu en générant une clé de 50 caractères.
+  \item \textbf{Avertissement clé JWT} : Django 6.0 avec SimpleJWT génère un avertissement si la \texttt{SECRET\_KEY} est trop courte -- résolu en générant une clé de 50 caractères.
   \item \textbf{Peuplement BDD} : Le script \texttt{seed\_demo.py} doit gérer le cas où les données de démo existent déjà (utilisation de \texttt{get\_or\_create}).
-  \item \textbf{Noms de fichiers avec espaces} : Certains screenshots contiennent des espaces dans leur nom (\texttt{dossier medical.png}, \texttt{salle attente.png}) – gérés directement dans le \texttt{.tex} sans renommage.
+  \item \textbf{Noms de fichiers avec espaces} : Certains screenshots contiennent des espaces dans leur nom (\texttt{dossier medical.png}, \texttt{salle attente.png}) -- gérés directement dans le \texttt{.tex} sans renommage.
   \item \textbf{Coordination multi-branches} : Synchronisation des quatre feature branches sans conflits a nécessité une discipline stricte dans les périmètres de modèles.
 \end{itemize}
 
@@ -1712,9 +1687,9 @@ git rebase origin/develop
   \rowcolor{medaccent}
   \textbf{Module} & \textbf{Tests U.} & \textbf{Tests API} & \textbf{Total} & \textbf{Taux} \\
   \hline
-  \texttt{patients\_api} & 6 & 5 & 11 & \textcolor{medgreen}{100\%} \\
+  \texttt{patients\_api} & 8 & 5 & 13 & \textcolor{medgreen}{100\%} \\
   \hline
-  \texttt{agenda\_api} & 7 & 16 & 23 & \textcolor{medgreen}{100\%} \\
+  \texttt{agenda\_api} & 5 & 16 & 21 & \textcolor{medgreen}{100\%} \\
   \hline
   \texttt{dossier\_medical\_api} & 5 & 21 & 26 & \textcolor{medgreen}{100\%} \\
   \hline
@@ -1725,6 +1700,8 @@ git rebase origin/develop
   \hline
 \end{tabular}
 \end{table}
+
+Au-delà du nombre de cas, la couverture instrumentée par coverage.py atteint \textbf{88\,\%} sur la logique métier et \textbf{93\,\%} sur les API Django (Figures~\ref{fig:qa-cov-u} et~\ref{fig:qa-cov-a}). La campagne est complétée par 26 assertions Postman/Newman, 4 parcours Selenium et 250 requêtes JMeter sans erreur.
 
 \section{Qualité du code}
 
@@ -1746,17 +1723,20 @@ git rebase origin/develop
 \begin{itemize}[leftmargin=*]
   \item \textbf{Interface multi-médecins limitée} : Le filtre par médecin dans la vue agenda est opérationnel côté API mais l'interface frontend ne propose pas encore de sélecteur de médecin dans la vue calendrier.
   \item \textbf{Pas de notifications} : Aucune notification email ou SMS n'est implémentée pour rappeler les rendez-vous aux patients.
-  \item \textbf{Pas de gestion documentaire} : Les ordonnances sont stockées en JSON uniquement – pas de génération PDF à ce stade.
+  \item \textbf{Pas de gestion documentaire} : Les ordonnances sont stockées en JSON uniquement -- pas de génération PDF à ce stade.
   \item \textbf{Pas de pagination avancée} : La pagination est implémentée mais sans navigation par curseur pour les très grandes listes.
-  \item \textbf{Mono-cabinet} : L'application gère un seul cabinet – pas de support multi-sites.
+  \item \textbf{Mono-cabinet} : L'application gère un seul cabinet -- pas de support multi-sites.
 \end{itemize}
 
 \section{Dettes techniques}
 
 \begin{itemize}[leftmargin=*]
   \item \textbf{Absence de CI/CD} : Pas de pipeline d'intégration continue automatisé (GitHub Actions ou GitLab CI).
+  \item \textbf{SonarQube non finalisé} : le daemon Docker de l'environnement était indisponible ; une analyse Ruff de repli a été exécutée (Figure~\ref{fig:qa-sonar}).
+  \item \textbf{OWASP ZAP non finalisé} : le téléchargement de l'image a échoué (\texttt{unexpected EOF}) et le daemon était indisponible ; les contrôles 401/403 ont été validés par Newman et Selenium (Figure~\ref{fig:qa-zap}).
+  \item \textbf{Snyk non exécuté} : un compte/token est requis ; \texttt{pip-audit} a été utilisé comme substitut local (Figure~\ref{fig:qa-pip-audit}).
   \item \textbf{Pas de documentation Swagger/OpenAPI} : L'API n'expose pas encore d'interface Swagger interactive (drf-spectacular ou drf-yasg).
-  \item \textbf{\texttt{db.sqlite3} hors Git} : Le fichier SQLite local est exclu du versionning (\texttt{.gitignore}) – le script \texttt{seed\_demo.py} compense pour l'environnement local sans Docker.
+  \item \textbf{\texttt{db.sqlite3} hors Git} : Le fichier SQLite local est exclu du versionning (\texttt{.gitignore}) -- le script \texttt{seed\_demo.py} compense pour l'environnement local sans Docker.
 \end{itemize}
 
 \section{Perspectives d'évolution}
@@ -1767,6 +1747,7 @@ git rebase origin/develop
   \item \textbf{Notifications multicanaux} : Intégration d'un service de rappel par email ou SMS (Django Email + Celery / Redis).
   \item \textbf{Génération PDF enrichie} : Utilisation de WeasyPrint pour générer des ordonnances et comptes-rendus au format PDF imprimable et sécurisé.
   \item \textbf{Pipeline CI/CD} : Configuration GitHub Actions pour exécuter automatiquement la suite de 68 tests à chaque validation de Pull Request.
+  \item \textbf{Intégration SonarQube et OWASP ZAP} : Brancher ces deux analyses dès qu'un environnement Docker stable et un token Snyk seront disponibles.
   \item \textbf{Tableau de bord analytique avancé} : Métriques d'occupation du cabinet, statistiques des pathologies et suivi financier.
 \end{itemize}
 
@@ -1776,9 +1757,9 @@ git rebase origin/develop
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-Le projet MedConnect illustre la mise en œuvre concrète d'une architecture web distribuée, développée dans le cadre du module \textit{Web Services et Applications Distribuées}. En s'appuyant sur Django REST Framework, SimpleJWT et une organisation en micro-services REST modulaires, le Groupe 12 a livré une plateforme opérationnelle couvrant l'intégralité du cycle médical : gestion des patients, planification des rendez-vous, suivi clinique et prescription d'ordonnances sécurisées.
+Le projet MedConnect illustre la mise en \oe{}uvre concrète d'une architecture web distribuée, développée dans le cadre du module \textit{Web Services et Applications Distribuées}. En s'appuyant sur Django REST Framework, SimpleJWT et une organisation en micro-services REST modulaires, le Groupe 12 a livré une plateforme opérationnelle couvrant l'intégralité du cycle médical : gestion des patients, planification des rendez-vous, suivi clinique et prescription d'ordonnances sécurisées.
 
-L'intégration d'une pile de conteneurisation complète \textbf{Docker Compose} avec serveur de production \textbf{Gunicorn} et base \textbf{PostgreSQL 16}, couplée à une couverture de tests exhaustive (68 tests unitaires et d'intégration validés à 100\%), atteste du professionnalisme et de la robustesse de la solution. MedConnect constitue un socle fiable, hautement extensible et directement déployable pour un cabinet médical moderne.
+L'intégration d'une pile de conteneurisation complète \textbf{Docker Compose} avec serveur de production \textbf{Gunicorn} et base \textbf{PostgreSQL 16}, couplée à une couverture de tests exhaustive (68 tests unitaires et d'intégration validés à 100\,\%) et à une campagne QA multi-outils (Postman/Newman, Selenium, JMeter, analyse statique, couverture et sécurité des dépendances), atteste du professionnalisme et de la robustesse de la solution. MedConnect constitue un socle fiable, hautement extensible et directement déployable pour un cabinet médical moderne.
 
 % ══════════════════════════════════════════════════════
 %  ANNEXES
@@ -1828,11 +1809,7 @@ MedConnect-WS-IL-EQ12/
 |   |   |-- urls.py
 |   |   |-- views.py
 |   |   +-- tests.py
-|   |-- tests/
-|   |   |-- test_patients.py
-|   |   |-- test_agenda.py
-|   |   |-- test_dossier.py
-|   |   +-- test_ordonnances.py
+|   |-- (les tests unitaires Pytest sont a la racine du depot)
 |   |-- exe.py
 |   |-- seed_demo.py
 |   |-- manage.py
@@ -1841,6 +1818,23 @@ MedConnect-WS-IL-EQ12/
 |   |-- docker-entrypoint.sh
 |   |-- .dockerignore
 |   +-- db.sqlite3            (non versionne - dev local)
+|
+|-- patients/                 # test_patient_service.py (8 tests)
+|-- agenda/                   # test_agenda_service.py (5 tests)
+|-- dossier_medical/          # test_dossier_service.py (5 tests)
+|-- ordonnances/              # test_ordonnance_service.py (5 tests)
+|-- tests/
+|   |-- postman/              # collection + environnement Newman
+|   |-- e2e/                  # scenarios Selenium
+|   |-- performance/          # plan JMeter (medconnect.jmx)
+|   |-- security/
+|   +-- qualite/              # scripts de capture des preuves
+|-- reports/
+|   |-- coverage/             # rapports coverage.py (HTML, XML, texte)
+|   |-- newman/               # rapport Postman/Newman
+|   |-- jmeter/               # dashboard JMeter
+|   |-- zap/                  # rapports de securite
+|   +-- qa_summary/
 |
 |-- docker-compose.yml        (orchestration web + db postgres)
 |-- DOCKER.md                 (guide d'exploitation conteneur)
@@ -1872,9 +1866,21 @@ MedConnect-WS-IL-EQ12/
   \hline
   Frontend SPA & \textcolor{medgreen}{\checkmark} & \texttt{backend/} \\
   \hline
-  Tests unitaires (23 Pytest) & \textcolor{medgreen}{\checkmark} & \texttt{backend/tests/} \\
+  Tests unitaires (23 Pytest) & \textcolor{medgreen}{\checkmark} & \texttt{patients/}, \texttt{agenda/}, \texttt{dossier\_medical/}, \texttt{ordonnances/} \\
   \hline
   Tests API (45 Django) & \textcolor{medgreen}{\checkmark} & \texttt{backend/*\_api/tests.py} \\
+  \hline
+  Tests API outillés (Postman / Newman) & \textcolor{medgreen}{\checkmark} & \texttt{tests/postman/}, \texttt{reports/newman/} \\
+  \hline
+  Tests End-to-End (Selenium) & \textcolor{medgreen}{\checkmark} & \texttt{tests/e2e/}, \texttt{report/screenshots/} \\
+  \hline
+  Test de charge (JMeter) & \textcolor{medgreen}{\checkmark} & \texttt{tests/performance/}, \texttt{reports/jmeter/} \\
+  \hline
+  Couverture (coverage.py) & \textcolor{medgreen}{\checkmark} & \texttt{reports/coverage/} \\
+  \hline
+  Analyse statique (Ruff / SonarQube) & \textcolor{medsecondary}{Partiel} & \texttt{reports/ruff.txt}, \texttt{reports/sonar/} \\
+  \hline
+  Sécurité (ZAP / pip-audit / Snyk) & \textcolor{medsecondary}{Partiel} & \texttt{reports/zap/}, \texttt{reports/pip\_audit.txt} \\
   \hline
   Script de démonstration & \textcolor{medgreen}{\checkmark} & \texttt{backend/seed\_demo.py} \\
   \hline
@@ -1897,7 +1903,7 @@ MedConnect-WS-IL-EQ12/
 
 \begin{table}[H]
 \centering
-\caption{Comptes de démonstration – accès à l'interface}
+\caption{Comptes de démonstration -- accès à l'interface}
 \renewcommand{\arraystretch}{1.6}
 \begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3cm}|}
   \hline
@@ -1916,13 +1922,20 @@ MedConnect-WS-IL-EQ12/
 \chapter{Références}
 
 \begin{enumerate}[leftmargin=*, label={[R\arabic*]}]
-  \item Django REST Framework – Documentation officielle. \url{https://www.django-rest-framework.org/}
-  \item djangorestframework-simplejwt – Documentation. \url{https://django-rest-framework-simplejwt.readthedocs.io/}
+  \item Django REST Framework -- Documentation officielle. \url{https://www.django-rest-framework.org/}
+  \item djangorestframework-simplejwt -- Documentation. \url{https://django-rest-framework-simplejwt.readthedocs.io/}
   \item Django Documentation (v6.0). \url{https://docs.djangoproject.com/}
-  \item Spécification Fonctionnelle MedConnect – \texttt{MIL3\_Dossier\_Spec\_Fonctionnelles\_E12\_V4.pdf}
-  \item Cahier des charges – \texttt{Atelier 02 cahier de charges-1.pdf}
+  \item Spécification Fonctionnelle MedConnect -- \texttt{MIL3\_Dossier\_Spec\_Fonctionnelles\_E12\_V4.pdf}
+  \item Cahier des charges -- \texttt{Atelier 02 cahier de charges-1.pdf}
   \item Pytest Documentation. \url{https://docs.pytest.org/}
   \item JWT RFC 7519. \url{https://datatracker.ietf.org/doc/html/rfc7519}
+  \item Coverage.py Documentation. \url{https://coverage.readthedocs.io/}
+  \item Postman / Newman Documentation. \url{https://learning.postman.com/docs/collections/using-newman-cli/command-line-integration-with-newman/}
+  \item Selenium Documentation. \url{https://www.selenium.dev/documentation/}
+  \item Apache JMeter Documentation. \url{https://jmeter.apache.org/usermanual/index.html}
+  \item OWASP ZAP Documentation. \url{https://www.zaproxy.org/docs/}
+  \item Snyk / pip-audit Documentation. \url{https://docs.snyk.io/} et \url{https://pypi.org/project/pip-audit/}
+  \item Ruff Documentation. \url{https://docs.astral.sh/ruff/}
 \end{enumerate}
 
 \end{document}
