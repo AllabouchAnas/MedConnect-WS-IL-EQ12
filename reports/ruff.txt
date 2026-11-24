@@ -1,0 +1,12 @@
+Ruff — analyse statique complémentaire (rules E9 + F, équivalent des erreurs bloquantes)
+Commande : python -m ruff check --select E9,F patients agenda dossier_medical ordonnances backend
+
+Avant correction : 5 erreurs F401 (imports inutilises)
+  backend/ordonnances_api/serializers.py  — Consultation importe mais inutilise
+  backend/ordonnances_api/tests.py        — LigneOrdonnance importe mais inutilise
+  backend/ordonnances_api/views.py        — get_object_or_404, HttpResponse inutilises
+  backend/patients_api/views.py           — IsAuthenticated importe mais inutilise
+
+Apres correction (ruff --fix) : 0 erreur, 0 avertissement bloquant.
+Remarque : les regles I001 (tri des imports) et E501 (longueur de ligne) restent
+des conventions de style, documentees comme dette technique mineure.

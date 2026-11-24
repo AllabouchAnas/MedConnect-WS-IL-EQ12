@@ -1,0 +1,251 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1795538143252,1673,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-1,text,true,,850,275,5,5,http://host.docker.internal:8000/api/auth/login/,1673,0,110
+1795538143943,935,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-3,text,true,,850,275,5,5,http://host.docker.internal:8000/api/auth/login/,930,0,4
+1795538143546,1400,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-2,text,true,,850,275,5,5,http://host.docker.internal:8000/api/auth/login/,1400,0,4
+1795538144936,24,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,1713,430,5,5,http://host.docker.internal:8000/api/patients/,24,0,0
+1795538144936,30,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,1713,430,5,5,http://host.docker.internal:8000/api/patients/,30,0,0
+1795538144947,25,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,1713,430,5,5,http://host.docker.internal:8000/api/patients/,25,0,0
+1795538144961,26,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,4101,432,5,5,http://host.docker.internal:8000/api/agenda/rdv/,26,0,0
+1795538144967,30,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,4101,432,5,5,http://host.docker.internal:8000/api/agenda/rdv/,30,0,0
+1795538144972,32,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,4101,432,5,5,http://host.docker.internal:8000/api/agenda/rdv/,31,0,0
+1795538144988,42,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,2016,431,5,5,http://host.docker.internal:8000/api/dashboard/,42,0,0
+1795538144998,39,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,2016,431,5,5,http://host.docker.internal:8000/api/dashboard/,39,0,0
+1795538145005,43,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,2016,431,5,5,http://host.docker.internal:8000/api/dashboard/,43,0,0
+1795538145031,18,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,1654,435,5,5,http://host.docker.internal:8000/api/consultations/,18,0,0
+1795538145038,21,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,1654,435,5,5,http://host.docker.internal:8000/api/consultations/,21,0,0
+1795538145049,18,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,1654,435,5,5,http://host.docker.internal:8000/api/consultations/,18,0,0
+1795538144343,1011,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-4,text,true,,850,275,6,6,http://host.docker.internal:8000/api/auth/login/,1011,0,4
+1795538145355,11,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,1713,430,6,6,http://host.docker.internal:8000/api/patients/,11,0,0
+1795538145366,14,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,4101,432,6,6,http://host.docker.internal:8000/api/agenda/rdv/,13,0,0
+1795538145381,17,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,2016,431,6,6,http://host.docker.internal:8000/api/dashboard/,17,0,0
+1795538145398,11,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,1654,435,6,6,http://host.docker.internal:8000/api/consultations/,11,0,0
+1795538144744,1127,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-5,text,true,,850,275,7,7,http://host.docker.internal:8000/api/auth/login/,1127,0,4
+1795538145872,14,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,1713,430,7,7,http://host.docker.internal:8000/api/patients/,12,0,0
+1795538145887,13,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,4101,432,7,7,http://host.docker.internal:8000/api/agenda/rdv/,13,0,0
+1795538145901,16,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,2016,431,7,7,http://host.docker.internal:8000/api/dashboard/,16,0,0
+1795538145918,11,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,1654,435,7,7,http://host.docker.internal:8000/api/consultations/,10,0,0
+1795538145068,1329,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-2,text,true,,850,498,9,9,http://host.docker.internal:8000/api/auth/login/,1329,0,0
+1795538146398,17,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,1713,430,9,9,http://host.docker.internal:8000/api/patients/,16,0,0
+1795538146415,18,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,4101,432,9,9,http://host.docker.internal:8000/api/agenda/rdv/,18,0,0
+1795538146434,38,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,2016,431,9,9,http://host.docker.internal:8000/api/dashboard/,38,0,0
+1795538145050,1442,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-3,text,true,,850,498,9,9,http://host.docker.internal:8000/api/auth/login/,1442,0,0
+1795538146493,16,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,1713,430,9,9,http://host.docker.internal:8000/api/patients/,16,0,0
+1795538146473,49,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-2,text,true,,1654,435,9,9,http://host.docker.internal:8000/api/consultations/,49,0,0
+1795538145060,1485,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-1,text,true,,850,498,8,8,http://host.docker.internal:8000/api/auth/login/,1485,0,0
+1795538146510,48,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,4101,432,8,8,http://host.docker.internal:8000/api/agenda/rdv/,48,0,0
+1795538146546,23,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,1713,430,8,8,http://host.docker.internal:8000/api/patients/,22,0,0
+1795538146569,27,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,4101,432,8,8,http://host.docker.internal:8000/api/agenda/rdv/,27,0,0
+1795538146559,39,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,2016,431,8,8,http://host.docker.internal:8000/api/dashboard/,39,0,0
+1795538146599,21,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-3,text,true,,1654,435,8,8,http://host.docker.internal:8000/api/consultations/,21,0,0
+1795538146597,32,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,2016,431,7,7,http://host.docker.internal:8000/api/dashboard/,32,0,0
+1795538146630,14,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-1,text,true,,1654,435,7,7,http://host.docker.internal:8000/api/consultations/,13,0,0
+1795538145146,1520,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-6,text,true,,850,275,6,6,http://host.docker.internal:8000/api/auth/login/,1520,0,3
+1795538146667,12,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,1713,430,6,6,http://host.docker.internal:8000/api/patients/,12,0,0
+1795538146680,18,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,4101,432,6,6,http://host.docker.internal:8000/api/agenda/rdv/,16,0,0
+1795538146699,19,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,2016,431,6,6,http://host.docker.internal:8000/api/dashboard/,19,0,0
+1795538146718,13,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,1654,435,6,6,http://host.docker.internal:8000/api/consultations/,13,0,0
+1795538145410,1651,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-4,text,true,,850,498,7,7,http://host.docker.internal:8000/api/auth/login/,1651,0,0
+1795538147062,15,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,1713,430,7,7,http://host.docker.internal:8000/api/patients/,14,0,0
+1795538147077,16,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,4101,432,7,7,http://host.docker.internal:8000/api/agenda/rdv/,16,0,0
+1795538147094,22,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,2016,431,7,7,http://host.docker.internal:8000/api/dashboard/,22,0,0
+1795538147117,13,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-4,text,true,,1654,435,7,7,http://host.docker.internal:8000/api/consultations/,13,0,0
+1795538145544,1943,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-7,text,true,,850,275,7,7,http://host.docker.internal:8000/api/auth/login/,1943,0,7
+1795538147490,19,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,1713,430,7,7,http://host.docker.internal:8000/api/patients/,14,0,0
+1795538147509,25,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,4101,432,7,7,http://host.docker.internal:8000/api/agenda/rdv/,19,0,0
+1795538147534,47,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,2016,431,8,8,http://host.docker.internal:8000/api/dashboard/,47,0,0
+1795538147581,20,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,1654,435,8,8,http://host.docker.internal:8000/api/consultations/,19,0,0
+1795538145929,2173,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-5,text,true,,850,498,9,9,http://host.docker.internal:8000/api/auth/login/,2173,0,0
+1795538148103,17,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,1713,430,9,9,http://host.docker.internal:8000/api/patients/,17,0,0
+1795538148121,20,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,4101,432,9,9,http://host.docker.internal:8000/api/agenda/rdv/,20,0,0
+1795538148142,30,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,2016,431,9,9,http://host.docker.internal:8000/api/dashboard/,30,0,0
+1795538148173,22,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-5,text,true,,1654,435,9,9,http://host.docker.internal:8000/api/consultations/,22,0,0
+1795538145946,2414,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-8,text,true,,850,275,9,9,http://host.docker.internal:8000/api/auth/login/,2414,0,4
+1795538148362,23,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,1713,430,9,9,http://host.docker.internal:8000/api/patients/,18,0,0
+1795538148385,25,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,4101,432,9,9,http://host.docker.internal:8000/api/agenda/rdv/,20,0,0
+1795538148411,33,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,2016,431,9,9,http://host.docker.internal:8000/api/dashboard/,33,0,0
+1795538148445,30,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,1654,435,9,9,http://host.docker.internal:8000/api/consultations/,30,0,0
+1795538146346,2955,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-9,text,true,,850,275,11,11,http://host.docker.internal:8000/api/auth/login/,2955,0,11
+1795538149303,35,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,1713,430,11,11,http://host.docker.internal:8000/api/patients/,26,0,0
+1795538149338,29,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,4101,432,11,11,http://host.docker.internal:8000/api/agenda/rdv/,28,0,0
+1795538149367,33,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,2016,431,11,11,http://host.docker.internal:8000/api/dashboard/,33,0,0
+1795538149401,51,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,1654,435,11,11,http://host.docker.internal:8000/api/consultations/,51,0,0
+1795538146732,2997,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-6,text,true,,850,498,12,12,http://host.docker.internal:8000/api/auth/login/,2997,0,0
+1795538149731,27,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,1713,430,12,12,http://host.docker.internal:8000/api/patients/,27,0,0
+1795538149759,35,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,4101,432,12,12,http://host.docker.internal:8000/api/agenda/rdv/,30,0,0
+1795538149795,40,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,2016,431,12,12,http://host.docker.internal:8000/api/dashboard/,40,0,0
+1795538149836,32,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-6,text,true,,1654,435,12,12,http://host.docker.internal:8000/api/consultations/,31,0,0
+1795538146745,3371,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-10,text,true,,850,275,12,12,http://host.docker.internal:8000/api/auth/login/,3371,0,15
+1795538150118,29,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,1713,430,12,12,http://host.docker.internal:8000/api/patients/,21,0,0
+1795538147143,3027,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-11,text,true,,850,275,12,12,http://host.docker.internal:8000/api/auth/login/,3027,0,4
+1795538150148,41,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,4101,432,12,12,http://host.docker.internal:8000/api/agenda/rdv/,41,0,0
+1795538150172,32,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,1713,430,12,12,http://host.docker.internal:8000/api/patients/,27,0,0
+1795538150205,46,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,4101,432,12,12,http://host.docker.internal:8000/api/agenda/rdv/,34,0,0
+1795538150190,71,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,2016,431,12,12,http://host.docker.internal:8000/api/dashboard/,71,0,0
+1795538150262,50,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,1654,435,12,12,http://host.docker.internal:8000/api/consultations/,50,0,0
+1795538150251,61,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,2016,431,12,12,http://host.docker.internal:8000/api/dashboard/,54,0,0
+1795538150313,71,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,1654,435,13,13,http://host.docker.internal:8000/api/consultations/,45,0,0
+1795538147602,3743,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-7,text,true,,850,498,15,15,http://host.docker.internal:8000/api/auth/login/,3743,0,0
+1795538151347,34,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,1713,430,15,15,http://host.docker.internal:8000/api/patients/,34,0,0
+1795538151382,47,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,4101,432,15,15,http://host.docker.internal:8000/api/agenda/rdv/,38,0,0
+1795538151430,35,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,2016,431,15,15,http://host.docker.internal:8000/api/dashboard/,35,0,0
+1795538151466,19,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-7,text,true,,1654,435,15,15,http://host.docker.internal:8000/api/consultations/,19,0,0
+1795538148355,4527,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-14,text,true,,850,275,18,18,http://host.docker.internal:8000/api/auth/login/,4527,0,12
+1795538152884,24,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,1713,430,18,18,http://host.docker.internal:8000/api/patients/,23,0,0
+1795538152909,36,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,4101,432,18,18,http://host.docker.internal:8000/api/agenda/rdv/,26,0,0
+1795538152946,33,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,2016,431,18,18,http://host.docker.internal:8000/api/dashboard/,33,0,0
+1795538147546,5466,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-12,text,true,,850,275,18,18,http://host.docker.internal:8000/api/auth/login/,5465,0,12
+1795538152980,53,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,1654,435,18,18,http://host.docker.internal:8000/api/consultations/,53,0,0
+1795538153015,48,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,1713,430,18,18,http://host.docker.internal:8000/api/patients/,35,0,0
+1795538153064,149,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,4101,432,18,18,http://host.docker.internal:8000/api/agenda/rdv/,141,0,0
+1795538153214,57,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,2016,431,18,18,http://host.docker.internal:8000/api/dashboard/,57,0,0
+1795538153271,89,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,1654,435,18,18,http://host.docker.internal:8000/api/consultations/,89,0,0
+1795538148762,4952,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-15,text,true,,850,275,18,18,http://host.docker.internal:8000/api/auth/login/,4952,0,27
+1795538153725,30,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,1713,430,18,18,http://host.docker.internal:8000/api/patients/,30,0,0
+1795538153756,34,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,4101,432,18,18,http://host.docker.internal:8000/api/agenda/rdv/,34,0,0
+1795538153791,45,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,2016,431,18,18,http://host.docker.internal:8000/api/dashboard/,45,0,0
+1795538153837,74,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,1654,435,18,18,http://host.docker.internal:8000/api/consultations/,74,0,0
+1795538147966,6186,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-13,text,true,,850,275,18,18,http://host.docker.internal:8000/api/auth/login/,6186,0,13
+1795538154154,37,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,1713,430,18,18,http://host.docker.internal:8000/api/patients/,28,0,0
+1795538154192,26,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,4101,432,18,18,http://host.docker.internal:8000/api/agenda/rdv/,26,0,0
+1795538154219,75,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,2016,431,18,18,http://host.docker.internal:8000/api/dashboard/,75,0,0
+1795538154295,55,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,1654,435,18,18,http://host.docker.internal:8000/api/consultations/,54,0,0
+1795538148476,6429,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-8,text,true,,850,498,18,18,http://host.docker.internal:8000/api/auth/login/,6429,0,0
+1795538154905,28,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,1713,430,18,18,http://host.docker.internal:8000/api/patients/,28,0,0
+1795538154934,25,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,4101,432,18,18,http://host.docker.internal:8000/api/agenda/rdv/,25,0,0
+1795538154960,59,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,2016,431,18,18,http://host.docker.internal:8000/api/dashboard/,59,0,0
+1795538155020,46,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-8,text,true,,1654,435,18,18,http://host.docker.internal:8000/api/consultations/,46,0,0
+1795538149954,5622,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-18,text,true,,850,275,17,17,http://host.docker.internal:8000/api/auth/login/,5622,0,14
+1795538155577,38,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,1713,430,17,17,http://host.docker.internal:8000/api/patients/,31,0,0
+1795538155616,35,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,4101,432,17,17,http://host.docker.internal:8000/api/agenda/rdv/,26,0,0
+1795538149153,6541,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-16,text,true,,850,275,17,17,http://host.docker.internal:8000/api/auth/login/,6541,0,23
+1795538155652,48,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,2016,431,17,17,http://host.docker.internal:8000/api/dashboard/,48,0,0
+1795538155694,22,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,1713,430,17,17,http://host.docker.internal:8000/api/patients/,22,0,0
+1795538155701,36,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,1654,435,17,17,http://host.docker.internal:8000/api/consultations/,36,0,0
+1795538155716,31,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,4101,432,17,17,http://host.docker.internal:8000/api/agenda/rdv/,31,0,0
+1795538155748,56,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,2016,431,17,17,http://host.docker.internal:8000/api/dashboard/,56,0,0
+1795538155804,32,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,1654,435,17,17,http://host.docker.internal:8000/api/consultations/,32,0,0
+1795538149453,6394,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-9,text,true,,850,498,17,17,http://host.docker.internal:8000/api/auth/login/,6394,0,0
+1795538155847,35,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,1713,430,17,17,http://host.docker.internal:8000/api/patients/,35,0,0
+1795538155883,25,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,4101,432,17,17,http://host.docker.internal:8000/api/agenda/rdv/,25,0,0
+1795538155909,36,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,2016,431,17,17,http://host.docker.internal:8000/api/dashboard/,36,0,0
+1795538155946,34,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-9,text,true,,1654,435,17,17,http://host.docker.internal:8000/api/consultations/,34,0,0
+1795538150313,5706,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-10,text,true,,850,498,16,16,http://host.docker.internal:8000/api/auth/login/,5706,0,0
+1795538156019,30,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,1713,430,16,16,http://host.docker.internal:8000/api/patients/,30,0,0
+1795538149556,6513,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-17,text,true,,850,275,16,16,http://host.docker.internal:8000/api/auth/login/,6513,0,27
+1795538156050,35,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,4101,432,16,16,http://host.docker.internal:8000/api/agenda/rdv/,35,0,0
+1795538156069,25,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,1713,430,16,16,http://host.docker.internal:8000/api/patients/,25,0,0
+1795538156085,41,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,2016,431,16,16,http://host.docker.internal:8000/api/dashboard/,41,0,0
+1795538156094,32,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,4101,432,16,16,http://host.docker.internal:8000/api/agenda/rdv/,32,0,0
+1795538150385,5763,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-11,text,true,,850,498,16,16,http://host.docker.internal:8000/api/auth/login/,5763,0,0
+1795538156127,387,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-10,text,true,,1654,435,16,16,http://host.docker.internal:8000/api/consultations/,387,0,0
+1795538150354,6187,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-19,text,true,,850,275,15,15,http://host.docker.internal:8000/api/auth/login/,6186,0,35
+1795538156148,424,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,1713,430,15,15,http://host.docker.internal:8000/api/patients/,424,0,0
+1795538156127,450,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,2016,431,15,15,http://host.docker.internal:8000/api/dashboard/,450,0,0
+1795538156541,36,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,1713,430,15,15,http://host.docker.internal:8000/api/patients/,36,0,0
+1795538156578,42,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,4101,432,15,15,http://host.docker.internal:8000/api/agenda/rdv/,42,0,0
+1795538156573,59,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,4101,432,15,15,http://host.docker.internal:8000/api/agenda/rdv/,58,0,0
+1795538156578,66,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,1654,435,15,15,http://host.docker.internal:8000/api/consultations/,66,0,0
+1795538156621,129,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,2016,431,15,15,http://host.docker.internal:8000/api/dashboard/,129,0,0
+1795538156632,138,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,2016,431,15,15,http://host.docker.internal:8000/api/dashboard/,138,0,0
+1795538156751,56,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,1654,435,15,15,http://host.docker.internal:8000/api/consultations/,56,0,0
+1795538156771,64,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-11,text,true,,1654,435,15,15,http://host.docker.internal:8000/api/consultations/,64,0,0
+1795538151554,5577,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-22,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,5577,0,15
+1795538150757,6417,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-20,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,6417,0,24
+1795538157139,43,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,43,0,0
+1795538157175,27,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,27,0,0
+1795538157183,32,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,32,0,0
+1795538157203,22,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,22,0,0
+1795538157216,81,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,81,0,0
+1795538157225,94,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,94,0,0
+1795538157320,40,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,40,0,0
+1795538157298,69,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,69,0,0
+1795538151955,5549,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-23,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,5549,0,26
+1795538157504,22,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,22,0,0
+1795538157527,32,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,27,0,0
+1795538151176,6403,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-21,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,6402,0,46
+1795538157579,25,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,25,0,0
+1795538157605,22,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,22,0,0
+1795538157563,72,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,72,0,0
+1795538157628,59,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,59,0,0
+1795538157635,52,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,52,0,0
+1795538157688,42,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,42,0,0
+1795538152375,5778,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-24,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,5778,0,44
+1795538153044,5136,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-14,text,true,,850,498,14,14,http://host.docker.internal:8000/api/auth/login/,5136,0,0
+1795538158153,32,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,32,0,0
+1795538158180,27,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,1713,430,14,14,http://host.docker.internal:8000/api/patients/,27,0,0
+1795538158186,27,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,27,0,0
+1795538158208,35,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,4101,432,14,14,http://host.docker.internal:8000/api/agenda/rdv/,35,0,0
+1795538158214,59,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,59,0,0
+1795538158274,37,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,37,0,0
+1795538158244,78,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,2016,431,14,14,http://host.docker.internal:8000/api/dashboard/,77,0,0
+1795538158323,29,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-14,text,true,,1654,435,14,14,http://host.docker.internal:8000/api/consultations/,28,0,0
+1795538152761,5604,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-25,text,true,,850,275,14,14,http://host.docker.internal:8000/api/auth/login/,5604,0,30
+1795538158365,21,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,1713,430,13,13,http://host.docker.internal:8000/api/patients/,21,0,0
+1795538158387,19,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,4101,432,13,13,http://host.docker.internal:8000/api/agenda/rdv/,18,0,0
+1795538158406,42,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,2016,431,13,13,http://host.docker.internal:8000/api/dashboard/,42,0,0
+1795538153912,4585,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-15,text,true,,850,498,13,13,http://host.docker.internal:8000/api/auth/login/,4585,0,0
+1795538158449,69,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,1654,435,13,13,http://host.docker.internal:8000/api/consultations/,69,0,0
+1795538158498,25,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,1713,430,13,13,http://host.docker.internal:8000/api/patients/,25,0,0
+1795538158524,28,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,4101,432,13,13,http://host.docker.internal:8000/api/agenda/rdv/,28,0,0
+1795538158553,32,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,2016,431,13,13,http://host.docker.internal:8000/api/dashboard/,32,0,0
+1795538158586,20,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-15,text,true,,1654,435,13,13,http://host.docker.internal:8000/api/consultations/,19,0,0
+1795538153361,5396,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-12,text,true,,850,498,12,12,http://host.docker.internal:8000/api/auth/login/,5395,0,0
+1795538158758,23,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,1713,430,12,12,http://host.docker.internal:8000/api/patients/,22,0,0
+1795538158781,22,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,4101,432,12,12,http://host.docker.internal:8000/api/agenda/rdv/,22,0,0
+1795538158804,54,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,2016,431,12,12,http://host.docker.internal:8000/api/dashboard/,54,0,0
+1795538158859,40,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-12,text,true,,1654,435,12,12,http://host.docker.internal:8000/api/consultations/,40,0,0
+1795538154351,4983,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-13,text,true,,850,498,11,11,http://host.docker.internal:8000/api/auth/login/,4982,0,0
+1795538159335,18,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,1713,430,11,11,http://host.docker.internal:8000/api/patients/,17,0,0
+1795538159353,19,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,4101,432,11,11,http://host.docker.internal:8000/api/agenda/rdv/,18,0,0
+1795538159372,39,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,2016,431,11,11,http://host.docker.internal:8000/api/dashboard/,39,0,0
+1795538159411,34,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-13,text,true,,1654,435,11,11,http://host.docker.internal:8000/api/consultations/,34,0,0
+1795538155738,3814,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-18,text,true,,850,498,10,10,http://host.docker.internal:8000/api/auth/login/,3814,0,0
+1795538159560,18,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,1713,430,10,10,http://host.docker.internal:8000/api/patients/,18,0,0
+1795538159579,19,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,4101,432,10,10,http://host.docker.internal:8000/api/agenda/rdv/,19,0,0
+1795538159598,35,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,2016,431,10,10,http://host.docker.internal:8000/api/dashboard/,34,0,0
+1795538159633,22,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-18,text,true,,1654,435,10,10,http://host.docker.internal:8000/api/consultations/,22,0,0
+1795538156808,3340,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-19,text,true,,850,498,9,9,http://host.docker.internal:8000/api/auth/login/,3340,0,0
+1795538160188,26,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,1713,430,9,9,http://host.docker.internal:8000/api/patients/,26,0,0
+1795538160215,36,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,4101,432,9,9,http://host.docker.internal:8000/api/agenda/rdv/,36,0,0
+1795538160252,38,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,2016,431,9,9,http://host.docker.internal:8000/api/dashboard/,38,0,0
+1795538160290,23,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-19,text,true,,1654,435,9,9,http://host.docker.internal:8000/api/consultations/,23,0,0
+1795538157368,3060,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-22,text,true,,850,498,8,8,http://host.docker.internal:8000/api/auth/login/,3060,0,0
+1795538160430,21,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,1713,430,8,8,http://host.docker.internal:8000/api/patients/,21,0,0
+1795538155837,4625,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-16,text,true,,850,498,8,8,http://host.docker.internal:8000/api/auth/login/,4625,0,0
+1795538160463,21,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,1713,430,8,8,http://host.docker.internal:8000/api/patients/,21,0,0
+1795538160452,32,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,4101,432,8,8,http://host.docker.internal:8000/api/agenda/rdv/,32,0,0
+1795538160485,28,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,4101,432,8,8,http://host.docker.internal:8000/api/agenda/rdv/,27,0,0
+1795538160485,67,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,2016,431,8,8,http://host.docker.internal:8000/api/dashboard/,66,0,0
+1795538157688,2876,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-23,text,true,,850,498,8,8,http://host.docker.internal:8000/api/auth/login/,2876,0,0
+1795538160552,29,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-22,text,true,,1654,435,8,8,http://host.docker.internal:8000/api/consultations/,29,0,0
+1795538160565,46,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,1713,430,7,7,http://host.docker.internal:8000/api/patients/,46,0,0
+1795538160514,98,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,2016,431,7,7,http://host.docker.internal:8000/api/dashboard/,98,0,0
+1795538160612,42,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,4101,432,7,7,http://host.docker.internal:8000/api/agenda/rdv/,35,0,0
+1795538160612,55,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-16,text,true,,1654,435,7,7,http://host.docker.internal:8000/api/consultations/,55,0,0
+1795538160655,32,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,2016,431,6,6,http://host.docker.internal:8000/api/dashboard/,32,0,0
+1795538160687,23,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-23,text,true,,1654,435,6,6,http://host.docker.internal:8000/api/consultations/,23,0,0
+1795538156645,4289,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-17,text,true,,850,498,5,5,http://host.docker.internal:8000/api/auth/login/,4289,0,0
+1795538160935,18,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,1713,430,5,5,http://host.docker.internal:8000/api/patients/,18,0,0
+1795538160954,25,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,4101,432,5,5,http://host.docker.internal:8000/api/agenda/rdv/,25,0,0
+1795538160980,42,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,2016,431,5,5,http://host.docker.internal:8000/api/dashboard/,42,0,0
+1795538161023,23,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-17,text,true,,1654,435,5,5,http://host.docker.internal:8000/api/consultations/,23,0,0
+1795538157367,3988,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-20,text,true,,850,498,4,4,http://host.docker.internal:8000/api/auth/login/,3988,0,0
+1795538161356,16,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,1713,430,4,4,http://host.docker.internal:8000/api/patients/,15,0,0
+1795538161372,18,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,4101,432,4,4,http://host.docker.internal:8000/api/agenda/rdv/,17,0,0
+1795538157731,3683,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-21,text,true,,850,498,4,4,http://host.docker.internal:8000/api/auth/login/,3683,0,0
+1795538161415,20,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,1713,430,4,4,http://host.docker.internal:8000/api/patients/,19,0,0
+1795538161390,51,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,2016,431,4,4,http://host.docker.internal:8000/api/dashboard/,51,0,0
+1795538161436,20,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,4101,432,4,4,http://host.docker.internal:8000/api/agenda/rdv/,19,0,0
+1795538161442,24,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-20,text,true,,1654,435,4,4,http://host.docker.internal:8000/api/consultations/,24,0,0
+1795538161457,27,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,2016,431,3,3,http://host.docker.internal:8000/api/dashboard/,27,0,0
+1795538161484,14,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-21,text,true,,1654,435,3,3,http://host.docker.internal:8000/api/consultations/,14,0,0
+1795538158312,3387,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-24,text,true,,850,498,2,2,http://host.docker.internal:8000/api/auth/login/,3387,0,0
+1795538161700,13,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,1713,430,2,2,http://host.docker.internal:8000/api/patients/,13,0,0
+1795538158519,3204,01 — Login JWT (dr.demo),200,OK,Utilisateurs cabinets (25) 1-25,text,true,,850,498,2,2,http://host.docker.internal:8000/api/auth/login/,3204,0,0
+1795538161714,21,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,4101,432,2,2,http://host.docker.internal:8000/api/agenda/rdv/,20,0,0
+1795538161725,17,02 — Liste patients,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,1713,430,2,2,http://host.docker.internal:8000/api/patients/,17,0,0
+1795538161743,21,03 — Liste rendez-vous,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,4101,432,2,2,http://host.docker.internal:8000/api/agenda/rdv/,21,0,0
+1795538161735,32,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,2016,431,2,2,http://host.docker.internal:8000/api/dashboard/,32,0,0
+1795538161768,17,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-24,text,true,,1654,435,2,2,http://host.docker.internal:8000/api/consultations/,17,0,0
+1795538161765,29,04 — Tableau de bord,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,2016,431,1,1,http://host.docker.internal:8000/api/dashboard/,28,0,0
+1795538161795,12,05 — Liste consultations,200,OK,Utilisateurs cabinets (25) 1-25,text,true,,1654,435,1,1,http://host.docker.internal:8000/api/consultations/,12,0,0
