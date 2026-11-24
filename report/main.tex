@@ -808,7 +808,13 @@ MedConnect adopte une architecture REST distribuée monorepo, où chaque micro-s
   \hline
   Authentification & djangorestframework-simplejwt 5.5 & JWT access (30 min) + refresh (1 jour) \\
   \hline
-  Base de données & SQLite 3 (dev) & Persistence légère sans configuration \\
+  Base de données & SQLite 3 (dev) / PostgreSQL 16 (prod) & Persistence locale et conteneurisée \\
+  \hline
+  Serveur WSGI & Gunicorn 21.2 & Serveur de production (3 workers) \\
+  \hline
+  Fichiers statiques & WhiteNoise 6.6 & Service des assets en conteneur \\
+  \hline
+  Conteneurisation & Docker + Docker Compose & Orchestration multi-services (web + db) \\
   \hline
   Frontend & JavaScript ES6 + CSS3 & SPA natif (aucun framework) \\
   \hline
@@ -1522,16 +1528,76 @@ python seed_demo.py
 python manage.py runserver
 \end{lstlisting}
 
-\section{Lanceur universel \texttt{exe.py}}
+\section{Déploiement conteneurisé avec Docker et Docker Compose}
 
-Le script \texttt{exe.py} automatise l'ensemble des étapes de lancement en un seul appel, compatible Windows et Linux/macOS :
+Afin de garantir la portabilité, l'isolation des environnements et une mise en production simplifiée, MedConnect intègre une infrastructure de conteneurisation complète reposant sur \textbf{Docker} et \textbf{Docker Compose}, couplant l'application Django avec un serveur de base de données relationnelle \textbf{PostgreSQL 16}.
 
-\begin{lstlisting}[language=bash, caption={Utilisation du lanceur universel}]
-# Depuis le répertoire backend/
-python exe.py
+\subsection{Architecture des conteneurs}
+
+Le déploiement s'articule autour de deux services interconnectés via un réseau virtuel Docker isolé :
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Service \texttt{db}} : Conteneur basé sur l'image officielle \texttt{postgres:16-alpine}. Les données sont persistées sur le volume managé \texttt{pgdata}. Un test de santé (\textit{healthcheck}) via \texttt{pg\_isready} valide la disponibilité du moteur avant le démarrage du backend.
+  \item \textbf{Service \texttt{web}} : Conteneur applicatif basé sur \texttt{python:3.12-slim}. L'application est servie par le serveur WSGI de production \textbf{Gunicorn} avec 3 workers sur le port \texttt{8000}. La distribution des fichiers statiques est prise en charge par \textbf{WhiteNoise}. L'exécution est sécurisée sous un utilisateur dédié non-root (\texttt{app:app}, UID 1000).
+\end{itemize}
+
+\subsection{Script d'entrée automatique (\texttt{docker-entrypoint.sh})}
+
+Au démarrage du conteneur \texttt{web}, le point d'entrée exécute automatiquement et séquentiellement :
+\begin{enumerate}[leftmargin=*]
+  \item L'application des migrations de schéma (\texttt{python manage.py migrate}).
+  \item Le rassemblement des fichiers statiques frontend (\texttt{python manage.py collectstatic --noinput}).
+  \item Le peuplement conditionnel des comptes et données de démo (\texttt{seed\_demo.py} si \texttt{SEED\_DEMO=1}).
+  \item Le lancement du serveur Gunicorn en écoute sur \texttt{0.0.0.0:8000}.
+\end{enumerate}
+
+\subsection{Variables d'environnement}
+
+\begin{table}[H]
+\centering
+\caption{Variables d'environnement supportées par la pile Docker}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4.5cm}|p{3.5cm}|p{6cm}|}
+  \hline
+  \rowcolor{medaccent}
+  \textbf{Variable} & \textbf{Valeur par défaut} & \textbf{Description} \\
+  \hline
+  \texttt{DJANGO\_SECRET\_KEY} & clé générée dev & Clé cryptographique Django (à modifier en prod) \\
+  \hline
+  \texttt{DB\_PASSWORD} & \texttt{medconnect-dev} & Mot de passe de l'utilisateur PostgreSQL \\
+  \hline
+  \texttt{DJANGO\_ALLOWED\_HOSTS} & \texttt{localhost,127.0.0.1} & Noms d'hôtes HTTP autorisés \\
+  \hline
+  \texttt{SEED\_DEMO} & \texttt{1} & Activer (1) ou désactiver (0) l'injection de démo \\
+  \hline
+  \texttt{DB\_ENGINE} & \texttt{postgres} & Sélecteur du moteur de base de données \\
+  \hline
+  \texttt{DB\_HOST} & \texttt{db} & Hôte réseau du conteneur PostgreSQL \\
+  \hline
+\end{tabular}
+\end{table}
+
+\subsection{Commandes d'exploitation Docker}
+
+\begin{lstlisting}[language=bash, caption={Commandes usuelles de gestion Docker}]
+# Lancer la pile complete (build + execution)
+docker compose up --build
+
+# Lancer en arriere-plan (mode detache)
+docker compose up -d --build
+
+# Consulter les journaux applicatifs en direct
+docker compose logs -f web
+
+# Executer la suite de tests Django dans le conteneur
+docker compose run --rm -e SEED_DEMO=0 web python manage.py test
+
+# Arreter les conteneurs (donnees conservees)
+docker compose down
+
+# Arret complet et purge de la base de donnees (volume supprime)
+docker compose down -v
 \end{lstlisting}
-
-Le script réalise automatiquement : vérification de l'environnement virtuel, installation des dépendances si absentes, exécution des migrations en attente, démarrage du serveur Django sur \texttt{http://127.0.0.1:8000}.
 
 \section{Exécution des tests}
 
@@ -1688,24 +1754,20 @@ git rebase origin/develop
 \section{Dettes techniques}
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{SQLite en développement} : SQLite ne supporte pas la concurrence – migration vers PostgreSQL requise pour un déploiement production.
-  \item \textbf{Absence de CI/CD} : Pas de pipeline d'intégration continue configuré (GitHub Actions ou équivalent).
-  \item \textbf{Pas de documentation Swagger/OpenAPI} : L'API n'expose pas encore de documentation interactive (drf-spectacular ou drf-yasg).
-  \item \textbf{\texttt{db.sqlite3} hors Git} : Le fichier de base de données est exclu du versionning (\texttt{.gitignore}) – le script \texttt{seed\_demo.py} compense pour le développement.
-  \item \textbf{Pas de Docker} : Le déploiement requiert une installation manuelle de Python et des dépendances.
+  \item \textbf{Absence de CI/CD} : Pas de pipeline d'intégration continue automatisé (GitHub Actions ou GitLab CI).
+  \item \textbf{Pas de documentation Swagger/OpenAPI} : L'API n'expose pas encore d'interface Swagger interactive (drf-spectacular ou drf-yasg).
+  \item \textbf{\texttt{db.sqlite3} hors Git} : Le fichier SQLite local est exclu du versionning (\texttt{.gitignore}) – le script \texttt{seed\_demo.py} compense pour l'environnement local sans Docker.
 \end{itemize}
 
 \section{Perspectives d'évolution}
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Migration PostgreSQL} : Passage à PostgreSQL pour la production – les modèles Django sont déjà agnostiques à la base de données.
-  \item \textbf{Conteneurisation Docker} : Création d'un \texttt{Dockerfile} et d'un \texttt{docker-compose.yml} pour faciliter le déploiement.
   \item \textbf{Documentation API Swagger} : Intégration de \texttt{drf-spectacular} pour générer automatiquement une documentation OpenAPI 3.0 interactive.
-  \item \textbf{Frontend React} : Migration de la SPA JavaScript natif vers React avec TypeScript pour une meilleure maintenabilité.
-  \item \textbf{Notifications} : Intégration d'un service email (Django Email + Celery) pour les rappels de rendez-vous.
-  \item \textbf{Génération PDF} : Utilisation de WeasyPrint ou ReportLab pour générer des ordonnances au format PDF imprimable.
-  \item \textbf{CI/CD} : Configuration GitHub Actions pour exécuter automatiquement les 68 tests à chaque push.
-  \item \textbf{Tableau de bord analytique} : Statistiques sur les consultations, les pathologies fréquentes, les taux d'annulation.
+  \item \textbf{Frontend React / Vue.js} : Migration de la SPA JavaScript natif vers un framework moderne à composants typés.
+  \item \textbf{Notifications multicanaux} : Intégration d'un service de rappel par email ou SMS (Django Email + Celery / Redis).
+  \item \textbf{Génération PDF enrichie} : Utilisation de WeasyPrint pour générer des ordonnances et comptes-rendus au format PDF imprimable et sécurisé.
+  \item \textbf{Pipeline CI/CD} : Configuration GitHub Actions pour exécuter automatiquement la suite de 68 tests à chaque validation de Pull Request.
+  \item \textbf{Tableau de bord analytique avancé} : Métriques d'occupation du cabinet, statistiques des pathologies et suivi financier.
 \end{itemize}
 
 % ══════════════════════════════════════════════════════
@@ -1714,11 +1776,9 @@ git rebase origin/develop
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-Le projet MedConnect illustre la mise en œuvre concrète d'une architecture web distribuée, développée dans le cadre du module \textit{Web Services et Applications Distribuées}. En s'appuyant sur Django REST Framework, SimpleJWT et une organisation en quatre micro-services REST, le Groupe 12 a livré une plateforme fonctionnelle couvrant l'intégralité du cycle de vie médical : gestion des patients, planification des rendez-vous, tenue du dossier médical et prescription d'ordonnances sécurisées.
+Le projet MedConnect illustre la mise en œuvre concrète d'une architecture web distribuée, développée dans le cadre du module \textit{Web Services et Applications Distribuées}. En s'appuyant sur Django REST Framework, SimpleJWT et une organisation en micro-services REST modulaires, le Groupe 12 a livré une plateforme opérationnelle couvrant l'intégralité du cycle médical : gestion des patients, planification des rendez-vous, suivi clinique et prescription d'ordonnances sécurisées.
 
-La rigueur dans la répartition des tâches, le workflow Git structuré et la suite de tests exhaustive (68 tests, 100\% de réussite) démontrent une approche professionnelle du développement logiciel collaboratif. Les limites identifiées (SQLite, absence de Docker, pas de CI/CD) constituent une feuille de route claire pour une version V2 orientée production.
-
-MedConnect constitue une base solide, maintenable et extensible pour une application de santé numérique à l'échelle d'un cabinet médical réel.
+L'intégration d'une pile de conteneurisation complète \textbf{Docker Compose} avec serveur de production \textbf{Gunicorn} et base \textbf{PostgreSQL 16}, couplée à une couverture de tests exhaustive (68 tests unitaires et d'intégration validés à 100\%), atteste du professionnalisme et de la robustesse de la solution. MedConnect constitue un socle fiable, hautement extensible et directement déployable pour un cabinet médical moderne.
 
 % ══════════════════════════════════════════════════════
 %  ANNEXES
@@ -1777,8 +1837,13 @@ MedConnect-WS-IL-EQ12/
 |   |-- seed_demo.py
 |   |-- manage.py
 |   |-- requirements.txt
-|   +-- db.sqlite3            (non versionne - genere par migrate)
+|   |-- Dockerfile
+|   |-- docker-entrypoint.sh
+|   |-- .dockerignore
+|   +-- db.sqlite3            (non versionne - dev local)
 |
+|-- docker-compose.yml        (orchestration web + db postgres)
+|-- DOCKER.md                 (guide d'exploitation conteneur)
 |-- report/
 |   |-- main.tex              (ce document)
 |   +-- screenshots/
@@ -1821,9 +1886,9 @@ MedConnect-WS-IL-EQ12/
   \hline
   Dépôt Git structuré (branches) & \textcolor{medgreen}{\checkmark} & GitHub \\
   \hline
-  Documentation API Swagger & \textcolor{medred}{\texttimes} & Prévu en V2 \\
+  Conteneurisation Docker & \textcolor{medgreen}{\checkmark} & \texttt{docker-compose.yml}, \texttt{Dockerfile} \\
   \hline
-  Docker / docker-compose & \textcolor{medred}{\texttimes} & Prévu en V2 \\
+  Documentation API Swagger & \textcolor{medred}{\texttimes} & Prévu en V2 \\
   \hline
 \end{tabular}
 \end{table}
